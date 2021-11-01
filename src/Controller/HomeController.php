@@ -15,14 +15,6 @@ class HomeController extends AbstractController
      */
     public function index(EmployerRepository $repository): Response
     {
-        /** @var Employee $user */
-        $user = $this->getUser();
-//        dd(array_map(function ($x) {
-//            return $x->getEmployees();
-//        },$repository->findAll()));
-
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+        return $this->render('home/index.html.twig');
     }
 }

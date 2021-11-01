@@ -108,6 +108,11 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $courseRegistrations;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Employer::class, inversedBy="managers")
+     */
+    private $managing;
+
     public function __construct()
     {
         $this->courseRegistrations = new ArrayCollection();
@@ -393,5 +398,21 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         if($reverse) $data = array_reverse($data);
 
         return sprintf("%s %s",...$data);
+    }
+
+    public function getManaging(): ?Employer
+    {
+        return $this->managing;
+    }
+
+    public function setManaging(?Employer $managing): self
+    {
+        $this->managing = $managing;
+
+        return $this;
+    }
+
+    public function isManager(): bool {
+        return !!$this->getManaging();
     }
 }

@@ -23,7 +23,7 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 class EmployeeAuthenticator extends AbstractLoginFormAuthenticator implements AuthenticationEntryPointInterface {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_security';
+    public const LOGIN_ROUTE = 'app_security_employee';
 
     private UrlGeneratorInterface $urlGenerator;
 

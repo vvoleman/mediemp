@@ -49,10 +49,16 @@ class Employer
      */
     private $employerCourses;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Employee::class, mappedBy="managing")
+     */
+    private $managers;
+
     public function __construct()
     {
         $this->employees = new ArrayCollection();
         $this->employerCourses = new ArrayCollection();
+        $this->managers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -162,6 +168,36 @@ class Employer
             // set the owning side to null (unless already changed)
             if ($employerCourse->getEmployer() === $this) {
                 $employerCourse->setEmployer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Employee[]
+     */
+    public function getManagers(): Collection
+    {
+        return $this->managers;
+    }
+
+    public function addManager(Employee $manager): self
+    {
+        if (!$this->managers->contains($manager)) {
+            $this->managers[] = $manager;
+            $manager->setManaging($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManager(Employee $manager): self
+    {
+        if ($this->managers->removeElement($manager)) {
+            // set the owning side to null (unless already changed)
+            if ($manager->getManaging() === $this) {
+                $manager->setManaging(null);
             }
         }
 
