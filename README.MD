@@ -73,3 +73,9 @@ Haha, my bad, takže pro přístup k databázi používáme Doctrine - knihovnu 
 ## Další
 * V případě, že vás zarazí nějaká do očí bijící věc, tak vytvořte issue a popište problém
 * Už nevím, co psát, tak asi dobrou noc
+
+## Užitečné příkazy
+1. `php bin/console debug:router`
+   * seznam rout
+2. `php bin/console debug:autowiring`
+   * services pro autowiring
