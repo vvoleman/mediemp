@@ -23,6 +23,7 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 class EmployeeAuthenticator extends AbstractLoginFormAuthenticator implements AuthenticationEntryPointInterface {
     use TargetPathTrait;
 
+    public const LOGIN_ROUTE_HUB = 'app_security';
     public const LOGIN_ROUTE = 'app_security_employee';
 
     private UrlGeneratorInterface $urlGenerator;
@@ -34,15 +35,15 @@ class EmployeeAuthenticator extends AbstractLoginFormAuthenticator implements Au
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function supports(Request $request): bool{
+    public function supports(Request $request): bool {
         return $request->isMethod('POST') && $this->getLoginUrl($request) === $request->getPathInfo();
     }
 
     public function authenticate(Request $request): PassportInterface {
         //vytažení emailu
-        $email = $request->request->get('email','');
+        $email = $request->request->get('email', '');
 
-        $request->getSession()->set(Security::LAST_USERNAME,$email);
+        $request->getSession()->set(Security::LAST_USERNAME, $email);
 
         return new Passport(
             new UserBadge($email),
@@ -69,5 +70,9 @@ class EmployeeAuthenticator extends AbstractLoginFormAuthenticator implements Au
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 
+    public function start(Request $request, AuthenticationException $authException = null): Response {
+        $url = $this->urlGenerator->generate(self::LOGIN_ROUTE_HUB);
 
+        return new RedirectResponse($url);
+    }
 }

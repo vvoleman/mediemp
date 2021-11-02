@@ -9,6 +9,7 @@
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/fontawesome.min.css') }}">
     {% endblock %}
 
     {% block javascripts %}
@@ -19,5 +20,6 @@
 <body>
 {% include "partials/_navbar.html.twig" %}
 {% block body %}{% endblock %}
+{% include "partials/_floating.html.twig" %}
 </body>
 </html>

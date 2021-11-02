@@ -48,11 +48,16 @@ body {
     color: white;
     display: flex;
     align-items: center;
-    border-radius: 5vh;
     min-height: 50px;
     min-width: 50px;
     font-weight: bold;
     margin: 0 5px;
+}
+.navbar-nav.bubble .nav-item{
+    border-radius: 5vh;
+}
+.form-floating>.form-control{
+    height: auto;
 }
 .bubble .nav-link:hover{
     background: var(--special-color);
@@ -143,4 +148,34 @@ form input{
 a.box{
     text-decoration: none;
     margin-top: 8.33333333%;
+}
+
+.floating-button{
+    position:fixed;
+    width:60px;
+    height:60px;
+    bottom:40px;
+    right:40px;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    box-shadow: 2px 2px 3px #999;
+}
+a.floating-button{
+    text-decoration: none;
+}
+.floating-button > .fa{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.special{
+    background: var(--special-color);
+    color:var(--main-text-color);
+}
+
+.my-float{
+    margin-top:22px;
 }

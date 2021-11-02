@@ -1,0 +1,4 @@
+bugtracker:
+    post:
+        success: "Chyba byla úspěšně nahlášena"
+        error: "Nebylo možné chybu nahlásit, zkuste to prosím později"

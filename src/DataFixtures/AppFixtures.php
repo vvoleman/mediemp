@@ -12,6 +12,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture {
 
+    use PersistArrayTrait;
+
     private UserPasswordHasherInterface $passwordHasher;
     private EntityManagerInterface $entityManager;
 
@@ -35,6 +37,8 @@ class AppFixtures extends Fixture {
         $u = EmployeeFactory::new()->create([
             "employer"=>$e->object(),
             "email"=>"test@test.cz",
+            "name"=>"Jan",
+            "surname"=>"Novák",
             "password"=>$hashed,
             "managing"=>$e->object()
         ]);
@@ -49,9 +53,7 @@ class AppFixtures extends Fixture {
                 "password" => $hashed,
                 "employer" => $e->object()
             ]);
-            foreach ($users as $u) {
-                $manager->persist($u->object());
-            }
+            $this->persistArrayProxies($manager,$users);
         }
 
         $manager->flush();
