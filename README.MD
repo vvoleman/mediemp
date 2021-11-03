@@ -80,3 +80,5 @@ Haha, my bad, takže pro přístup k databázi používáme Doctrine - knihovnu 
 2. `php bin/console debug:autowiring` <search>
    * services pro autowiring
    * možno vyhledat dle názvů -> `php bin/console debug:autowiring log`
+
+TBA
