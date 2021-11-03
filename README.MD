@@ -77,5 +77,6 @@ Haha, my bad, takže pro přístup k databázi používáme Doctrine - knihovnu 
 ## Užitečné příkazy
 1. `php bin/console debug:router`
    * seznam rout
-2. `php bin/console debug:autowiring`
+2. `php bin/console debug:autowiring` <search>
    * services pro autowiring
+   * možno vyhledat dle názvů -> `php bin/console debug:autowiring log`
