@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class PreviousUrlService {
 
-    private const NAME="_previous_url";
+    private const NAME = "_previous_url";
 
     private SessionInterface $session;
 
@@ -23,8 +23,8 @@ class PreviousUrlService {
     public function set(Request $request): bool {
         $url = $request->headers->get("referer");
 
-        if(!!$url){
-            $this->session->set(self::NAME,$url);
+        if (!!$url) {
+            $this->session->set(self::NAME, $url);
             return true;
         }
 
@@ -36,9 +36,10 @@ class PreviousUrlService {
      * @param bool $clear
      * @return string|null
      */
-    public function get(string $default = null, bool $clear = true): ?string{
+    public function get(string $default = null, bool $clear = true): ?string {
         $url = $this->session->get(self::NAME);
-        $this->session->remove(self::NAME);
+        if ($clear) $this->session->remove(self::NAME);
+        if ($url==null) $url = $default;
         return $url;
     }
 
@@ -46,7 +47,7 @@ class PreviousUrlService {
      * Is previous URL set?
      * @return bool
      */
-    public function isSet(): bool{
+    public function isSet(): bool {
         return $this->session->has(self::NAME);
     }
 

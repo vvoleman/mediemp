@@ -17,4 +17,15 @@ class HomeController extends AbstractController
     {
         return $this->render('home/index.html.twig');
     }
+
+    public function renderFlashMessages(){
+        return $this->render("partials/_flashmessages.html.twig",[
+            "classes"=>[
+                "error"=>"danger",
+                "success"=>"success",
+                "info"=>"info",
+                "warning"=>"warning"
+            ]
+        ]);
+    }
 }

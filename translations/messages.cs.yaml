@@ -1,4 +1,7 @@
 bugtracker:
     post:
         success: "Chyba byla úspěšně nahlášena"
-        error: "Nebylo možné chybu nahlásit, zkuste to prosím později"
+        error: "Chyba nebyla nahlášená - zkontrolujte, že jste vyplnili všechny údaje"
+security:
+    csrf:
+        invalid: "Nelze zpracovat formulář, zkuste obnovit stránku"

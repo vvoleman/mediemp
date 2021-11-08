@@ -8,8 +8,7 @@ use App\Repository\BugCategoryRepository;
 use App\Repository\BugRepository;
 use App\Repository\EmployeeRepository;
 use App\Security\LoggerAwareTrait;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,16 +21,20 @@ class BugTrackerService {
     private ValidatorInterface $validator;
     private EmployeeRepository $employeeRepository;
     private BugCategoryRepository $categoryRepository;
-    private EntityManager $manager;
+    private EntityManagerInterface $manager;
     private EventDispatcherInterface $dispatcher;
     private BugRepository $bugRepository;
+    private PreviousUrlService $urlService;
+    private ImageService $imageService;
 
     public function __construct(ValidatorInterface       $validator,
                                 EmployeeRepository       $employeeRepository,
                                 BugCategoryRepository    $categoryRepository,
                                 BugRepository            $bugRepository,
-                                EntityManager            $manager,
-                                EventDispatcherInterface $dispatcher
+                                EntityManagerInterface   $manager,
+                                EventDispatcherInterface $dispatcher,
+                                PreviousUrlService       $urlService,
+                                ImageService             $imageService
     ) {
         $this->validator = $validator;
         $this->employeeRepository = $employeeRepository;
@@ -39,6 +42,8 @@ class BugTrackerService {
         $this->manager = $manager;
         $this->dispatcher = $dispatcher;
         $this->bugRepository = $bugRepository;
+        $this->urlService = $urlService;
+        $this->imageService = $imageService;
     }
 
     /**
@@ -64,6 +69,7 @@ class BugTrackerService {
         // Persists into DB
         try {
             $this->manager->persist($bug);
+            $this->manager->flush();
         } catch (\Exception $e) {
             $this->getLogger()->warning("Unable to persist bug", [
                 "exception" => $e,
@@ -74,7 +80,6 @@ class BugTrackerService {
 
         // Dispatch event
         $this->dispatcher->dispatch(new BugReportCreatedEvent($bug), BugReportCreatedEvent::NAME);
-
         return true;
     }
 
@@ -85,6 +90,12 @@ class BugTrackerService {
         $bug->setDescription($request->request->get("description", ""));
         $bug->setCreatedAt();
 
+        $images = $this->imageService->saveMany($request->files->get("images"));
+        if (sizeof($images) > 0) {
+            $bug->addScreenshots($images);
+        }
+
+
         if ($request->request->has("created_by")) {
             $employee = $this->employeeRepository->find($request->request->get("created_by"));
             if (!!$employee) {
@@ -92,8 +103,14 @@ class BugTrackerService {
             }
         }
 
-        $bug->setCategory($this->categoryRepository->find($request->request->get("category")));
-        $bug->setUrl($request->request->get("bug_url"));
+        $category = $this->categoryRepository->find($request->request->get("category"));
+        if (!!$category) {
+            $bug->setCategory($category);
+        }
+
+        if ($this->urlService->isSet()) {
+            $bug->setUrl($this->urlService->get("", true));
+        }
 
         return $bug;
     }

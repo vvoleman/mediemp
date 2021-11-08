@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\BugCategoryRepository;
+use App\Security\VerifyCsrfTrait;
 use App\Service\BugTrackerService;
 use App\Service\PreviousUrlService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -18,6 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
  */
 class BugTrackerController extends AbstractController {
+    use VerifyCsrfTrait;
 
     private PreviousUrlService $previousUrlService;
 
@@ -33,7 +35,8 @@ class BugTrackerController extends AbstractController {
 
         return $this->render("bug_tracker/index.html.twig",
             [
-                "categories"=>$repository->findAll()
+                "categories"=>$repository->findAll(),
+                "previousUrl"=>$this->previousUrlService->get("",false)
             ]
         );
     }
@@ -45,6 +48,9 @@ class BugTrackerController extends AbstractController {
      * @return Response
      */
     public function post(Request $request, BugTrackerService $trackerService): Response {
+        if(!$this->verify("post-bug",$request->request->get("_csrf_token"))){
+            return new RedirectResponse($this->previousUrlService->get($this->generateUrl("app_home"),false));
+        }
         $result = $trackerService->postReport($request);
 
         $status = $result ? "success" : "error";

@@ -26,9 +26,9 @@ class Image
 
     /**
      * @var string|null
-     * @ORM\Column(type="uuid",unique=true)
+     * @ORM\Column(type="string",unique=true)
      */
-    private ?string $uuid;
+    private string $uuid;
 
     public function getId(): ?int
     {
@@ -38,6 +38,10 @@ class Image
     public function getPath(): ?string
     {
         return $this->path;
+    }
+
+    public function getPublicUrl(){
+        return "";
     }
 
     public function setPath(string $path): self

@@ -20,7 +20,7 @@ class Bug {
     private $id;
 
     /**
-     * @Assert\Date
+     * @Assert\NotBlank
      * @ORM\Column(type="datetime_immutable")
      */
     private \DateTimeImmutable $createdAt;
@@ -70,7 +70,7 @@ class Bug {
             $createdAt = new \DateTimeImmutable();
         }
 
-        $this->createdAt = $createdAt;
+        $this->createdAt = $createdAt;//->format("Y-m-d H:i:s");
 
         return $this;
     }
@@ -106,6 +106,12 @@ class Bug {
         if (!$this->screenshots->contains($screenshot)) {
             $this->screenshots[] = $screenshot;
         }
+
+        return $this;
+    }
+
+    public function addScreenshots(array $images){
+        foreach($images as $i){$this->addScreenshot($i);};
 
         return $this;
     }
