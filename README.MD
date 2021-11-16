@@ -19,7 +19,7 @@
 7. Máme teď sice krásnou DB, ale je prázdná. Pomocí příkazu `php bin/console doctrine:fixtures:load` můžeme spustit tzv. seedování,
 tedy vložení nějakých, v našem případě fake dat do DB. Toto seedování provádíme přes fixtures -> `src/DataFixtures`
    * Všechny hesla jsou `heslo123` a pro přihlášení můžete použít `test@test.cz`
-8. Tohle už není tak úplně instalace, ale pokud chceme web vidět, můžeme spustit built-in webserver; `php bin/console serve`
+8. Tohle už není tak úplně instalace, ale pokud chceme web vidět, můžeme spustit built-in webserver; `php -S localhost:8080 -t public/`
 9. ???
 10. Profit!
 
@@ -73,3 +73,12 @@ Haha, my bad, takže pro přístup k databázi používáme Doctrine - knihovnu 
 ## Další
 * V případě, že vás zarazí nějaká do očí bijící věc, tak vytvořte issue a popište problém
 * Už nevím, co psát, tak asi dobrou noc
+
+## Užitečné příkazy
+1. `php bin/console debug:router`
+   * seznam rout
+2. `php bin/console debug:autowiring` <search>
+   * services pro autowiring
+   * možno vyhledat dle názvů -> `php bin/console debug:autowiring log`
+
+TBA
