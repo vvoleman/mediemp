@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\File;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -10,7 +10,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FileUploaderService {
 
-    public const FOLDER = "/public/uploaded";
+    public const FOLDER = "/uploaded";
 
     private RandomService $randomService;
     private Filesystem $filesystem;
@@ -35,7 +35,7 @@ class FileUploaderService {
                 $name = $this->randomService->string(16);
             }
             $fileName = sprintf("%s.%s",$name,$file->guessExtension());
-            $full = $this->getFullPath($this->appKernel->getProjectDir().$directory,$fileName);
+            $full = $this->getFullPath($directory,$fileName);
         }while($this->filesystem->exists($full));
 
         $file->move($this->appKernel->getProjectDir().$directory,$fileName);

@@ -39,9 +39,6 @@ final class EmployeeFactory extends ModelFactory
     {
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
-            'email' => self::faker()->email(),
-            'roles' => [],
-            'password' => self::faker()->text(),
             'name' => self::faker()->firstName(),
             'surname' => self::faker()->lastName(),
             'degree' => self::faker()->randomElement(["Bc.","Mudr."]),

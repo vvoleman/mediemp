@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Repository\BugCategoryRepository;
 use App\Security\VerifyCsrfTrait;
-use App\Service\BugTrackerService;
-use App\Service\PreviousUrlService;
+use App\Service\Entity\BugTrackerService;
+use App\Service\Util\PreviousUrlService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatableMessage;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @IsGranted("IS_AUTHENTICATED_REMEMBERED")

@@ -179,3 +179,17 @@ a.floating-button{
 .my-float{
     margin-top:22px;
 }
+
+.photo-box{
+    width: 90%;
+    min-height: 100px;
+    height: auto;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.separator{
+    padding:12px 5px;
+    background: #bababa;
+    text-align: center;
+}

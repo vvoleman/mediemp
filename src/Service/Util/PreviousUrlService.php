@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Util;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

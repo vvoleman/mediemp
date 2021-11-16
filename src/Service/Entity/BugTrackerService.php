@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Entity;
 
 use App\Entity\Bug;
 use App\Event\BugTracker\BugReportCreatedEvent;
