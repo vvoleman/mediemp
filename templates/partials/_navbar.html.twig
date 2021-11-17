@@ -14,7 +14,11 @@
                         <div class="dropdown">
                             <button class="nav-link btn btn-secondary dropdown-toggle" type="button"
                                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ app.user.fullname }}
+                                {% if instanceof(app.user.user,"App\\Entity\\Employee") %}
+                                    {{ app.user.user.fullname }}
+                                {% else %}
+                                    {{ app.user.email }}
+                                {% endif %}
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item" href="#">Action</a></li>
