@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Zaměstnavatelé - {{ parent() }} {% endblock %}
+
+{% block body %}
+    {% for employer in pager %}
+        <li>{{ employer.name }}</li>
+    {% endfor %}
+{% endblock %}

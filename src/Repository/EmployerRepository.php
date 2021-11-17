@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Employer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,6 +20,10 @@ class EmployerRepository extends ServiceEntityRepository
         parent::__construct($registry, Employer::class);
     }
 
+    public function createAllEmployerQueryBuilder(): QueryBuilder {
+        return $this->createQueryBuilder('p');
+    }
+    
     // /**
     //  * @return Employer[] Returns an array of Employer objects
     //  */
