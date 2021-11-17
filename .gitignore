@@ -7,7 +7,7 @@
 /public/bundles/
 /var/cache/
 /var/log/
-/var/files/data_assets/assets/
+/var/files/data_assets/assets/*
 /vendor/
 ###< symfony/framework-bundle ###
 

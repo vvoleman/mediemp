@@ -15,8 +15,6 @@ class HomeController extends AbstractController {
      * @Route("/", name="app_home")
      */
     public function index(EmployerRepository $repository,DataAssetService $service): Response {
-        $this->start();
-        dd($service->searchFor("nrpzs","Ústav pro péči o matku a dítě"),$this->stop());
         return $this->render('home/index.html.twig');
     }
 
