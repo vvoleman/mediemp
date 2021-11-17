@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CalendarController!{% endblock %}
+
+{% block body %}
+    <h1>Date: {{ date.format('d. m. Y') }}</h1>
+    <h1>Starts at: {{ starts_at }}</h1>
+    <h1>Number of days: {{ days }}</h1>
+    <h1>Offset: {{ offset }} |
+        <a href="{{ path('app_calendar_get',{"offset":offset-1}) }}">-</a>
+        <a href="{{ path('app_calendar_get',{"offset":offset+1}) }}">+</a>
+        <a href="{{ path('app_calendar_get',{"offset":0}) }}">Vynuluj</a>
+    </h1>
+{% endblock %}

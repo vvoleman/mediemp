@@ -14,6 +14,7 @@ class DataAssetFixtures extends Fixture {
         $asset->setChangeFrequencyDays(31);
         $asset->setSchemaFile("/files/data_assets/schemas/nrzps.json");
         $asset->setSourceLink("https://opendata.mzcr.cz/data/nrpzs/narodni-registr-poskytovatelu-zdravotnich-sluzeb.csv");
+
         $manager->persist($asset);
         $manager->flush();
     }
