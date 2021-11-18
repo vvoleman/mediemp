@@ -13,17 +13,24 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Employer[]    findAll()
  * @method Employer[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class EmployerRepository extends ServiceEntityRepository
-{
-    public function __construct(ManagerRegistry $registry)
-    {
+class EmployerRepository extends ServiceEntityRepository {
+    public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Employer::class);
     }
 
     public function createAllEmployerQueryBuilder(): QueryBuilder {
         return $this->createQueryBuilder('p');
     }
-    
+
+    public function getUnconfirmedEmployer(string $token): ?Employer {
+        $qb = $this->createQueryBuilder('p');
+        return $qb->where('p.confirmedAt = null')
+            ->where('p.confirmToken = :token')
+            ->setParameter('token',$token)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Employer[] Returns an array of Employer objects
     //  */

@@ -54,6 +54,21 @@ class Employer
      */
     private $managers;
 
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $confirmedAt;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $confirmToken;
+
     public function __construct()
     {
         $this->employees = new ArrayCollection();
@@ -117,8 +132,7 @@ class Employer
     /**
      * @return Collection|Employee[]
      */
-    public function getEmployees(): Collection
-    {
+    public function getEmployees(): Collection{
         return $this->employees;
     }
 
@@ -200,6 +214,42 @@ class Employer
                 $manager->setManaging(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getConfirmedAt(): ?\DateTimeImmutable
+    {
+        return $this->confirmedAt;
+    }
+
+    public function setConfirmedAt(?\DateTimeImmutable $confirmedAt): self
+    {
+        $this->confirmedAt = $confirmedAt;
+
+        return $this;
+    }
+
+    public function getConfirmToken(): ?string
+    {
+        return $this->confirmToken;
+    }
+
+    public function setConfirmToken(string $confirmToken): self
+    {
+        $this->confirmToken = $confirmToken;
 
         return $this;
     }

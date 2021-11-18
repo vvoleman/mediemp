@@ -3,7 +3,35 @@
 {% block title %} Zaměstnavatelé - {{ parent() }} {% endblock %}
 
 {% block body %}
-    {% for employer in pager %}
-        <li>{{ employer.name }}</li>
-    {% endfor %}
+
+    <div class="mx-auto col-lg-6 ">
+        <div>
+            <button class="btn btn-primary">Přidat organizaci</button>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <td>Název</td>
+                <td>Počet zaměstnanců</td>
+                <td>Více</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for employer in pager %}
+                <tr>
+                    <td>{{ employer.name }}</td>
+                    <td>{{ employer.employees.count }}</td>
+                    <td>
+                        <a href="">
+                            <button><i class="fas fa-info-circle"></i></button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+            {{ pagerfanta(pager) }}
+        </div>
+    </div>
 {% endblock %}
