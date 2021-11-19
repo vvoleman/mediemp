@@ -188,8 +188,31 @@ a.floating-button{
     background-size: contain;
     background-repeat: no-repeat;
 }
+.info-frame{
+    background-color: #0b5ed7;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 25px;
+    height: 75px;
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+
+
+.upravit{
+background-color: #0d6efd;
+border-radius: 30%;
+width: 100px;
+display: inline-block;
+text-align: center;
+margin-left: 100px;
+    alignment: right;
+}
 .separator{
     padding:12px 5px;
     background: #bababa;
     text-align: center;
+
 }
