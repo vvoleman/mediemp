@@ -1,20 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CoursesController!{% endblock %}
+{% block title %}Courses overview{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="container">
+  <div class="row justify-content-md-center">
+{% for course in courses %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="col col-lg-3 m-2">
+      <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ course.name }}</h5>
+                <p class="card-text">{{ course.focus }}</p>
+                {% set keywords = course.keywords|split(',') %}
+                {% for u in keywords %}
+                <span class="badge bg-secondary">{{ u }}</span>
+                {% endfor %}
+                <div class="card-text my-2">
+                    <a href="{{path('app_courses_one', {"id":course.id}) }}" class="btn btn-primary">Visit course</a>
+                </div>
+                
+            </div>        
+        </div>    
+    </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'D:/xampp/htdocs/mediemp/src/Controller/CoursesController.php'|file_link(0) }}">src/Controller/CoursesController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'D:/xampp/htdocs/mediemp/templates/courses/index.html.twig'|file_link(0) }}">templates/courses/index.html.twig</a></code></li>
-    </ul>
+{% else %}
+    No courses have been found.
+{% endfor %}
+    </div>
 </div>
 {% endblock %}
