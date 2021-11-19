@@ -7,9 +7,11 @@ use App\Entity\EmployerCourse;
 use App\Entity\GlobalCourse;
 use App\Repository\EmployerCourseRepository;
 use App\Repository\GlobalCourseRepository;
+use App\Service\Util\PreviousUrlService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Doctrine\ORM\Mapping\Id;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -40,17 +42,19 @@ class CoursesController extends AbstractController
         ]);
     }
     /**
-     * @Route("/courses/{id}", name="app_courses_one",methods={"POST"})
+     * @Route("/courses/{id}", name="app_courses_one_post",methods={"POST"})
      */
-    public function index2Post(GlobalCourseRepository $repository, GlobalCourse $c): Response
+    public function index2Post(GlobalCourse $c, Request $request, PreviousUrlService $previousUrlService, $id): Response
     {
-
-        $url = $this->previousUrlService->get();
-        if (!$url) {
-            $url = $this->generateUrl("app_home");
-        }
-
-        return new RedirectResponse($url);
+        $entityManager = $this->getDoctrine()->getManager();
+        $c->setName($request->request->get('name'));
+        $c->setFocus($request->request->get('focus'));
+        $c->setSpecialization($request->request->get('specialization'));
+        $c->setKeywords($request->request->get('keywords'));
+        $entityManager->persist($c);
+        $entityManager->flush();
+        $this->addFlash("success", "Data saved");
+        return new RedirectResponse($this->generateUrl("app_courses_one", ['id' => $id]));
     }
 
 

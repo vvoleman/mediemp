@@ -68,9 +68,24 @@
                 <td>{{ c.employee.name  }}</td>
                 <td>{{ c.employee.surname  }}</td>
                 <td>
-                <a href="#" class="btn btn-success btn-sm">Make test done</a>
-                <a href="#" class="btn btn-warning btn-sm">Set absent</a>
-                <a href="#" class="btn btn-danger btn-sm">Remove from appointments</a>
+                <form method="POST">
+                <input type="hidden" name="action" value="set_test_done" /> 
+                <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('post-bug') }}">
+                <input type="Submit" class="btn btn-success btn-sm" value="Make test done" />
+                </form>
+                <form method="POST">
+                <input type="hidden" name="action" value="set_absent" /> 
+                <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('post-bug') }}">
+                <input type="Submit" class="btn btn-warning btn-sm" value="Set absent" />
+                </form>
+                <form method="POST">
+                <input type="hidden" name="action" value="remove" /> 
+                <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('post-bug') }}">
+                <input type="Submit" class="btn btn-danger btn-sm" value="Remove from appointments" />
+                </form>               
                 </td>
             </tr>
         {% endfor %}

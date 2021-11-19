@@ -10,22 +10,26 @@
   <div class="card-body">
     <h5 class="card-title">Course edit</h5>
     <p class="card-text">
-    <form>
+    <form method="POST">
     <div class="mb-3">
     <label  class="form-label">Name</label>
     <input type="text" class="form-control" disabled value="{{ course.id }}">    
   </div>
   <div class="mb-3">
     <label  class="form-label">Name</label>
-    <input type="text" class="form-control" value="{{ course.name }}">    
+    <input type="text" class="form-control" name="name" value="{{ course.name }}">    
   </div>
   <div class="mb-3">
     <label  class="form-label">Keywords</label>
-    <input type="text" class="form-control" value="{{ course.keywords }}">    
+    <input type="text" class="form-control" name="keywords" value="{{ course.keywords }}">    
+  </div>
+   <div class="mb-3">
+    <label  class="form-label">Specialization</label>
+    <input type="text" class="form-control" name="specialization" value="{{ course.specialization }}">    
   </div>
   <div class="mb-3">
     <label  class="form-label">Focus</label>
-    <input type="text" class="form-control" value="{{ course.focus }}">    
+    <input type="text" class="form-control" name="focus" value="{{ course.focus }}">    
   </div>
   
   <button type="submit" class="btn btn-primary">Submit</button>
