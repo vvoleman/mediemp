@@ -102,6 +102,7 @@ body {
 .link-box a{
     margin-bottom: 30px;
 }
+
 .btn-main{
     background: var(--main-bg-color);
     border:none;

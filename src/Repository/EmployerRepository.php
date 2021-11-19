@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Employer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,11 +25,13 @@ class EmployerRepository extends ServiceEntityRepository {
 
     public function getUnconfirmedEmployer(string $token): ?Employer {
         $qb = $this->createQueryBuilder('p');
-        return $qb->where('p.confirmedAt = null')
+        $obj = $qb->where('p.confirmedAt = null')
             ->where('p.confirmToken = :token')
             ->setParameter('token',$token)
             ->getQuery()
-            ->getResult();
+            ->getResult(Query::HYDRATE_OBJECT);
+
+        return (sizeof($obj) == 0) ? null : $obj[0];
     }
 
     // /**
