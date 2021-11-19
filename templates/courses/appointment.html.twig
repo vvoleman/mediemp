@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Course{% endblock %}
+
+{% block body %}
+<div class="container">
+<div class="row">
+<div class="col-4">
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Course view</h5>
+    <p class="card-text">
+    <form>
+   
+  <div class="mb-3">
+    <label  class="form-label">Name</label>
+    <input type="text" class="form-control" value="{{ course.name }}">    
+  </div>
+
+<div class="mb-3">
+    <label  class="form-label">Date</label>
+    <input type="text" class="form-control" value="{{ appointment.date |date('Y-m-d  H:i')}}">    
+  </div>
+  <div class="mb-3">
+    <label  class="form-label">Place</label>
+    <input type="text" class="form-control" value="{{ appointment.place }}">    
+  </div>
+  <div class="mb-3">
+    <label  class="form-label">Capacity</label>
+    <input type="text" class="form-control" value="{{ appointment.capacity }}">    
+  </div>
+
+
+  <div class="mb-3">
+    <label  class="form-label">Keywords</label>
+    <input type="text" class="form-control" value="{{ course.keywords }}">    
+  </div>
+  <div class="mb-3">
+    <label  class="form-label">Focus</label>
+    <input type="text" class="form-control" value="{{ course.focus }}">    
+  </div>
+  
+  
+</form>
+    </p>
+    
+  </div>
+</div>
+</div>
+<div class="col-8">
+<div class="card" >
+    <div class="card-body">
+    <h5 class="card-title">Courses assigned to employers</h5>
+    <p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col"></th>            
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for c in peoples %}
+            <tr>
+                <td>{{ c.employee.degree  }}</td>
+                <td>{{ c.employee.name  }}</td>
+                <td>{{ c.employee.surname  }}</td>
+                <td>
+                <a href="#" class="btn btn-success btn-sm">Make test done</a>
+                <a href="#" class="btn btn-warning btn-sm">Set absent</a>
+                <a href="#" class="btn btn-danger btn-sm">Remove from appointments</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+     </table>
+     <button class="btn btn-primary">Add user to appointment</button>
+    </p>
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}
