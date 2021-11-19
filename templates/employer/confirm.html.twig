@@ -23,56 +23,7 @@
             </div>
             <hr>
             <h3>Vytvoření manažera</h3>
-            <div class="mb-3">
-                <label for="name" class="form-label">Jméno</label>
-                <input type="text" class="form-control" id="name" name="name">
-            </div>
-            <div class="mb-3">
-                <label for="surname" class="form-label">Příjmení</label>
-                <input type="text" class="form-control" id="surname" name="surname">
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email">
-            </div>
-            <div class="mb-3">
-                <label for="degree" class="form-label">Titul</label>
-                <input type="text" class="form-control" id="degree" name="degree">
-            </div>
-            <div class="mb-3">
-                <label for="birthday" class="form-label">Datum narození</label>
-                <input type="date" class="form-control" id="birthday" name="birthday">
-            </div>
-            <div class="mb-3">
-                <label for="degree" class="form-label">Město narození</label>
-                <input type="text" class="form-control" id="birthcity" name="birthcity">
-            </div>
-            <div class="mb-3">
-                <label for="citizenship" class="form-label">Národnost</label>
-                <input type="text" class="form-control" id="citizenship" name="citizenship">
-            </div>
-            <div class="mb-3">
-                <label for="dpc" class="form-label">Označení odborné způsobilosti</label>
-                <input type="text" class="form-control" id="dpc" name="designation_of_professional_competence">
-            </div>
-            <div class="mb-3">
-                <label for="sc" class="form-label">Specializované způsobilosti</label>
-                <input type="text" class="form-control" id="sc" name="specialized_competency">
-            </div>
-            <div class="mb-3">
-                <label for="diploma_number" class="form-label">Číslo diplomu</label>
-                <input type="text" class="form-control" id="diploma_number" name="diploma_number">
-            </div>
-            <div class="mb-3">
-                <label for="diploma_date" class="form-label">Datum získání diplomu</label>
-                <input type="date" class="form-control" id="diploma_date" name="diploma_date">
-            </div>
-            <div class="mb-3">
-                <label for="idee" class="form-label">Identifikační údaje vzdělávacího zařízení</label>
-                <input type="text" class="form-control" id="idee" name="idee">
-            </div>
-
-            <input type="hidden" name="token" value="{{ csrf_token('confirm-employer') }}"/>
         </form>
+        {{ form(employeeForm) }}
     </div>
 {% endblock %}
