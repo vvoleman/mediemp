@@ -6,25 +6,31 @@
         <div class="col-lg-2">
             <div class="photo-box" style="background-image: url('https://i.redd.it/s6zoxmbnq4b61.jpg')"></div>
         </div>
-        <!--Střední sloupec-->
-        <div class="col-lg-8">
-
-
-            <div class="col-12 separator">Obobní údaje</div>
-            <div class="col-12 d-block">
-                <div class="col-4" style=" margin-top: 50px;margin-bottom: 50px; background-color: lawngreen">Aktivní
-                </div>
             </div>
             <div class="col-12 d-flex flex-wrap">
-                <div class="col-4 info-frame">Jmeno</div>
-                <div class="col-4 info-frame">Příjmění</div>
-                <div class="col-4 info-frame">Titul</div>
-                <div class="col-4 info-frame">Bydliště</div>
-                <div class="col-4 info-frame">Místo narození</div>
-                <div class="col-4 info-frame">Rodné číslo</div>
+                <div class="col-4 info-frame">{{ user.degree }}</div>
+                <!--Střední sloupec-->
+                <div class="col-lg-8">
+
+
+                    <div class="col-12 separator">Obobní údaje</div>
+                    <div class="col-12 d-block">
+                        <div class="col-5">Status</div>{%  %}
+                        <div class="col-4" style=" margin-top: 50px;margin-bottom: 50px; background-color: lawngreen">Aktivní
+                        </div>
+                <div class="col-4 info-frame">{{ user.name }}</div>
+                <div class="col-4 info-frame">{{ user.surname }}</div>
+                <div class="col-4 info-frame">bydliště </div>
+                <div class="col-4 info-frame">{{ user.birthCity }}</div>
+                <div class="col-4 info-frame"> občanka</div>
 
 
             </div>
+            <div class="col-12 d-block">
+            <div class="separator" ">Profesní informace
+            </div>
+
+        </div>
         </div>
         <!-- Pravý sloupec-->
         <div class="col-lg-2">
