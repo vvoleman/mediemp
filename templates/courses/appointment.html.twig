@@ -16,14 +16,15 @@
                           
             </h5>
             <p class="card-text">
-              <form>
+               <form method="POST">
+                                          <input type="hidden" name="action" value="edit_course" />
 
                 <div class="mb-3">
                   <label class="form-label">
                     Name
                                       
                   </label>
-                  <input type="text" class="form-control" value="{{ course.name }}"></div>
+                  <input type="text" class="form-control" readonly value="{{ course.name }}"></div>
 
                   <div class="mb-3">
                     <label class="form-label">
@@ -49,15 +50,18 @@
                             Keywords
                                                       
                           </label>
-                          <input type="text" class="form-control" value="{{ course.keywords }}"></div>
+                          <input type="text" class="form-control" readonly value="{{ course.keywords }}"></div>
                           <div class="mb-3">
                             <label class="form-label">
                               Focus
                                                           
                             </label>
-                            <input type="text" class="form-control" value="{{ course.focus }}"></div>
-
-                          </form>
+                            <input type="text" class="form-control" readonly value="{{ course.focus }}"></div>
+<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-edit') }}">
+                          <button type="submit" class="btn btn-primary">
+                                Submit
+                            </button>
+                        </form>
                         </p>
 
                       </div>
@@ -97,9 +101,11 @@
                                   </td>
                                   <td>
                                     {{ c.employee.name }}
+                                   
                                   </td>
                                   <td>
                                     {{ c.employee.surname }}
+                                    {{ c.test_done }}
                                   </td>
                                   <td>
                                     <form method="POST">

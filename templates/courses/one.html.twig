@@ -14,6 +14,8 @@
                         </h5>
                         <p class="card-text">
                         <form method="POST">
+                                          <input type="hidden" name="action" value="edit_course" />
+
                             <div class="mb-3">
                                 <label class="form-label">
                                     Name
@@ -90,6 +92,19 @@
                                 {% endfor %}
                             </tbody>
                         </table>
+                        </p>
+                        <p>
+                        <form method="POST">
+                                          <input type="hidden" name="action" value="create_appointment" />
+                                          <input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">¨
+                                          <select class="form-select" name="employer_id">
+  <option selected disabled hidden>For employer</option>
+  {% for e in emp_all %}
+  <option value="{{ e.id }}">{{ e.name }}</option>
+  {% endfor %}
+  </select>
+                                            <input type="Submit" class="btn btn-danger btn-sm" value="Create new appointment" />
+                                          </form>
                         </p>
                     </div>
                 </div>
