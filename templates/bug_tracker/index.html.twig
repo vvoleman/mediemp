@@ -3,48 +3,53 @@
 {% block title %}Nahlášení chyby - {{ parent() }}{% endblock %}
 
 {% block body %}
-    <form method="post" action="{{ path("app_bug_report_post") }}" class="col-lg-4 mx-auto bar d-grid" enctype="multipart/form-data">
-
+    <div class="col-lg-4 mx-auto bar d-grid">
         <h1 class="h3 font-weight-normal text-center" style="margin-bottom: 40px">Nahlášení chyby</h1>
-        <div class="form-floating mb-3">
-            <select class="form-select" id="floatingSelect" name="category" aria-label="Floating label select example">
-                <option selected>Vyberte typ</option>
-                {% for cat in categories %}
-                    <option value="{{ cat.id }}">{{ cat.label }}</option>
-                {% endfor %}
-            </select>
-            <label for="floatingSelect">Typ chyby</label>
-        </div>
+        {{ form(form) }}
+    </div>
 
-        <div class="form-floating mb-3">
-            <textarea rows="5" name="description" id="description" class="form-control"
-                      placeholder="Popis chyby" required autofocus></textarea>
-            <label for="description">Popis chyby</label>
-        </div>
+{#    <form method="post" action="{{ path("app_bug_report_post") }}" class="col-lg-4 mx-auto bar d-grid" enctype="multipart/form-data">#}
 
-        {% if previousUrl != "" %}
-        <div class="checkbox mb-3">
-            <input type="checkbox" name="employee_info" id="use_url" checked>
-            <label for="use_url" style="user-select: none">Chyba se váže k této URL adrese</label>
-            <input type="text" disabled class="form-control" value="{{ previousUrl }}">
-        </div>
-        {% endif %}
-        <div class="checkbox mb3">
-            <input type="file" id="images" multiple name="images[]">
-        </div>
-        <input type="hidden" name="_csrf_token"
-               value="{{ csrf_token('post-bug') }}"
-        >
+{#        <h1 class="h3 font-weight-normal text-center" style="margin-bottom: 40px">Nahlášení chyby</h1>#}
+{#        <div class="form-floating mb-3">#}
+{#            <select class="form-select" id="floatingSelect" name="category" aria-label="Floating label select example">#}
+{#                <option selected>Vyberte typ</option>#}
+{#                {% for cat in categories %}#}
+{#                    <option value="{{ cat.id }}">{{ cat.label }}</option>#}
+{#                {% endfor %}#}
+{#            </select>#}
+{#            <label for="floatingSelect">Typ chyby</label>#}
+{#        </div>#}
 
-        <div class="checkbox mb-3">
-            <input type="checkbox" name="employee_info" id="employee_info" checked>
-            <label for="employee_info" style="user-select: none">Přeji si
-                uvést informace o mně</label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">
-            Přihlásit se
-        </button>
-    </form>
+{#        <div class="form-floating mb-3">#}
+{#            <textarea rows="5" name="description" id="description" class="form-control"#}
+{#                      placeholder="Popis chyby" required autofocus></textarea>#}
+{#            <label for="description">Popis chyby</label>#}
+{#        </div>#}
+
+{#        {% if previousUrl != "" %}#}
+{#        <div class="checkbox mb-3">#}
+{#            <input type="checkbox" name="employee_info" id="use_url" checked>#}
+{#            <label for="use_url" style="user-select: none">Chyba se váže k této URL adrese</label>#}
+{#            <input type="text" disabled class="form-control" value="{{ previousUrl }}">#}
+{#        </div>#}
+{#        {% endif %}#}
+{#        <div class="checkbox mb3">#}
+{#            <input type="file" id="images" multiple name="images[]">#}
+{#        </div>#}
+{#        <input type="hidden" name="_csrf_token"#}
+{#               value="{{ csrf_token('post-bug') }}"#}
+{#        >#}
+
+{#        <div class="checkbox mb-3">#}
+{#            <input type="checkbox" name="employee_info" id="employee_info" checked>#}
+{#            <label for="employee_info" style="user-select: none">Přeji si#}
+{#                uvést informace o mně</label>#}
+{#        </div>#}
+{#        <button class="btn btn-lg btn-primary btn-block" type="submit">#}
+{#            Přihlásit se#}
+{#        </button>#}
+{#    </form>#}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

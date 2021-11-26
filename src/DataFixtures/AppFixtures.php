@@ -28,8 +28,8 @@ class AppFixtures extends Fixture {
 
     public function load(ObjectManager $manager): void {
         $conn = $this->entityManager->getConnection();
+        //$conn->setAutoCommit(false);
         $conn->executeStatement("ALTER TABLE user AUTO_INCREMENT = 1;ALTER TABLE admin AUTO_INCREMENT = 1;ALTER TABLE employee AUTO_INCREMENT = 1;ALTER TABLE employer AUTO_INCREMENT = 1");
-
         $hashed = $this->passwordHasher->hashPassword(new User(), "heslo123");
 
         //static
@@ -41,9 +41,9 @@ class AppFixtures extends Fixture {
         $manager->persist($a);
         //employer
         $e = EmployerFactory::new()->create([
-            "name"=>"Krajská nemocnice Liberec"
+            "name"=>"Krajská nemocnice Liberec",
         ]);
-        $manager->persist($e->object());
+
         //employee
         $u = UserFactory::new()->create(["type"=>"employee","email"=>"test@test.cz","password"=>$hashed]);
         $e = EmployeeFactory::new()->create([

@@ -60,7 +60,7 @@ class Employer
     private $managers;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime_immutable",options={"default": "CURRENT_TIMESTAMP"},nullable=true)
      */
     private $createdAt;
 
@@ -71,8 +71,15 @@ class Employer
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $confirmToken;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Email
+     */
+    private $confirmEmail;
 
     public function __construct()
     {
@@ -255,6 +262,18 @@ class Employer
     public function setConfirmToken(string $confirmToken): self
     {
         $this->confirmToken = $confirmToken;
+
+        return $this;
+    }
+
+    public function getConfirmEmail(): ?string
+    {
+        return $this->confirmEmail;
+    }
+
+    public function setConfirmEmail(string $confirmEmail): self
+    {
+        $this->confirmEmail = $confirmEmail;
 
         return $this;
     }

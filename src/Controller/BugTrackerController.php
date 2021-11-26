@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Bug;
+use App\Form\BugReportType;
 use App\Repository\BugCategoryRepository;
 use App\Security\VerifyCsrfTrait;
 use App\Service\Entity\BugTrackerService;
+use App\Service\Entity\DataAssetService;
+use App\Service\Entity\ImageService;
 use App\Service\Util\PreviousUrlService;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,40 +32,69 @@ class BugTrackerController extends AbstractController {
     }
 
     /**
-     * @Route("/bug/report", name="app_bug_report_get",methods={"GET"})
+     * @Route("/bug/report", name="app_bug_report_get")
      */
-    public function index(Request $request, BugCategoryRepository $repository): Response {
-        $this->previousUrlService->set($request);
+    public function index(Request $request,DataAssetService $service, EntityManagerInterface $manager, ImageService $imageService): Response {
+        $bug = new Bug();
+        if(!$this->previousUrlService->isSet()){
+            $this->previousUrlService->set($request);
+        }
+        $form = $this->createForm(BugReportType::class, $bug,[
+            'previous_url'=>$this->previousUrlService->previous($request)
+        ]);
 
-        return $this->render("bug_tracker/index.html.twig",
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Bug $bug */
+            $bug = $form->getData();
+            //TODO: Přesměrování
+
+            if ($form['use_url']->getData()) {
+                $bug->setUrl($this->previousUrlService->get(""));
+            }
+
+            //image upload
+            $images = $imageService->saveMany($form['screenshots']->getData());
+            if (sizeof($images) > 0) {
+                $bug->addScreenshots($images);
+            }
+
+            $manager->persist($bug);
+            $manager->flush();
+            $this->addFlash("success", new TranslatableMessage("bugtracker.post.success"));
+            return new RedirectResponse(($bug->getUrl()) ?: $this->generateUrl('app_home'));
+
+        }
+
+        return $this->renderForm("bug_tracker/index.html.twig",
             [
-                "categories"=>$repository->findAll(),
-                "previousUrl"=>$this->previousUrlService->get("",false)
+                "form" => $form,
+                "previousUrl" => $this->previousUrlService->get("", false)
             ]
         );
     }
 
-    /**
-     * @Route("/bug/report",name="app_bug_report_post",methods={"POST"})
-     * @param Request $request
-     * @param BugTrackerService $trackerService
-     * @return Response
-     */
-    public function post(Request $request, BugTrackerService $trackerService): Response {
-        if(!$this->verify("post-bug",$request->request->get("_csrf_token"))){
-            return new RedirectResponse($this->previousUrlService->get($this->generateUrl("app_home"),false));
-        }
-        $result = $trackerService->postReport($request);
-
-        $status = $result ? "success" : "error";
-        $this->addFlash($status, new TranslatableMessage(sprintf("bugtracker.post.%s", $status)));
-
-        $url = $this->previousUrlService->get();
-        if (!$url) {
-            $url = $this->generateUrl("app_home");
-        }
-
-        return new RedirectResponse($url);
-    }
+//    /**
+//     * @Route("/bug/report",name="app_bug_report_post",methods={"POST"})
+//     * @param Request $request
+//     * @param BugTrackerService $trackerService
+//     * @return Response
+//     */
+//    public function post(Request $request, BugTrackerService $trackerService): Response {
+//        if(!$this->verify("post-bug",$request->request->get("_csrf_token"))){
+//            return new RedirectResponse($this->previousUrlService->get($this->generateUrl("app_home"),false));
+//        }
+//        $result = $trackerService->postReport($request);
+//
+//        $status = $result ? "success" : "error";
+//        $this->addFlash($status, new TranslatableMessage(sprintf("bugtracker.post.%s", $status)));
+//
+//        $url = $this->previousUrlService->get();
+//        if (!$url) {
+//            $url = $this->generateUrl("app_home");
+//        }
+//
+//        return new RedirectResponse($url);
+//    }
 
 }

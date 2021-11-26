@@ -9,9 +9,6 @@ use App\Event\Employer\EmployerConfirmedEvent;
 use App\Security\LoggerAwareTrait;
 use App\Service\Mail\SenderService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 
 class EmployerSubscriber implements EventSubscriberInterface {
 
@@ -25,7 +22,7 @@ class EmployerSubscriber implements EventSubscriberInterface {
 
     public static function getSubscribedEvents() {
         return [
-            EmployerConfirmedEvent::NAME => [['sendConfirmed'], ['sendManagerSetup']]
+            EmployerConfirmedEvent::class => [['sendConfirmed',10], ['sendManagerSetup',0]]
         ];
     }
 

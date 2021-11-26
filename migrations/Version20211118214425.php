@@ -31,4 +31,9 @@ final class Version20211118214425 extends AbstractMigration
         $this->addSql('DROP TABLE reset_password_request');
         $this->addSql('ALTER TABLE employer DROP created_at, DROP confirmed_at, DROP confirm_token');
     }
+
+    public function isTransactional(): bool {
+        return false;
+    }
+
 }

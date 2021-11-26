@@ -106,6 +106,9 @@
     "fakerphp/faker": {
         "version": "v1.16.0"
     },
+    "franzose/doctrine-bulk-insert": {
+        "version": "v1.2"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },

@@ -49,6 +49,7 @@ class DataAssetService {
      */
     public function searchFor(string $assetName, string $search): array {
         $asset = $this->assetRepository->findOneBy(["name" => $assetName]);
+        $this->addVersion($asset);
         if (!$asset) {
             $this->getLogger()->error("Couldn't found DataAsset!", [
                 "assetName" => $assetName,
@@ -81,16 +82,7 @@ class DataAssetService {
         $this->start();
         $date = new \DateTime();
         $name = sprintf("/data_assets/assets/%s-%s_%d.csv", strtolower($asset->getName()), $date->format("Y-m-d"), uniqid());
-        $this->readerService->readToFile($asset->getSourceLink(), self::FOLDER . $name);
-        $v = new DataAssetVersion();
-        $v->setFileName($name);
-        $v->setCreatedAt();
-        $v->setDataAsset($asset);
-        $v->setProcessTime($this->stop());
-        $this->entityManager->persist($v);
-        $this->entityManager->flush();
-
-        return $v;
+        $this->readerService->readToDatabase($asset->getSourceLink() /*self::FOLDER . $name*/);
     }
 
 }

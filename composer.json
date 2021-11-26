@@ -4,7 +4,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "ext-calendar": "*",
         "ext-ctype": "*",
         "ext-curl": "*",
@@ -15,6 +15,7 @@
         "doctrine/doctrine-bundle": "^2.4",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.10",
+        "franzose/doctrine-bulk-insert": "^1.2",
         "pagerfanta/doctrine-orm-adapter": "^3.4",
         "pagerfanta/twig": "^3.4",
         "phpdocumentor/reflection-docblock": "^5.3",

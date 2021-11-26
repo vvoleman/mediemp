@@ -26,32 +26,38 @@ use Zenstruck\Foundry\Proxy;
  * @method static EmployerRepository|RepositoryProxy repository()
  * @method Employer|Proxy create(array|callable $attributes = [])
  */
-final class EmployerFactory extends ModelFactory {
-    public function __construct() {
+final class EmployerFactory extends ModelFactory
+{
+    public function __construct()
+    {
         parent::__construct();
 
         // TODO inject services if required (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services)
     }
 
-    protected function getDefaults(): array {
+    protected function getDefaults(): array
+    {
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
-            'name' => self::faker()->company(),
+            'name' => self::faker()->name(),
             'address' => self::faker()->address(),
             'provider_type' => self::faker()->text(),
             'form_of_care' => self::faker()->text(),
             'confirmToken' => self::faker()->md5(),
-            'confirmedAt' => new \DateTimeImmutable()
+            'confirmEmail' => self::faker()->email(),
         ];
     }
 
-    protected function initialize(): self {
+    protected function initialize(): self
+    {
         // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
-        return $this// ->afterInstantiate(function(Employer $employer) {})
-            ;
+        return $this
+            // ->afterInstantiate(function(Employer $employer) {})
+        ;
     }
 
-    protected static function getClass(): string {
+    protected static function getClass(): string
+    {
         return Employer::class;
     }
 }
