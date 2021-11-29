@@ -3,11 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Bug;
+use App\Entity\EmployerLine;
 use App\Form\BugReportType;
-use App\Repository\BugCategoryRepository;
 use App\Security\VerifyCsrfTrait;
-use App\Service\Entity\BugTrackerService;
-use App\Service\Entity\DataAssetService;
+use App\Service\Entity\EmployerLineService;
 use App\Service\Entity\ImageService;
 use App\Service\Util\PreviousUrlService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,7 +33,7 @@ class BugTrackerController extends AbstractController {
     /**
      * @Route("/bug/report", name="app_bug_report_get")
      */
-    public function index(Request $request,DataAssetService $service, EntityManagerInterface $manager, ImageService $imageService): Response {
+    public function index(Request $request,EntityManagerInterface $manager, ImageService $imageService): Response {
         $bug = new Bug();
         if(!$this->previousUrlService->isSet()){
             $this->previousUrlService->set($request);

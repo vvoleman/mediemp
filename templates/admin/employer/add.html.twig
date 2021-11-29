@@ -1,9 +1,31 @@
-{% extends "base.html.twig" %}
-{% block title %} Přidání organizace - {{ parent() }} {% endblock %}
-{% block body %}
-    <div class="col-lg-6 mx-auto">
-        <form method="post">
+{% extends 'base.html.twig' %}
 
-        </form>
-    </div>
+{% block title %}Nový zaměstnavatel | {{ parent() }}{% endblock %}
+
+{% block body %}
+    {{ form(form) }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/autocomplete.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-user-autocomplete').autocomplete({hint: false}, [
+                {
+                    source: function(query, cb) {
+                        cb([
+                            {value: 'foo'},
+                            {value: 'bar'}
+                        ])
+                    }
+                }
+            ]);
+        });
+    </script>
 {% endblock %}

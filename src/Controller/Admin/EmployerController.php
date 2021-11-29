@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Form\NewEmployerType;
 use App\Repository\EmployerRepository;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
@@ -11,12 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route("/admin/employers",name:"app_admin_employers")]
 class EmployerController extends AbstractController {
 
-    /**
-     * @Route("/admin/employers",name="app_admin_employers")
-     * @return Response
-     */
+    #[Route('',name:'')]
     public function index(Request $request, EmployerRepository $repository): Response {
         $qb = $repository->createAllEmployerQueryBuilder();
         $pagerfanta = new Pagerfanta(new QueryAdapter($qb));
@@ -28,18 +27,19 @@ class EmployerController extends AbstractController {
         ]);
     }
 
-    /**
-     * @Route("/admin/employers/add",name="app_admin_employers_add",methods={"GET"})
-     */
-    public function add(){
+    #[Route('/add/', name: '_add')]
+    public function add(Request $request): Response {
+        $form = $this->createForm(NewEmployerType::class);
+        $form->handleRequest($request);
 
-    }
+        if($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+            dd($data);
+        }
 
-    /**
-     * @Route("/admin/employers/add",name="app_admin_employers_add_post",methods={"POST"})
-     */
-    public function postAdd(){
-
+        return $this->renderForm('admin/employer/add.html.twig', [
+            'form' => $form,
+        ]);
     }
 
 }

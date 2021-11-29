@@ -73,7 +73,10 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/"
-        }
+        },
+        "files": [
+            "src/Service/File/BulkInsert/QueryHelper.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

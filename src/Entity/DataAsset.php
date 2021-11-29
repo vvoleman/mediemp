@@ -29,11 +29,6 @@ class DataAsset {
     private $schemaFile;
 
     /**
-     * @ORM\OneToMany(targetEntity=DataAssetVersion::class, mappedBy="dataAsset")
-     */
-    private $dataAssetVersions;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $sourceLink;
@@ -47,10 +42,6 @@ class DataAsset {
      * @ORM\Column(type="string", length=255)
      */
     private $type;
-
-    public function __construct() {
-        $this->dataAssetVersions = new ArrayCollection();
-    }
 
     public function getId(): ?int {
         return $this->id;
@@ -72,33 +63,6 @@ class DataAsset {
 
     public function setSchemaFile(string $schemaFile): self {
         $this->schemaFile = $schemaFile;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|DataAssetVersion[]
-     */
-    public function getDataAssetVersions(): Collection {
-        return $this->dataAssetVersions;
-    }
-
-    public function addDataAssetVersion(DataAssetVersion $dataAssetVersion): self {
-        if (!$this->dataAssetVersions->contains($dataAssetVersion)) {
-            $this->dataAssetVersions[] = $dataAssetVersion;
-            $dataAssetVersion->setDataAsset($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDataAssetVersion(DataAssetVersion $dataAssetVersion): self {
-        if ($this->dataAssetVersions->removeElement($dataAssetVersion)) {
-            // set the owning side to null (unless already changed)
-            if ($dataAssetVersion->getDataAsset() === $this) {
-                $dataAssetVersion->setDataAsset(null);
-            }
-        }
 
         return $this;
     }

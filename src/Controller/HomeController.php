@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\EmployeeRepository;
 use App\Repository\EmployerRepository;
-use App\Service\Entity\DataAssetService;
 use App\Service\Util\TimeTrackerTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +17,7 @@ class HomeController extends AbstractController {
      * @Route("/", name="app_home")
      * @throws \Exception
      */
-    public function index(EmployeeRepository $repository,DataAssetService $service): Response {
+    public function index(): Response {
         /** @var User $user */
         $user = $this->getUser();
 
