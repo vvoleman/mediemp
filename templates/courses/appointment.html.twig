@@ -139,11 +139,72 @@
 									{% endfor %}
 								</tbody>
 							</table>
-							<button class="btn btn-primary" onclick="alert('not implemented')">
+							<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_users">
 								Add user to appointmen
 
 							</button>
 						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal" id="add_users" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Add user to appointment</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col"></th>
+										<th>
+											Name
+
+										</th>
+										<th>
+											Surname
+
+										</th>
+										<th>
+											Actions
+
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for c in all_users %}
+										<tr>
+											<td>
+												{{ c.degree }}
+											</td>
+											<td>
+												{{ c.name }}
+
+											</td>
+											<td>
+												{{ c.surname }}
+											</td>
+											<td>
+												<form method="POST">
+													<input type="hidden" name="id" value="{{ c.id }}"/>
+													<input type="hidden" name="action" value="add_user"/>
+													<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
+													<input type="Submit" class="btn btn-success btn-sm" value="Add"/>
+												</form>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>

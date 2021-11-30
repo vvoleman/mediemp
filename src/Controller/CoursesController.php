@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\CourseAppointment;
+use App\Entity\CourseRegistration;
 use App\Entity\EmployerCourse;
 use App\Entity\GlobalCourse;
 use App\Repository\CourseAppointmentRepository;
 use App\Repository\CourseRegistrationRepository;
+use App\Repository\EmployeeRepository;
 use App\Repository\EmployerCourseRepository;
 use App\Repository\EmployerRepository;
 use App\Repository\GlobalCourseRepository;
@@ -74,23 +76,24 @@ class CoursesController extends AbstractController
     /**
      * @Route("/courses/{c_id}/appointment/{id}", name="app_courses_one_appointment",methods={"GET"})
      */
-    public function indexAppointment(CourseAppointment $c): Response
+    public function indexAppointment(CourseAppointment $c, EmployeeRepository $emp): Response
     {
         $course = $c->getEmployerCourse()->getCourse();
         $peoples = $c->getCourseRegistrations()->toArray();
-        //dd($peoples);
+        $all_users = $emp->findAll();
         return $this->render('courses/appointment.html.twig', [
             'controller_name' => 'CoursesController',
             'course' => $course,
             'peoples' => $peoples,
-            'appointment' => $c
+            'appointment' => $c,
+            'all_users' => $all_users
 
         ]);
     }
     /**
      * @Route("/courses/{c_id}/appointment/{id}", name="app_courses_one_appointment_post",methods={"POST"})
      */
-    public function indexAppointmentPost(CourseAppointment $c, Request $request, $c_id, $id, CourseRegistrationRepository $rep_c): Response
+    public function indexAppointmentPost(CourseAppointment $c, Request $request, $c_id, $id, CourseRegistrationRepository $rep_c, EmployeeRepository $emp): Response
     {
         if ($request->request->get('action') == "edit_course") {
             $entityManager = $this->getDoctrine()->getManager();
@@ -118,6 +121,17 @@ class CoursesController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $old = $rep_c->findOneBy(['id' => $request->request->get("id")]);
             $entityManager->remove($old);
+            $entityManager->flush();
+            $this->addFlash("success", "User removed");
+        } else if ($request->request->get('action') == "add_user") {
+            $entityManager = $this->getDoctrine()->getManager();
+            $new = new CourseRegistration();
+            $new->setCourseAppointment($c);
+            $new->setEmployee($emp->findOneBy(['id' => $request->request->get("id")]));
+            $new->setAbsence(0);
+            $new->setTestDone(0);
+            $new->setNotificationStatus("pending");
+            $entityManager->persist($new);
             $entityManager->flush();
             $this->addFlash("success", "User removed");
         }
