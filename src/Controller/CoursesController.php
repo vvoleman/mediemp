@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\CourseAppointment;
 use App\Entity\EmployerCourse;
 use App\Entity\GlobalCourse;
+use App\Repository\CourseAppointmentRepository;
+use App\Repository\CourseRegistrationRepository;
 use App\Repository\EmployerCourseRepository;
 use App\Repository\EmployerRepository;
 use App\Repository\GlobalCourseRepository;
@@ -88,7 +90,7 @@ class CoursesController extends AbstractController
     /**
      * @Route("/courses/{c_id}/appointment/{id}", name="app_courses_one_appointment_post",methods={"POST"})
      */
-    public function indexAppointmentPost(CourseAppointment $c, Request $request, $c_id, $id): Response
+    public function indexAppointmentPost(CourseAppointment $c, Request $request, $c_id, $id, CourseRegistrationRepository $rep_c): Response
     {
         if ($request->request->get('action') == "edit_course") {
             $entityManager = $this->getDoctrine()->getManager();
@@ -98,13 +100,26 @@ class CoursesController extends AbstractController
             $entityManager->persist($c);
             $entityManager->flush();
             $this->addFlash("success", "Data saved");
-        } else if ($request->request->get('action') == "create_appointment") {
-            /*$entityManager = $this->getDoctrine()->getManager();
-            $new = new CourseAppointment();
-            //$new->setEmployerCourse($)
-            $entityManager->persist($c);
+        } else if ($request->request->get('action') == "set_test_done") {
+            $entityManager = $this->getDoctrine()->getManager();
+            $old = $rep_c->findOneBy(['id' => $request->request->get("id")]);
+            $old->setTestDone(1);
+            $entityManager->persist($old);
             $entityManager->flush();
-            $this->addFlash("success", "Data saved");*/
+            $this->addFlash("success", "Test market as done");
+        } else if ($request->request->get('action') == "set_absent") {
+            $entityManager = $this->getDoctrine()->getManager();
+            $old = $rep_c->findOneBy(['id' => $request->request->get("id")]);
+            $old->setAbsence(1);
+            $entityManager->persist($old);
+            $entityManager->flush();
+            $this->addFlash("success", "User marked absent");
+        } else if ($request->request->get('action') == "remove") {
+            $entityManager = $this->getDoctrine()->getManager();
+            $old = $rep_c->findOneBy(['id' => $request->request->get("id")]);
+            $entityManager->remove($old);
+            $entityManager->flush();
+            $this->addFlash("success", "User removed");
         }
         return new RedirectResponse($this->generateUrl("app_courses_one_appointment", ['id' => $id, 'c_id' => $c_id]));
     }
