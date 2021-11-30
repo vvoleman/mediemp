@@ -66,6 +66,10 @@
                                     <th scope="col">
                                         Available appointemnts starts
                                     </th>
+                                    <th>
+                                    Actions
+                                    </th>
+                                   
                                 </tr>
                             </thead>
                             <tbody>
@@ -74,7 +78,19 @@
                                         <td>
                                             {{ c.employer.name }}
                                         </td>
+                                        <td></td>
+                                        <td>
+                                        <form method="POST">
+                                          <input type="hidden" name="action" value="create_appointment" />
+                                          <input type="hidden" name="id" value="{{c.id}}" />
+                                          <input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
+                                          <input type="Submit" class="btn btn-success btn-sm" value="New" />
+                                          </form>
+                                        </td>
+                                        
+                                    </tr>
                                         {% for d in c.CourseAppointments() %}
+                                        <tr><td></td>
                                             <td>
                                                 <a href="{{ path('app_courses_one_appointment', {"c_id":course.id, "id":d.id}) }}">
                                                     {{ d.date|date('Y-m-d  H:i') }}
@@ -86,8 +102,19 @@
                                                     {{ d.capacity }}
                                                     )
                                                 </small>
+                                                                                        
                                             </td>
+                                            <td>
+                                            <form method="POST">
+                                          <input type="hidden" name="action" value="create_appointment" />
+                                          <input type="hidden" name="id" value="{{c.id}}" />
+                                          <input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
+                                          <input type="Submit" class="btn btn-danger btn-sm" value="Delete" />
+                                          </form>
+                                          </td>
+                                            </tr>
                                         {% endfor %}
+                                        <tr>                                        
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -95,15 +122,15 @@
                         </p>
                         <p>
                         <form method="POST">
-                                          <input type="hidden" name="action" value="create_appointment" />
-                                          <input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">¨
+                                          <input type="hidden" name="action" value="adopt_course" />
+                                          <input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
                                           <select class="form-select" name="employer_id">
   <option selected disabled hidden>For employer</option>
   {% for e in emp_all %}
   <option value="{{ e.id }}">{{ e.name }}</option>
   {% endfor %}
   </select>
-                                            <input type="Submit" class="btn btn-danger btn-sm" value="Create new appointment" />
+                                            <input type="Submit" class="btn btn-danger btn-sm" value="Adopt course" />
                                           </form>
                         </p>
                     </div>

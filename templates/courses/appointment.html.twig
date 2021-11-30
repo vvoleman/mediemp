@@ -1,141 +1,148 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-  Course
-  
+	Course
+
 {% endblock %}
 
 {% block body %}
-  <div class="container">
-    <div class="row">
-      <div class="col-4">
-        <div class="card" style="width: 18rem;">
-          <div class="card-body">
-            <h5 class="card-title">
-              Course view
-                          
-            </h5>
-            <p class="card-text">
-               <form method="POST">
-                                          <input type="hidden" name="action" value="edit_course" />
+	<div class="container">
+		<div class="row">
+			<div class="col-4">
+				<div class="card" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title">
+							Course view
 
-                <div class="mb-3">
-                  <label class="form-label">
-                    Name
-                                      
-                  </label>
-                  <input type="text" class="form-control" readonly value="{{ course.name }}"></div>
+						</h5>
+						<p class="card-text">
+							<form method="POST">
+								<input type="hidden" name="action" value="edit_course"/>
 
-                  <div class="mb-3">
-                    <label class="form-label">
-                      Date
-                                          
-                    </label>
-                    <input type="text" class="form-control" value="{{ appointment.date |date('Y-m-d  H:i') }}"></div>
-                    <div class="mb-3">
-                      <label class="form-label">
-                        Place
-                                              
-                      </label>
-                      <input type="text" class="form-control" value="{{ appointment.place }}"></div>
-                      <div class="mb-3">
-                        <label class="form-label">
-                          Capacity
-                                                  
-                        </label>
-                        <input type="text" class="form-control" value="{{ appointment.capacity }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Name
 
-                        <div class="mb-3">
-                          <label class="form-label">
-                            Keywords
-                                                      
-                          </label>
-                          <input type="text" class="form-control" readonly value="{{ course.keywords }}"></div>
-                          <div class="mb-3">
-                            <label class="form-label">
-                              Focus
-                                                          
-                            </label>
-                            <input type="text" class="form-control" readonly value="{{ course.focus }}"></div>
-<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-edit') }}">
-                          <button type="submit" class="btn btn-primary">
-                                Submit
-                            </button>
-                        </form>
-                        </p>
+									</label>
+									<input type="text" class="form-control" readonly value="{{ course.name }}"></div>
 
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-8">
-                    <div class="card">
-                      <div class="card-body">
-                        <h5 class="card-title">
-                          Courses assigned to employers
-                                                  
-                        </h5>
-                        <p>
-                          <table class="table">
-                            <thead>
-                              <tr>
-                                <th scope="col"></th>
-                                <th>
-                                  Name
-                                                                  
-                                </th>
-                                <th>
-                                  Surname
-                                                                  
-                                </th>
-                                <th>
-                                  Actions
-                                                                  
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {% for c in peoples %}
-                                <tr>
-                                  <td>
-                                    {{ c.employee.degree }}
-                                  </td>
-                                  <td>
-                                    {{ c.employee.name }}
-                                   
-                                  </td>
-                                  <td>
-                                    {{ c.employee.surname }}
-                                    {{ c.test_done }}
-                                  </td>
-                                  <td>
-                                    <form method="POST">
-                                      <input type="hidden" name="action" value="set_test_done" />
-                                      <input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
-                                        <input type="Submit" class="btn btn-success btn-sm" value="Make test done" />
-                                      </form>
-                                      <form method="POST">
-                                        <input type="hidden" name="action" value="set_absent" />
-                                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
-                                          <input type="Submit" class="btn btn-warning btn-sm" value="Set absent" />
-                                        </form>
-                                        <form method="POST">
-                                          <input type="hidden" name="action" value="remove" />
-                                          <input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
-                                            <input type="Submit" class="btn btn-danger btn-sm" value="Remove from appointments" />
-                                          </form>
-                                        </td>
-                                      </tr>
-                                    {% endfor %}
-                                  </tbody>
-                                </table>
-                                <button class="btn btn-primary">
-                                  Add user to appointment
-                                                                  
-                                </button>
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    {% endblock %}
-                    
+								<div class="mb-3">
+									<label class="form-label">
+										Date
+
+									</label>
+									<input type="text" class="form-control" name="date" value="{{ appointment.date |date('Y-m-d H:i') }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Place
+
+									</label>
+									<input type="text" class="form-control" name="place" value="{{ appointment.place }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Capacity
+
+									</label>
+									<input type="number" min="1" step="1" class="form-control" name="capacity" value="{{ appointment.capacity }}"></div>
+
+								<div class="mb-3">
+									<label class="form-label">
+										Keywords
+
+									</label>
+									<input type="text" class="form-control" readonly value="{{ course.keywords }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Focus
+
+									</label>
+									<input type="text" class="form-control" readonly value="{{ course.focus }}"></div>
+								<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-edit') }}">
+								<button type="submit" class="btn btn-primary">
+									Submit
+								</button>
+							</form>
+						</p>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-8">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">
+							Emplyes in course appointment
+
+						</h5>
+						<p>
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col"></th>
+										<th>
+											Name
+
+										</th>
+										<th>
+											Surname
+
+										</th>
+										<th>
+											Actions
+
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for c in peoples %}
+										<tr>
+											<td>
+												{{ c.employee.degree }}
+											</td>
+											<td>
+												{{ c.employee.name }}
+												{% if c.testDone ==  1 %}
+													<span class="badge bg-success">Test DONE</span>
+												{% endif %}
+												{% if c.absence ==  1 %}
+													<span class="badge bg-warning">ABSENT</span>
+												{% endif %}
+											</td>
+											<td>
+												{{ c.employee.surname }}
+											</td>
+											<td>
+												{% if c.testDone ==  0 %}
+													<form method="POST">
+														<input type="hidden" name="action" value="set_test_done"/>
+														<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
+														<input type="Submit" class="btn btn-success btn-sm" value="Make test done"/>
+													</form>
+												{% endif %}
+												{% if c.absence ==  0 %}
+													<form method="POST">
+														<input type="hidden" name="action" value="set_absent"/>
+														<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
+														<input type="Submit" class="btn btn-warning btn-sm" value="Set absent"/>
+													</form>
+												{% endif %}
+												<form method="POST">
+													<input type="hidden" name="action" value="remove"/>
+													<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
+													<input type="Submit" class="btn btn-danger btn-sm" value="Remove from appointments"/>
+												</form>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+							<button class="btn btn-primary">
+								Add user to appointment
+
+							</button>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
