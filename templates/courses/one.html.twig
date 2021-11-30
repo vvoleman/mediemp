@@ -107,8 +107,8 @@
 												</td>
 												<td>
 													<form method="POST">
-														<input type="hidden" name="action" value="create_appointment"/>
-														<input type="hidden" name="id" value="{{c.id}}"/>
+														<input type="hidden" name="action" value="delete_appointment"/>
+														<input type="hidden" name="id" value="{{d.id}}"/>
 														<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
 														<input type="Submit" class="btn btn-danger btn-sm" value="Delete"/>
 													</form>

@@ -51,7 +51,7 @@ class CoursesController extends AbstractController
     /**
      * @Route("/courses/{id}", name="app_courses_one_post",methods={"POST"})
      */
-    public function indexOneCoursePost(GlobalCourse $c, Request $request, $id, EmployerRepository $emp, EmployerCourseRepository $emp_course): Response
+    public function indexOneCoursePost(GlobalCourse $c, Request $request, $id, EmployerRepository $emp, EmployerCourseRepository $emp_course, CourseAppointmentRepository $course_appointemtn): Response
     {
         if ($request->request->get('action') == "edit_course") {
             $entityManager = $this->getDoctrine()->getManager();
@@ -78,6 +78,12 @@ class CoursesController extends AbstractController
             $new->setCapacity(0);
             $new->setPlace("");
             $entityManager->persist($new);
+            $entityManager->flush();
+            $this->addFlash("success", "Course addopted");
+        } else if ($request->request->get('action') == "delete_appointment") {
+            $entityManager = $this->getDoctrine()->getManager();
+            $old = $course_appointemtn->findOneBy(['id' => $request->request->get("id")]);
+            $entityManager->remove($old);
             $entityManager->flush();
             $this->addFlash("success", "Course addopted");
         }
