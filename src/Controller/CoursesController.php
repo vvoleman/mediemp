@@ -51,7 +51,7 @@ class CoursesController extends AbstractController
     /**
      * @Route("/courses/{id}", name="app_courses_one_post",methods={"POST"})
      */
-    public function indexOneCoursePost(GlobalCourse $c, Request $request, $id): Response
+    public function indexOneCoursePost(GlobalCourse $c, Request $request, $id, EmployerRepository $emp): Response
     {
         if ($request->request->get('action') == "edit_course") {
             $entityManager = $this->getDoctrine()->getManager();
@@ -62,13 +62,14 @@ class CoursesController extends AbstractController
             $entityManager->persist($c);
             $entityManager->flush();
             $this->addFlash("success", "Data saved");
-        } else if ($request->request->get('action') == "create_appointment") {
-            /*$entityManager = $this->getDoctrine()->getManager();
-            $new = new CourseAppointment();
-            //$new->setEmployerCourse($)
-            $entityManager->persist($c);
+        } else if ($request->request->get('action') == "adopt_course") {
+            $entityManager = $this->getDoctrine()->getManager();
+            $new = new EmployerCourse();
+            $new->setEmployer($emp->findOneBy(['id' => $request->request->get("employer_id")]));
+            $new->setCourse($c);
+            $entityManager->persist($new);
             $entityManager->flush();
-            $this->addFlash("success", "Data saved");*/
+            $this->addFlash("success", "Course addopted");
         }
         return new RedirectResponse($this->generateUrl("app_courses_one", ['id' => $id]));
     }
