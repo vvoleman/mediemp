@@ -23,7 +23,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CoursesController extends AbstractController
 {
-    #[Route('/courses', name: 'app_courses')]
+    /**
+     * @Route("/courses", name="app_courses",methods={"GET"})
+     */
     public function indexCourses(GlobalCourseRepository $repository): Response
     {
         $records = $repository->findAll();
@@ -31,6 +33,30 @@ class CoursesController extends AbstractController
             'controller_name' => 'CoursesController',
             'courses' => $records
         ]);
+    }
+    /**
+     * @Route("/courses", name="app_courses_post",methods={"POST"})
+     */
+    public function indexCoursesPost(GlobalCourseRepository $repository, Request $request): Response
+    {
+        if ($request->request->get('action') == "delete_course") {
+            $entityManager = $this->getDoctrine()->getManager();
+            $old = $repository->findOneBy(['id' => $request->request->get('id')]);
+            $entityManager->remove($old);
+            $entityManager->flush();
+            $this->addFlash("success", "Course deleted");
+        } else if ($request->request->get('action') == "create_course") {
+            $entityManager = $this->getDoctrine()->getManager();
+            $new = new GlobalCourse();
+            $new->setName("Change me!");
+            $new->setKeywords("");
+            $new->setFocus("");
+            $new->setSpecialization("");
+            $entityManager->persist($new);
+            $entityManager->flush();
+            $this->addFlash("success", "Course created");
+        }
+        return new RedirectResponse($this->generateUrl("app_courses"));
     }
 
 

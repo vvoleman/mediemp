@@ -1,32 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Courses overview{% endblock %}
+{% block title %}Courses overview
+{% endblock %}
 
 {% block body %}
-<div class="container">
-  <div class="row justify-content-md-center">
-{% for course in courses %}
+	<div class="container">
+		<div class="row justify-content-md-center">
+			{% for course in courses %}
 
-    <div class="col col-lg-3 m-2">
-      <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ course.name }}</h5>
-                <p class="card-text">{{ course.focus }}</p>
-                {% set keywords = course.keywords|split(',') %}
-                {% for u in keywords %}
-                <span class="badge bg-secondary">{{ u }}</span>
-                {% endfor %}
-                <div class="card-text my-2">
-                    <a href="{{path('app_courses_one', {"id":course.id}) }}" class="btn btn-primary">Open course</a>
-                </div>
-                
-            </div>        
-        </div>    
-    </div>
+				<div class="col col-lg-3 m-2">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">{{ course.name }}</h5>
+							<p class="card-text">{{ course.focus }}</p>
+							{% set keywords = course.keywords|split(',') %}
+							{% for u in keywords %}
+								<span class="badge bg-secondary">{{ u }}</span>
+							{% endfor %}
+							<div class="card-text my-2">
+								<a href="{{path('app_courses_one', {"id":course.id}) }}" class="btn btn-primary">Open course</a>
+								<form method="POST">
+									<input type="hidden" name="action" value="delete_course"/>
+									<input type="hidden" name="id" value="{{course.id}}"/>
+									<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
+									<input type="Submit" class="btn btn-danger btn-sm my-1" value="Delete"/>
+								</form>
+							</div>
 
-{% else %}
-    No courses have been found.
-{% endfor %}
-    </div>
-</div>
+						</div>
+					</div>
+				</div>
+
+			{% endfor %}
+			<div class="col col-lg-3 m-2">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-text my-2 text-center">
+							<form method="POST">
+								<input type="hidden" name="action" value="create_course"/>
+								<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
+								<input type="Submit" class="btn btn-success my-1" value="Create new"/>
+							</form>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
