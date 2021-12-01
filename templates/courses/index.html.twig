@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Courses overview
+{% block title %}Přehled kurzů
 {% endblock %}
 
 {% block body %}
@@ -18,12 +18,12 @@
 								<span class="badge bg-secondary">{{ u }}</span>
 							{% endfor %}
 							<div class="card-text my-2">
-								<a href="{{path('app_courses_one', {"id":course.id}) }}" class="btn btn-primary">Open course</a>
+								<a href="{{path('app_courses_one', {"id":course.id}) }}" class="btn btn-primary">Otevřít kurz</a>
 								<form method="POST">
 									<input type="hidden" name="action" value="delete_course"/>
 									<input type="hidden" name="id" value="{{course.id}}"/>
 									<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
-									<input type="Submit" class="btn btn-danger btn-sm my-1" value="Delete"/>
+									<input type="Submit" class="btn btn-danger btn-sm my-1" value="Smazat"/>
 								</form>
 							</div>
 
@@ -39,7 +39,7 @@
 							<form method="POST">
 								<input type="hidden" name="action" value="create_course"/>
 								<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
-								<input type="Submit" class="btn btn-success my-1" value="Create new"/>
+								<input type="Submit" class="btn btn-success my-1" value="Vytvořit nový"/>
 							</form>
 						</div>
 

@@ -44,7 +44,7 @@ class CoursesController extends AbstractController
             $old = $repository->findOneBy(['id' => $request->request->get('id')]);
             $entityManager->remove($old);
             $entityManager->flush();
-            $this->addFlash("success", "Course deleted");
+            $this->addFlash("success", "Kurz smazán");
         } else if ($request->request->get('action') == "create_course") {
             $entityManager = $this->getDoctrine()->getManager();
             $new = new GlobalCourse();
@@ -54,7 +54,7 @@ class CoursesController extends AbstractController
             $new->setSpecialization("");
             $entityManager->persist($new);
             $entityManager->flush();
-            $this->addFlash("success", "Course created");
+            $this->addFlash("success", "Kurz vytvořen");
         }
         return new RedirectResponse($this->generateUrl("app_courses"));
     }
@@ -87,7 +87,7 @@ class CoursesController extends AbstractController
             $c->setKeywords($request->request->get('keywords'));
             $entityManager->persist($c);
             $entityManager->flush();
-            $this->addFlash("success", "Data saved");
+            $this->addFlash("success", "Uloženo");
         } else if ($request->request->get('action') == "adopt_course") {
             $entityManager = $this->getDoctrine()->getManager();
             $new = new EmployerCourse();
@@ -95,7 +95,7 @@ class CoursesController extends AbstractController
             $new->setCourse($c);
             $entityManager->persist($new);
             $entityManager->flush();
-            $this->addFlash("success", "Course addopted");
+            $this->addFlash("success", "Kurz adoptován");
         } else if ($request->request->get('action') == "create_appointment") {
             $entityManager = $this->getDoctrine()->getManager();
             $new = new CourseAppointment();
@@ -105,13 +105,13 @@ class CoursesController extends AbstractController
             $new->setPlace("");
             $entityManager->persist($new);
             $entityManager->flush();
-            $this->addFlash("success", "Course addopted");
+            $this->addFlash("success", "Termín vytvořen");
         } else if ($request->request->get('action') == "delete_appointment") {
             $entityManager = $this->getDoctrine()->getManager();
             $old = $course_appointemtn->findOneBy(['id' => $request->request->get("id")]);
             $entityManager->remove($old);
             $entityManager->flush();
-            $this->addFlash("success", "Course addopted");
+            $this->addFlash("success", "Termín smazán");
         }
         return new RedirectResponse($this->generateUrl("app_courses_one", ['id' => $id]));
     }
@@ -145,27 +145,27 @@ class CoursesController extends AbstractController
             $c->setCapacity($request->request->get('capacity'));
             $entityManager->persist($c);
             $entityManager->flush();
-            $this->addFlash("success", "Data saved");
+            $this->addFlash("success", "Uloženo");
         } else if ($request->request->get('action') == "set_test_done") {
             $entityManager = $this->getDoctrine()->getManager();
             $old = $rep_c->findOneBy(['id' => $request->request->get("id")]);
             $old->setTestDone(1);
             $entityManager->persist($old);
             $entityManager->flush();
-            $this->addFlash("success", "Test market as done");
+            $this->addFlash("success", "Test označen za hotový");
         } else if ($request->request->get('action') == "set_absent") {
             $entityManager = $this->getDoctrine()->getManager();
             $old = $rep_c->findOneBy(['id' => $request->request->get("id")]);
             $old->setAbsence(1);
             $entityManager->persist($old);
             $entityManager->flush();
-            $this->addFlash("success", "User marked absent");
+            $this->addFlash("success", "Uživatel chyběl");
         } else if ($request->request->get('action') == "remove") {
             $entityManager = $this->getDoctrine()->getManager();
             $old = $rep_c->findOneBy(['id' => $request->request->get("id")]);
             $entityManager->remove($old);
             $entityManager->flush();
-            $this->addFlash("success", "User removed");
+            $this->addFlash("success", "Uživatel odebrán");
         } else if ($request->request->get('action') == "add_user") {
             $entityManager = $this->getDoctrine()->getManager();
             $new = new CourseRegistration();
@@ -176,7 +176,7 @@ class CoursesController extends AbstractController
             $new->setNotificationStatus("pending");
             $entityManager->persist($new);
             $entityManager->flush();
-            $this->addFlash("success", "User removed");
+            $this->addFlash("success", "Uživatel přidán");
         }
         return new RedirectResponse($this->generateUrl("app_courses_one_appointment", ['id' => $id, 'c_id' => $c_id]));
     }

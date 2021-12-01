@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Course
+	Kurz
 {% endblock %}
 {% block body %}
 	<div class="container">
@@ -10,7 +10,7 @@
 				<div class="card" style="width: 18rem;">
 					<div class="card-body">
 						<h5 class="card-title">
-							Course edit
+							Editace kurzu
 						</h5>
 						<p class="card-text">
 							<form method="POST">
@@ -23,27 +23,27 @@
 									<input type="text" class="form-control" disabled value="{{ course.id }}"></div>
 								<div class="mb-3">
 									<label class="form-label">
-										Name
+										Jméno
 									</label>
 									<input type="text" class="form-control" name="name" value="{{ course.name }}"></div>
 								<div class="mb-3">
 									<label class="form-label">
-										Keywords
+										Klíčová slova
 									</label>
 									<input type="text" class="form-control" name="keywords" value="{{ course.keywords }}"></div>
 								<div class="mb-3">
 									<label class="form-label">
-										Specialization
+										Specializace
 									</label>
 									<input type="text" class="form-control" name="specialization" value="{{ course.specialization }}"></div>
 								<div class="mb-3">
 									<label class="form-label">
-										Focus
+										Zaměření
 									</label>
 									<input type="text" class="form-control" name="focus" value="{{ course.focus }}"></div>
 
 								<button type="submit" class="btn btn-primary">
-									Submit
+									Uložit
 								</button>
 							</form>
 						</p>
@@ -54,20 +54,20 @@
 				<div class="card">
 					<div class="card-body">
 						<h5 class="card-title">
-							Courses assigned to employers
+							Přiřazené termíny
 						</h5>
 						<p>
 							<table class="table">
 								<thead>
 									<tr>
 										<th scope="col">
-											Employer
+											Zaměstnavatel
 										</th>
 										<th scope="col">
-											Available appointemnts starts
+											Dostupné časy startu
 										</th>
 										<th>
-											Actions
+											Akce
 										</th>
 
 									</tr>
@@ -84,7 +84,7 @@
 													<input type="hidden" name="action" value="create_appointment"/>
 													<input type="hidden" name="id" value="{{c.id}}"/>
 													<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
-													<input type="Submit" class="btn btn-success btn-sm" value="New"/>
+													<input type="Submit" class="btn btn-success btn-sm" value="Nový"/>
 												</form>
 											</td>
 
@@ -110,7 +110,7 @@
 														<input type="hidden" name="action" value="delete_appointment"/>
 														<input type="hidden" name="id" value="{{d.id}}"/>
 														<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
-														<input type="Submit" class="btn btn-danger btn-sm" value="Delete"/>
+														<input type="Submit" class="btn btn-danger btn-sm" value="Smazat"/>
 													</form>
 												</td>
 											</tr>
@@ -125,12 +125,12 @@
 								<input type="hidden" name="action" value="adopt_course"/>
 								<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
 								<select class="form-select" name="employer_id">
-									<option selected disabled hidden>For employer</option>
+									<option selected disabled hidden>Pro zaměstnavatele</option>
 									{% for e in emp_all %}
 										<option value="{{ e.id }}">{{ e.name }}</option>
 									{% endfor %}
 								</select>
-								<input type="Submit" class="btn btn-danger btn-sm" value="Adopt course"/>
+								<input type="Submit" class="btn btn-danger btn-sm" value="Adoptovat kurz"/>
 							</form>
 						</p>
 					</div>

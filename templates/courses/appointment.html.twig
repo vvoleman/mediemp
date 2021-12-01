@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Course
+	Termín kurzu
 
 {% endblock %}
 
@@ -12,7 +12,7 @@
 				<div class="card" style="width: 18rem;">
 					<div class="card-body">
 						<h5 class="card-title">
-							Course view
+							Editace termínu
 
 						</h5>
 						<p class="card-text">
@@ -21,45 +21,45 @@
 
 								<div class="mb-3">
 									<label class="form-label">
-										Name
+										Jméno
 
 									</label>
 									<input type="text" class="form-control" readonly value="{{ course.name }}"></div>
 
 								<div class="mb-3">
 									<label class="form-label">
-										Date
+										Datum
 
 									</label>
 									<input type="text" class="form-control" name="date" value="{{ appointment.date |date('Y-m-d H:i') }}"></div>
 								<div class="mb-3">
 									<label class="form-label">
-										Place
+										Místo
 
 									</label>
 									<input type="text" class="form-control" name="place" value="{{ appointment.place }}"></div>
 								<div class="mb-3">
 									<label class="form-label">
-										Capacity
+										Kapacita
 
 									</label>
 									<input type="number" min="1" step="1" class="form-control" name="capacity" value="{{ appointment.capacity }}"></div>
 
 								<div class="mb-3">
 									<label class="form-label">
-										Keywords
+										Klíčová slova
 
 									</label>
 									<input type="text" class="form-control" readonly value="{{ course.keywords }}"></div>
 								<div class="mb-3">
 									<label class="form-label">
-										Focus
+										Zaměření
 
 									</label>
 									<input type="text" class="form-control" readonly value="{{ course.focus }}"></div>
 								<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-edit') }}">
 								<button type="submit" class="btn btn-primary">
-									Submit
+									Uložit
 								</button>
 							</form>
 						</p>
@@ -71,7 +71,7 @@
 				<div class="card">
 					<div class="card-body">
 						<h5 class="card-title">
-							Emplyes in course appointment
+							Registrovaní zaměstnanci na termínu
 
 						</h5>
 						<p>
@@ -80,15 +80,15 @@
 									<tr>
 										<th scope="col"></th>
 										<th>
-											Name
+											Jméno
 
 										</th>
 										<th>
-											Surname
+											Příjmení
 
 										</th>
 										<th>
-											Actions
+											Akce
 
 										</th>
 									</tr>
@@ -102,10 +102,10 @@
 											<td>
 												{{ c.employee.name }}
 												{% if c.testDone ==  1 %}
-													<span class="badge bg-success">Test DONE</span>
+													<span class="badge bg-success">Test HOTOVÝ</span>
 												{% endif %}
 												{% if c.absence ==  1 %}
-													<span class="badge bg-warning">ABSENT</span>
+													<span class="badge bg-warning">CHYBĚL</span>
 												{% endif %}
 											</td>
 											<td>
@@ -117,7 +117,7 @@
 														<input type="hidden" name="action" value="set_test_done"/>
 														<input type="hidden" name="id" value="{{ c.id }}"/>
 														<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
-														<input type="Submit" class="btn btn-success btn-sm" value="Make test done"/>
+														<input type="Submit" class="btn btn-success btn-sm" value="Označit test hotový"/>
 													</form>
 												{% endif %}
 												{% if c.absence ==  0 %}
@@ -125,14 +125,14 @@
 														<input type="hidden" name="action" value="set_absent"/>
 														<input type="hidden" name="id" value="{{ c.id }}"/>
 														<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
-														<input type="Submit" class="btn btn-warning btn-sm" value="Set absent"/>
+														<input type="Submit" class="btn btn-warning btn-sm" value="Označit jako chybějící"/>
 													</form>
 												{% endif %}
 												<form method="POST">
 													<input type="hidden" name="id" value="{{ c.id }}"/>
 													<input type="hidden" name="action" value="remove"/>
 													<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
-													<input type="Submit" class="btn btn-danger btn-sm" value="Remove from appointment"/>
+													<input type="Submit" class="btn btn-danger btn-sm" value="Odebrat"/>
 												</form>
 											</td>
 										</tr>
@@ -140,7 +140,7 @@
 								</tbody>
 							</table>
 							<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_users">
-								Add user to appointmen
+								Přidat zaměstance na termín
 
 							</button>
 						</p>
@@ -153,7 +153,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Add user to appointment</h5>
+						<h5 class="modal-title">Přidat zaměstance na termín</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -163,15 +163,15 @@
 									<tr>
 										<th scope="col"></th>
 										<th>
-											Name
+											Jméno
 
 										</th>
 										<th>
-											Surname
+											Příjmení
 
 										</th>
 										<th>
-											Actions
+											Akce
 
 										</th>
 									</tr>
@@ -194,7 +194,7 @@
 													<input type="hidden" name="id" value="{{ c.id }}"/>
 													<input type="hidden" name="action" value="add_user"/>
 													<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
-													<input type="Submit" class="btn btn-success btn-sm" value="Add"/>
+													<input type="Submit" class="btn btn-success btn-sm" value="Přidat"/>
 												</form>
 											</td>
 										</tr>
@@ -204,7 +204,7 @@
 						</p>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zavřít</button>
 					</div>
 				</div>
 			</div>
