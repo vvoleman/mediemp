@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20211119143139 extends AbstractMigration
+final class Version20211201172642 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -28,4 +28,9 @@ final class Version20211119143139 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE employee DROP address, DROP person_id, DROP gender');
     }
+
+    public function isTransactional(): bool {
+        return false;
+    }
+
 }

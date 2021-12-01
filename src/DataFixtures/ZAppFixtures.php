@@ -27,50 +27,39 @@ class ZAppFixtures extends Fixture {
     }
 
     public function load(ObjectManager $manager): void {
+        //Potřebuju přidat 5 organizací, každá bude mít 10 zaměstnanců
+        //Potřebuju přidat 1 uživatele-zaměstnance, uživatele-admina
+
+
         $conn = $this->entityManager->getConnection();
         $conn->executeStatement("ALTER TABLE user AUTO_INCREMENT = 1;ALTER TABLE admin AUTO_INCREMENT = 1;ALTER TABLE employee AUTO_INCREMENT = 1;ALTER TABLE employer AUTO_INCREMENT = 1");
 
         $hashed = $this->passwordHasher->hashPassword(new User(), "heslo123");
 
-        //static
-        //admin
+        //user-admin
         $u = UserFactory::new()->create(["type"=>"admin","email"=>"admin@test.cz","password"=>$hashed]);
         $a = new Admin();
         $a->setIdentity($u->object());
-        $manager->persist($u->object());
         $manager->persist($a);
-        //employer
-        $e = EmployerFactory::new()->create([
-            "name"=>"Krajská nemocnice Liberec"
-        ]);
-        $manager->persist($e->object());
-        //employee
-        $u = UserFactory::new()->create(["type"=>"employee","email"=>"test@test.cz","password"=>$hashed]);
-        $e = EmployeeFactory::new()->create([
-            "employer"=>$e->object(),
-            "name"=>"Jan",
-            "identity"=>$u,
-            "surname"=>"Novák",
-            "managing"=>$e->object()
-        ]);
-        $manager->persist($u->object());
-        $manager->persist($e->object());
 
-        //dynamic
-        $employers = EmployerFactory::new()->createMany(5);
-        $employees[] = $e;
-        foreach ($employers as $e) {
-            $manager->persist($e->object());
-            $users=[];
-            for($i=0;$i<10;$i++){
-                $u = UserFactory::new()->create(["type"=>"employee","password"=>$hashed]);
-                $employees[] = EmployeeFactory::new()->create(["employer"=>$e->object(),"identity"=>$u]);
-                $users[] = $u;
-            }
-            $this->persistArrayProxies($manager,$users);
+        //user-employee
+
+        try {
+            $u = UserFactory::new()->create(["email"=>"test@test.cz","password"=>$hashed,"type"=>"employee"]);
+            $employer = EmployerFactory::new()->create(["name"=>"Krajská nemocnice v Liberci"]);
+            $employee = EmployeeFactory::new()->create(["identity"=>$u->object(),"employer"=>$employer->object(),"name"=>"Jan","surname"=>"Novák"]);
+
+        }catch (\Exception $e){
+            die(print_r($e));
         }
-        $this->persistArrayProxies($manager,$employers);
-        $this->persistArrayProxies($manager,$employees);
+
+        $employers = EmployerFactory::new()->createMany(5);
+        foreach ($employers as $employer){
+            $employees = EmployeeFactory::new()->createMany(5);
+            foreach ($employees as $employee) {
+                $employee->setEmployer($employer);
+            }
+        }
 
         $manager->flush();
     }
