@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class AppFixtures extends Fixture {
+class ZAppFixtures extends Fixture {
 
     use PersistArrayTrait;
 
@@ -58,6 +58,7 @@ class AppFixtures extends Fixture {
 
         //dynamic
         $employers = EmployerFactory::new()->createMany(5);
+        $this->persistArrayProxies($manager,$employers);
         $employees[] = $e;
         foreach ($employers as $e) {
             $manager->persist($e->object());
@@ -69,7 +70,7 @@ class AppFixtures extends Fixture {
             }
             $this->persistArrayProxies($manager,$users);
         }
-        $this->persistArrayProxies($manager,$employers);
+
         $this->persistArrayProxies($manager,$employees);
 
         $manager->flush();

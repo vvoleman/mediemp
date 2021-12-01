@@ -22,7 +22,7 @@ class EmployerLine {
     private $medicalFacilityId;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="bigint")
      */
     private $code;
 
@@ -42,42 +42,42 @@ class EmployerLine {
     private $address;
 
     /**
-     * @ORM\Column(type="integer", length=9)
+     * @ORM\Column(type="string", length=32, nullable="true")
      */
     private $phoneNumber;
 
     /**
-     * @ORM\Column(type="string", length=128)
+     * @ORM\Column(type="string", length=128,nullable="true")
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=128)
+     * @ORM\Column(type="string", length=128,nullable="true")
      */
     private $web;
 
     /**
-     * @ORM\Column(type="integer", length=8)
+     * @ORM\Column(type="integer", length=8,nullable="true")
      */
     private $ico;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $fieldOfCare;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $formOfCare;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $typeOfCare;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $representative;
 
@@ -121,16 +121,6 @@ class EmployerLine {
 
     public function setFacilityType(string $facilityType): self {
         $this->facilityType = $facilityType;
-
-        return $this;
-    }
-
-    public function getMunicipality(): ?string {
-        return $this->municipality;
-    }
-
-    public function setMunicipality(string $municipality): self {
-        $this->municipality = $municipality;
 
         return $this;
     }
@@ -259,24 +249,5 @@ class EmployerLine {
      */
     public function setRepresentative($representative): void {
         $this->representative = $representative;
-    }
-
-    public function getPsc(): ?int {
-        return $this->psc;
-    }
-
-    public function setPsc(int $psc): self {
-        $this->psc = $psc;
-
-        return $this;
-    }
-
-    public function getStreet(): ?string {
-        return $this->street;
-    }
-
-    public function setStreet(string $street): self {
-        $this->street = $street;
-        return $this;
     }
 }
