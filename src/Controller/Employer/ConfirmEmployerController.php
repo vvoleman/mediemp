@@ -5,6 +5,7 @@ namespace App\Controller\Employer;
 use App\Entity\Employee;
 use App\Entity\Employer;
 use App\Event\Employer\EmployerConfirmedEvent;
+use App\Form\ConfirmEmployerType;
 use App\Form\NewEmployeeType;
 use App\Repository\EmployerRepository;
 use App\Service\Entity\EmployeeService;
@@ -23,12 +24,38 @@ use Symfony\Component\{EventDispatcher\Debug\TraceableEventDispatcher,
 class ConfirmEmployerController extends AbstractController {
 
     /**
-     * @Route("/{confirmToken}")
+     * @Route("/{confirmToken}",name="")
      */
-    public function index(Request $request, EmployerRepository $repository, EntityManagerInterface $manager, string $confirmToken, EventDispatcherInterface $dispatcher) {
+    public function confirm(Request $request, EmployerRepository $repository, EntityManagerInterface $manager, string $confirmToken, EventDispatcherInterface $dispatcher) {
         $employer = $repository->getUnconfirmedEmployer($confirmToken);
         if (!$employer) {
             $this->createNotFoundException("Invalid token");
+        }
+        $form = $this->createForm(ConfirmEmployerType::class, $employer,[
+            "manager_email"=>$employer->getConfirmEmail()
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Employer $employer */
+            $employer = $form->getData();
+            $employer->setConfirmedAt(new \DateTimeImmutable());
+            $manager->flush();
+
+            $dispatcher->dispatch(new EmployerConfirmedEvent($employer,$form['manager_email']->getNormData()));
+
+            $this->addFlash("success","Organizace potvrzena, na email přijde link pro vytvoření manažera");
+        } //TODO: Kontrola dat a vytvoření manažera
+        return $this->renderForm("employer/confirm.html.twig", ["employer" => $employer, "employeeForm" => $form]);
+    }
+
+    #[Route("/{confirmToken}/setup",name:"_setup")]
+    public function setupManager(Request $request, EmployerRepository $repository, EntityManagerInterface $manager, string $confirmToken, EventDispatcherInterface $dispatcher){
+        $employer = $repository->getUnconfirmedEmployer($confirmToken);
+        if (!$employer) {
+            $this->createNotFoundException("Invalid token");
+        }
+        if(!$employer->getManagers()->isEmpty()){
+            $this->createNotFoundException("Managers already exists");
         }
         $employee = new Employee();
         $form = $this->createForm(NewEmployeeType::class, $employee);
@@ -40,15 +67,14 @@ class ConfirmEmployerController extends AbstractController {
             $employee = $form->getData();
             $employee->setEmployer($employer);
 
-            $dispatcher->dispatch(new EmployerConfirmedEvent($employee, $email));
+            //$dispatcher->dispatch(new EmployerConfirmedEvent($employee, $email));
 
             $manager->persist($employee);
             $manager->flush();
 
-            $this->addFlash("success","Organizace potvrzena, link pro manažerský email zaslán");
+            $this->addFlash("success","Manažerský účet vytvořen!");
             return $this->redirectToRoute("app_home");
         } //TODO: Kontrola dat a vytvoření manažera
-        return $this->renderForm("employer/confirm.html.twig", ["employer" => $employer, "employeeForm" => $form]);
     }
 
 }

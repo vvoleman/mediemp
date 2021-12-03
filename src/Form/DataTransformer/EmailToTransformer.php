@@ -3,21 +3,23 @@
 namespace App\Form\DataTransformer;
 
 use App\Entity\User;
+use App\Repository\EmployerRepository;
 use App\Repository\UserRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class EmailToTransformer implements DataTransformerInterface {
 
-    private $userRepository;
+    private $repository;
     /**
      * @var callable
      */
     private $finder_callback;
 
-    public function __construct(UserRepository $userRepository, callable $finder_callback)
+    public function __construct(ServiceEntityRepository $repository, callable $finder_callback)
     {
-        $this->userRepository = $userRepository;
+        $this->repository = $repository;
         $this->finder_callback = $finder_callback;
     }
 
@@ -28,10 +30,7 @@ class EmailToTransformer implements DataTransformerInterface {
         if (null === $value) {
             return '';
         }
-        if (!$value instanceof User) {
-            throw new \LogicException('The UserSelectTextType can only be used with User objects');
-        }
-        return $value->getEmail();
+        return $value;
     }
 
     /**
@@ -39,11 +38,11 @@ class EmailToTransformer implements DataTransformerInterface {
      */
     public function reverseTransform($value) {
         $callback = $this->finder_callback;
-        $user = $callback($this->userRepository,$value);
-        if (!$user) {
-            throw new TransformationFailedException(sprintf('No user found with email "%s"', $value));
+        $user = $callback($this->repository,$value);
+        if ($user) {
+            throw new TransformationFailedException(sprintf('Callback returned false for "%s"', $value));
         }
-        return $user;
+        return $value;
     }
 
 }

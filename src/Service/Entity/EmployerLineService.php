@@ -41,7 +41,7 @@ class EmployerLineService {
                 "code" => $arr[2],
                 "facility_name" => $arr[3],
                 "facility_type" => $arr[4],
-                "address" => $arr[7]." ".$arr[8].", ".$arr[6]." ".$arr[5],
+                "address" => trim($arr[7]." ".$arr[8].", ".$arr[6]." ".$arr[5]),
                 "phone_number" => $arr[14],
                 "email"=>$arr[16],
                 "web"=>$arr[17],

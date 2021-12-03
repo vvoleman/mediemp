@@ -29,7 +29,6 @@ class NameToEmployerLineTransformer implements DataTransformerInterface{
 
     public function reverseTransform($value) {
         $el = $this->repository->findOneBy(['id'=>$value]);
-        dd($el);
         if(!$el){
             throw new TransformationFailedException(sprintf('No EmployerLine found with id="%s"',$value));
         }

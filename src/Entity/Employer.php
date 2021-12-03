@@ -86,6 +86,7 @@ class Employer
         $this->employees = new ArrayCollection();
         $this->employerCourses = new ArrayCollection();
         $this->managers = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

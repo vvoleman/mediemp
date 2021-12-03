@@ -4,26 +4,6 @@
     <div class="col-md-6 mx-auto">
         <h1 class="text-center">Potvrzení nové organizace</h1>
         <hr>
-        <form method="post">
-            <div class="mb-3">
-                <label for="name" class="form-label">Název organizace</label>
-                <input type="text" class="form-control" value="{{ employer.name }}" id="name" name="name">
-            </div>
-            <div class="mb-3">
-                <label for="address" class="form-label">Adresa</label>
-                <input type="text" class="form-control" value="{{ employer.address }}" id="address" name="address">
-            </div>
-            <div class="mb-3">
-                <label for="providerType" class="form-label">Druh poskytovatele</label>
-                <input type="text" class="form-control" value="{{ employer.providerType }}" id="providerType" name="providerType">
-            </div>
-            <div class="mb-3">
-                <label for="formOfCare" class="form-label">Forma péče</label>
-                <input class="form-control"  type="text" value="{{ employer.formOfCare }}" id="formOfCare" name="formOfCare">
-            </div>
-            <hr>
-            <h3>Vytvoření manažera</h3>
-        </form>
         {{ form(employeeForm) }}
     </div>
 {% endblock %}

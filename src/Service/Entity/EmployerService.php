@@ -17,8 +17,8 @@ class EmployerService {
         $this->validator = $validator;
     }
 
-    public function postEmployer(array $data){
-        $employer = $data;
+    public function postEmployer(array $data): false|Employer {
+        $employer = $this->assembleEmployer($data);
 
         $errors = $this->validator->validate($employer);
         if ($errors->count() > 0) {
@@ -28,6 +28,9 @@ class EmployerService {
             ]);
             return false;
         }
+        $this->entityManager->persist($employer);
+        $this->entityManager->flush();
+        return $employer;
     }
 
     private function assembleEmployer(array $data): Employer{
@@ -36,6 +39,8 @@ class EmployerService {
         $employer->setAddress($data["address"]);
         $employer->setFormOfCare($data["form_of_care"]);
         $employer->setProviderType($data["provider_type"]);
+        $employer->setConfirmToken(md5(time().uniqid()));
+        $employer->setConfirmEmail($data["confirm_email"]);
 
         return $employer;
     }

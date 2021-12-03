@@ -3,21 +3,22 @@
 namespace App\Event\Employer;
 
 use App\Entity\Employee;
+use App\Entity\Employer;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class EmployerConfirmedEvent extends Event {
 
     public const NAME = "employer.confirmed";
-    private Employee $manager;
+    private Employer $employer;
     private string $email;
 
-    public function __construct(Employee $manager,string $email) {
-        $this->manager = $manager;
+    public function __construct(Employer $employer,string $email) {
+        $this->employer = $employer;
         $this->email = $email;
     }
 
-    public function getManager(): Employee {
-        return $this->manager;
+    public function getEmployer(): Employer {
+        return $this->employer;
     }
 
     public function getEmail(): string {
