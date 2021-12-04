@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Kurz
+{% endblock %}
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col-4">
+				<div class="card" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title">
+							Editace kurzu
+						</h5>
+						<p class="card-text">
+							<form method="POST">
+								<input type="hidden" name="action" value="edit_course"/>
+
+								<div class="mb-3">
+									<label class="form-label">
+										Id
+									</label>
+									<input type="text" class="form-control" disabled value="{{ course.id }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Jméno
+									</label>
+									<input type="text" class="form-control" name="name" value="{{ course.name }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Klíčová slova
+									</label>
+									<input type="text" class="form-control" name="keywords" value="{{ course.keywords }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Specializace
+									</label>
+									<input type="text" class="form-control" name="specialization" value="{{ course.specialization }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Zaměření
+									</label>
+									<input type="text" class="form-control" name="focus" value="{{ course.focus }}"></div>
+
+								<button type="submit" class="btn btn-primary">
+									Uložit
+								</button>
+							</form>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-8">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">
+							Přiřazené termíny
+						</h5>
+						<p>
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">
+											Zaměstnavatel
+										</th>
+										<th scope="col">
+											Dostupné časy startu
+										</th>
+										<th>
+											Akce
+										</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									{% for c in emp_course %}
+										<tr>
+											<td>
+												{{ c.employer.name }}
+											</td>
+											<td></td>
+											<td>
+												<form method="POST">
+													<input type="hidden" name="action" value="create_appointment"/>
+													<input type="hidden" name="id" value="{{c.id}}"/>
+													<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
+													<input type="Submit" class="btn btn-success btn-sm" value="Nový"/>
+												</form>
+											</td>
+
+										</tr>
+										{% for d in c.CourseAppointments() %}
+											<tr>
+												<td></td>
+												<td>
+													<a href="{{ path('app_courses_one_appointment', {"c_id":course.id, "id":d.id}) }}">
+														{{ d.date|date('Y-m-d  H:i') }}
+													</a>
+													<small>
+														(
+														{{ d.courseRegistrations|length }}
+														/
+														{{ d.capacity }}
+														)
+													</small>
+
+												</td>
+												<td>
+													<form method="POST">
+														<input type="hidden" name="action" value="delete_appointment"/>
+														<input type="hidden" name="id" value="{{d.id}}"/>
+														<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
+														<input type="Submit" class="btn btn-danger btn-sm" value="Smazat"/>
+													</form>
+												</td>
+											</tr>
+										{% endfor %}
+										<tr></tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</p>
+						<p>
+							<form method="POST">
+								<input type="hidden" name="action" value="adopt_course"/>
+								<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
+								<select class="form-select" name="employer_id">
+									<option selected disabled hidden>Pro zaměstnavatele</option>
+									{% for e in emp_all %}
+										<option value="{{ e.id }}">{{ e.name }}</option>
+									{% endfor %}
+								</select>
+								<input type="Submit" class="btn btn-danger btn-sm" value="Adoptovat kurz"/>
+							</form>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</p>
+{% endblock %}
