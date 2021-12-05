@@ -4,6 +4,7 @@ namespace App\Controller\Employer;
 
 use App\Entity\Employee;
 use App\Entity\Employer;
+use App\Entity\User;
 use App\Event\Employer\EmployerConfirmedEvent;
 use App\Form\ConfirmEmployerType;
 use App\Form\NewEmployeeType;
@@ -15,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\{EventDispatcher\Debug\TraceableEventDispatcher,
     EventDispatcher\EventDispatcherInterface,
     HttpFoundation\Request,
+    PasswordHasher\Hasher\UserPasswordHasherInterface,
     Routing\Annotation\Route,
     Stopwatch\Stopwatch};
 
@@ -49,7 +51,7 @@ class ConfirmEmployerController extends AbstractController {
     }
 
     #[Route("/{confirmToken}/setup",name:"_setup")]
-    public function setupManager(Request $request, EmployerRepository $repository, EntityManagerInterface $manager, string $confirmToken, EventDispatcherInterface $dispatcher){
+    public function setupManager(Request $request, EmployerRepository $repository, EntityManagerInterface $manager, string $confirmToken, EventDispatcherInterface $dispatcher, UserPasswordHasherInterface $hasher){
         $employer = $repository->getUnconfirmedEmployer($confirmToken);
         if (!$employer) {
             $this->createNotFoundException("Invalid token");
@@ -61,11 +63,16 @@ class ConfirmEmployerController extends AbstractController {
         $form = $this->createForm(NewEmployeeType::class, $employee);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $email = $form->get('email')->getNormData();
-            $employer->setConfirmedAt(new \DateTimeImmutable());
+            $user = new User();
+            $user->setEmail($form->get('email')->getNormData());
+            $user->setPassword($hasher->hashPassword($user,$form->get('password')->getNormData()));
+            $user->setType(Employee::TYPE_NAME);
+            $manager->persist($user);
+
             /** @var Employee $employee */
             $employee = $form->getData();
             $employee->setEmployer($employer);
+            $employee->setIdentity($user);
 
             //$dispatcher->dispatch(new EmployerConfirmedEvent($employee, $email));
 
@@ -74,7 +81,12 @@ class ConfirmEmployerController extends AbstractController {
 
             $this->addFlash("success","Manažerský účet vytvořen!");
             return $this->redirectToRoute("app_home");
-        } //TODO: Kontrola dat a vytvoření manažera
+        }
+
+        return $this->renderForm('employer/setup.html.twig',[
+            'form'=>$form,
+            "employer"=>$employer
+        ]);
     }
 
 }

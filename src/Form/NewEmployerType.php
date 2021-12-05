@@ -21,13 +21,13 @@ class NewEmployerType extends AbstractType {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('employer_id',EmployerLineSelectTextType::class);
         $builder->add("email",CheckEmailType::class);
-//        $builder->add('search_name',ChoiceType::class,[
-//            'multiple'=>false,
-//            'expanded'=>false,
-//            'row_attr'=>['class'=>'select-autocomplete']
-//        ]);
+        $builder->add('employer_id',EmployerLineSelectTextType::class,[
+            'label'=>'Organizace',
+            'multiple'=>false,
+            'expanded'=>false,
+            'row_attr'=>['class'=>'select-autocomplete']
+        ]);
 
         $builder->add('submit',SubmitType::class);
     }
