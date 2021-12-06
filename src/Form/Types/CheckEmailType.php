@@ -35,7 +35,8 @@ class CheckEmailType extends AbstractType {
             'finder_callback'=> function(EmployerRepository $repository,string $email){
                 return $repository->findOneBy(["confirmEmail"=>$email]);
             },
-            'repository' => $this->repository
+            'repository' => $this->repository,
+            'invalid_message' => 'Tento email byl již pro potvrzení organizace použit!',
         ]);
     }
 

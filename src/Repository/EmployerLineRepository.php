@@ -31,7 +31,7 @@ class EmployerLineRepository extends ServiceEntityRepository {
     }
 
     public function getSearchQuery(string $query, int $page = 0): QueryBuilder {
-        $q = $this->createQueryBuilder('p');
+        $q = $this->getAvailable();
         return $q
             ->where($q->expr()->like(
                 $q->expr()->concat('p.facilityName', $q->expr()->literal(' '), 'p.facilityType'),
@@ -42,6 +42,15 @@ class EmployerLineRepository extends ServiceEntityRepository {
 
     public function hasNext(int $page, QueryBuilder $queryBuilder): bool {
         return ($page+1) * self::PAGE_SIZE < $this->getSizeOfQuery($queryBuilder);
+    }
+
+    public function getAvailable(){
+        $q = $this->createQueryBuilder('p');
+        $q
+            ->leftJoin('p.employer','e')
+            ->where('e.id is null');
+
+        return $q;
     }
 
     public function isEmpty(): bool {
@@ -58,6 +67,14 @@ class EmployerLineRepository extends ServiceEntityRepository {
             return 0;
         }
         return $data[0]["amount"];
+    }
+
+    public function getFirst(int $start = 0,int $stop = 1){
+        $q = $this->createQueryBuilder('p');
+        return $q
+            ->setFirstResult($start*self::PAGE_SIZE)
+            ->setMaxResults($stop*self::PAGE_SIZE)
+            ->getQuery()->getResult();
     }
 
     // /**

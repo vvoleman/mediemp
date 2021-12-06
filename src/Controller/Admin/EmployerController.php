@@ -8,6 +8,7 @@ use App\Event\Employer\EmployerCreatedEvent;
 use App\Form\NewEmployerType;
 use App\Repository\EmployerLineRepository;
 use App\Repository\EmployerRepository;
+use App\Service\Entity\EmployerLineService;
 use App\Service\Entity\EmployerService;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
@@ -43,13 +44,7 @@ class EmployerController extends AbstractController {
             $data = $form->getData();
             /** @var EmployerLine $line */
             $line = $data["employer_id"];
-            $data = [
-                "name"=>$line->getFacilityName(),
-                "address"=>$line->getAddress(),
-                "provider_type"=>$line->getFieldOfCare(),
-                "form_of_care"=>$line->getFormOfCare(),
-                "confirm_email"=>$data["email"]
-            ];
+            $data = EmployerLineService::formatArrayToEmployer($line,$data["email"]);
             $employer = $service->postEmployer($data);
 
             if($employer){

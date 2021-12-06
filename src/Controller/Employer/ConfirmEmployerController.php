@@ -30,6 +30,10 @@ class ConfirmEmployerController extends AbstractController {
      */
     public function confirm(Request $request, EmployerRepository $repository, EntityManagerInterface $manager, string $confirmToken, EventDispatcherInterface $dispatcher) {
         $employer = $repository->getUnconfirmedEmployer($confirmToken);
+        if($employer->getConfirmedAt()){
+            $this->addFlash("warning","Tato organizace již byla potvrzena!");
+            return $this->redirectToRoute('app_home');
+        }
         if (!$employer) {
             $this->createNotFoundException("Invalid token");
         }
@@ -46,6 +50,7 @@ class ConfirmEmployerController extends AbstractController {
             $dispatcher->dispatch(new EmployerConfirmedEvent($employer,$form['manager_email']->getNormData()));
 
             $this->addFlash("success","Organizace potvrzena, na email přijde link pro vytvoření manažera");
+            return $this->redirectToRoute('app_home');
         } //TODO: Kontrola dat a vytvoření manažera
         return $this->renderForm("employer/confirm.html.twig", ["employer" => $employer, "employeeForm" => $form]);
     }

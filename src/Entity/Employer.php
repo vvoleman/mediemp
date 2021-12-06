@@ -33,13 +33,13 @@ class Employer
     private $address;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      * @Assert\NotBlank
      */
     private $provider_type;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      * @Assert\NotBlank
      */
     private $form_of_care;
@@ -80,6 +80,12 @@ class Employer
      * @Assert\Email
      */
     private $confirmEmail;
+
+    /**
+     * @ORM\OneToOne(targetEntity=EmployerLine::class, inversedBy="employer", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="line_id",referencedColumnName="id",onDelete="SET NULL")
+     */
+    private $lineId;
 
     public function __construct()
     {
@@ -281,6 +287,18 @@ class Employer
 
     public function __toString(): string {
         return sprintf("%s (%s)",$this->getName(),$this->getProviderType());
+    }
+
+    public function getLineId(): ?EmployerLine
+    {
+        return $this->lineId;
+    }
+
+    public function setLineId(?EmployerLine $lineId): self
+    {
+        $this->lineId = $lineId;
+
+        return $this;
     }
 
 

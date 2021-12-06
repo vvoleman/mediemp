@@ -92,32 +92,26 @@
             templateResult: formatRepo,
             templateSelection: formatRepoSelection
         });
-
         function formatRepo(repo) {
             if (repo.loading) {
                 return "Načítám...";
             }
-
             var $container = $(`<div>${getText(repo)}</div>`);
-
             return $container;
         }
-
         function formatRepoSelection(repo) {
             if(repo.id.length !== 0){
                 fillValues(repo);
             }
-
             return getText(repo);
         }
-
         function getText(repo) {
             if (repo.id.length === 0) {
                 return repo.text;
             }
-            return `${repo.facilityName} (${repo.fieldOfCare})`;
+            console.log(repo);
+            return `${repo.facilityName} (${repo.facilityType})`;
         }
-
         function fillValues(repo){
             const fields = ['facilityName','facilityType','fieldOfCare','formOfCare','ico','phoneNumber','web','representative'];
             var el = $("#more_info");

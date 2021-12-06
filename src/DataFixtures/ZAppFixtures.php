@@ -4,10 +4,15 @@ namespace App\DataFixtures;
 
 use App\Entity\Admin;
 use App\Entity\Employee;
+use App\Entity\Employer;
+use App\Entity\EmployerLine;
 use App\Entity\User;
 use App\Factory\EmployeeFactory;
 use App\Factory\EmployerFactory;
 use App\Factory\UserFactory;
+use App\Repository\EmployerLineRepository;
+use App\Service\Entity\EmployerLineService;
+use App\Service\Entity\EmployerService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -19,11 +24,18 @@ class ZAppFixtures extends Fixture {
 
     private UserPasswordHasherInterface $passwordHasher;
     private EntityManagerInterface $entityManager;
+    private EmployerLineRepository $lineRepository;
+    private EmployerService $employerService;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher,EntityManagerInterface $entityManager) {
+    public function __construct(UserPasswordHasherInterface $passwordHasher,
+                                EntityManagerInterface      $entityManager,
+                                EmployerLineRepository      $lineRepository,
+                                EmployerService             $employerService) {
 
         $this->passwordHasher = $passwordHasher;
         $this->entityManager = $entityManager;
+        $this->lineRepository = $lineRepository;
+        $this->employerService = $employerService;
     }
 
     public function load(ObjectManager $manager): void {
@@ -46,21 +58,32 @@ class ZAppFixtures extends Fixture {
 
         try {
             $u = UserFactory::new()->create(["email" => "test@test.cz", "password" => $hashed, "type" => "employee"]);
-            $employer = EmployerFactory::new()->create(["name" => "Krajská nemocnice v Liberci"]);
-            $employee = EmployeeFactory::new()->create(["identity" => $u->object(), "employer" => $employer->object(), "name" => "Jan", "surname" => "Novák"]);
+//            $employer = EmployerFactory::new()->create(["name" => "Krajská nemocnice v Liberci"]);
+            $employer = $this->employerService->postEmployer(EmployerLineService::formatArrayToEmployer($this->lineRepository->find(189734), "employer@test.cz"));
+            $manager->persist($employer);
+            $employee = EmployeeFactory::new()->create(["identity" => $u->object(), "employer" => $employer, "name" => "Jan", "surname" => "Novák"]);
 
         } catch (\Exception $e) {
             die(print_r($e));
         }
 
-        $employers = EmployerFactory::new()->createMany(5);
-        foreach ($employers as $employer) {
-            $employees = EmployeeFactory::new()->createMany(5);
-            foreach ($employees as $employee) {
-                $employee->setEmployer($employer);
-            }
-        }
+        $employers = $this->lineRepository->getFirst();
 
+
+        try {
+            foreach ($employers as $employer) {
+                /** @var Employer $employer */
+                $employer = $this->employerService->postEmployer(EmployerLineService::formatArrayToEmployer($employer));
+                $manager->persist($employer);
+                for($i=0;$i<5;$i++){
+                    EmployeeFactory::new()->create([
+                        'employer'=>$employer
+                    ]);
+                }
+            }
+        }catch (\Exception $e){
+            die(print_r($e));
+        }
         $manager->flush();
     }
 }
