@@ -1,0 +1,212 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Termín kurzu
+
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col-4">
+				<div class="card" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title">
+							Editace termínu
+
+						</h5>
+						<p class="card-text">
+							<form method="POST">
+								<input type="hidden" name="action" value="edit_course"/>
+
+								<div class="mb-3">
+									<label class="form-label">
+										Jméno
+
+									</label>
+									<input type="text" class="form-control" readonly value="{{ course.name }}"></div>
+
+								<div class="mb-3">
+									<label class="form-label">
+										Datum
+
+									</label>
+									<input type="text" class="form-control" name="date" value="{{ appointment.date |date('Y-m-d H:i') }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Místo
+
+									</label>
+									<input type="text" class="form-control" name="place" value="{{ appointment.place }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Kapacita
+
+									</label>
+									<input type="number" min="1" step="1" class="form-control" name="capacity" value="{{ appointment.capacity }}"></div>
+
+								<div class="mb-3">
+									<label class="form-label">
+										Klíčová slova
+
+									</label>
+									<input type="text" class="form-control" readonly value="{{ course.keywords }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Zaměření
+
+									</label>
+									<input type="text" class="form-control" readonly value="{{ course.focus }}"></div>
+								<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-edit') }}">
+								<button type="submit" class="btn btn-primary">
+									Uložit
+								</button>
+							</form>
+						</p>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-8">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">
+							Registrovaní zaměstnanci na termínu
+
+						</h5>
+						<p>
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col"></th>
+										<th>
+											Jméno
+
+										</th>
+										<th>
+											Příjmení
+
+										</th>
+										<th>
+											Akce
+
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for c in peoples %}
+										<tr>
+											<td>
+												{{ c.employee.degree }}
+											</td>
+											<td>
+												{{ c.employee.name }}
+												{% if c.testDone ==  1 %}
+													<span class="badge bg-success">Test HOTOVÝ</span>
+												{% endif %}
+												{% if c.absence ==  1 %}
+													<span class="badge bg-warning">CHYBĚL</span>
+												{% endif %}
+											</td>
+											<td>
+												{{ c.employee.surname }}
+											</td>
+											<td>
+												{% if c.testDone ==  0 %}
+													<form method="POST">
+														<input type="hidden" name="action" value="set_test_done"/>
+														<input type="hidden" name="id" value="{{ c.id }}"/>
+														<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
+														<input type="Submit" class="btn btn-success btn-sm" value="Označit test hotový"/>
+													</form>
+												{% endif %}
+												{% if c.absence ==  0 %}
+													<form method="POST">
+														<input type="hidden" name="action" value="set_absent"/>
+														<input type="hidden" name="id" value="{{ c.id }}"/>
+														<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
+														<input type="Submit" class="btn btn-warning btn-sm" value="Označit jako chybějící"/>
+													</form>
+												{% endif %}
+												<form method="POST">
+													<input type="hidden" name="id" value="{{ c.id }}"/>
+													<input type="hidden" name="action" value="remove"/>
+													<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
+													<input type="Submit" class="btn btn-danger btn-sm" value="Odebrat"/>
+												</form>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+							<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_users">
+								Přidat zaměstance na termín
+
+							</button>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal" id="add_users" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Přidat zaměstance na termín</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col"></th>
+										<th>
+											Jméno
+
+										</th>
+										<th>
+											Příjmení
+
+										</th>
+										<th>
+											Akce
+
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for c in all_users %}
+										<tr>
+											<td>
+												{{ c.degree }}
+											</td>
+											<td>
+												{{ c.name }}
+
+											</td>
+											<td>
+												{{ c.surname }}
+											</td>
+											<td>
+												<form method="POST">
+													<input type="hidden" name="id" value="{{ c.id }}"/>
+													<input type="hidden" name="action" value="add_user"/>
+													<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-bug') }}">
+													<input type="Submit" class="btn btn-success btn-sm" value="Přidat"/>
+												</form>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zavřít</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
