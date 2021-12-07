@@ -77,6 +77,7 @@ class ConfirmEmployerController extends AbstractController {
             /** @var Employee $employee */
             $employee = $form->getData();
             $employee->setEmployer($employer);
+            $employee->setManaging($employer);
             $employee->setIdentity($user);
 
             //$dispatcher->dispatch(new EmployerConfirmedEvent($employee, $email));

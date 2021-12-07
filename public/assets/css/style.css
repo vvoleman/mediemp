@@ -198,3 +198,15 @@ a.floating-button{
     background: #bababa;
     text-align: center;
 }
+
+.table-striped .bg-warning{
+    background: var(--special-color) !important;
+}
+
+.table-striped .bg-info{
+    background: #5ca0ff !important;
+}
+
+.table-striped .bg-success{
+    background: #7fff6c !important;
+}

@@ -14,6 +14,8 @@
             <thead>
             <tr>
                 <td>Název</td>
+                <td>Typ zařízení</td>
+                <td>Stav</td>
                 <td>Počet zaměstnanců</td>
                 <td>Více</td>
             </tr>
@@ -22,6 +24,16 @@
             {% for employer in pager %}
                 <tr>
                     <td>{{ employer.name }}</td>
+                    <td>{{ employer.providerType|u.truncate(32,'...',false)}}</td>
+                    {% set state = employer.state-1 %}
+                    {% set arr = [
+                        ['Nepotvrzeno','bg-warning'],
+                        ['Chybí manažer','bg-info'],
+                        ['OK','bg-success']
+                    ] %}
+                    <td class="text-center {{ arr[state][1] }}">
+                        {{ arr[state][0] }}
+                    </td>
                     <td>{{ employer.employees.count }}</td>
                     <td>
                         <a href="">

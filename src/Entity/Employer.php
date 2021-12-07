@@ -11,8 +11,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=EmployerRepository::class)
  */
-class Employer
-{
+class Employer {
+
+    public const NOT_CONFIRMED = 1;
+    public const NO_MANAGER = 2;
+    public const OK = 3;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -283,6 +287,21 @@ class Employer
         $this->confirmEmail = $confirmEmail;
 
         return $this;
+    }
+
+    public function getState(): int {
+        if($this->getConfirmedAt() == null){
+            return self::NOT_CONFIRMED;
+        }
+        
+        if($this->getManagers()->count() == 0){
+            return self::NO_MANAGER;
+        }
+
+        return self::OK;
+        //nepotvrzeno
+        //potvrzeno, nevytvořen manažer
+        //potvrzeno
     }
 
     public function __toString(): string {
