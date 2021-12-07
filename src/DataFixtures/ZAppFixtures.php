@@ -61,7 +61,7 @@ class ZAppFixtures extends Fixture {
 //            $employer = EmployerFactory::new()->create(["name" => "Krajská nemocnice v Liberci"]);
             $employer = $this->employerService->postEmployer(EmployerLineService::formatArrayToEmployer($this->lineRepository->find(189734), "employer@test.cz"));
             $manager->persist($employer);
-            $employee = EmployeeFactory::new()->create(["identity" => $u->object(), "employer" => $employer, "name" => "Jan", "surname" => "Novák"]);
+            $employee = EmployeeFactory::new()->create(["identity" => $u->object(), "employer" => $employer, "name" => "Jan", "surname" => "Novák","managing"=>$employer]);
 
         } catch (\Exception $e) {
             die(print_r($e));
