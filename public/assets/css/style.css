@@ -1,5 +1,8 @@
-/*@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&family=Prompt&display=swap');*/
-
+@font-face {
+    font-family: "Noto Sans";
+    src: url("../fonts/Noto_Sans/NotoSans-Regular.ttf");
+    font-weight: bold;
+}
 :root {
     --main-bg-color: #004286;
     --main-text-color: rgba(0, 0, 0, .9);
@@ -193,6 +196,19 @@ a.floating-button{
     background: #bababa;
     text-align: center;
 }
+
+.table-striped .bg-warning{
+    background: var(--special-color) !important;
+}
+
+.table-striped .bg-info{
+    background: #5ca0ff !important;
+}
+
+.table-striped .bg-success{
+    background: #7fff6c !important;
+}
+
 .button-left{
     color:white;
     font-size: 5.3em;

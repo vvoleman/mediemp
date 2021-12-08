@@ -1,4 +1,7 @@
 {
+    "babdev/pagerfanta-bundle": {
+        "version": "v3.4.0"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.4"
     },
@@ -103,6 +106,9 @@
     "fakerphp/faker": {
         "version": "v1.16.0"
     },
+    "franzose/doctrine-bulk-insert": {
+        "version": "v1.2"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
@@ -117,6 +123,15 @@
     },
     "nikic/php-parser": {
         "version": "v4.13.0"
+    },
+    "pagerfanta/core": {
+        "version": "v3.4.0"
+    },
+    "pagerfanta/doctrine-orm-adapter": {
+        "version": "v3.4.0"
+    },
+    "pagerfanta/twig": {
+        "version": "v3.4.0"
     },
     "phar-io/manifest": {
         "version": "2.0.3"
@@ -604,11 +619,26 @@
     "symfony/yaml": {
         "version": "v5.3.6"
     },
+    "symfonycasts/reset-password-bundle": {
+        "version": "1.9",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "97c1627c0384534997ae1047b93be517ca16de43"
+        },
+        "files": [
+            "./config/packages/reset_password.yaml"
+        ]
+    },
     "theseer/tokenizer": {
         "version": "1.2.1"
     },
     "twig/extra-bundle": {
         "version": "v3.3.3"
+    },
+    "twig/string-extra": {
+        "version": "v3.3.4"
     },
     "twig/twig": {
         "version": "v3.3.3"
