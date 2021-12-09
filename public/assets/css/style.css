@@ -35,7 +35,7 @@ body {
     border-radius: 100%;
     width: 50px;
     height: 50px;
-    padding: px;
+    padding:0px;
     background: var(--main-bg-color);
     font-weight: bold;
     /*border: 3px solid var(--main-text-color);*/
@@ -189,17 +189,44 @@ a.floating-button{
     background-repeat: no-repeat;
 }
 .info-frame{
+    position: relative;
     background-color: #0b5ed7;
     color: white;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: 15px;
     border-radius: 25px;
     height: 75px;
     font-size: 25px;
     margin-bottom: 5px;
-}
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    }
+.pinfo-frame{
+    padding: 20px;
+    position: relative;
+    background-color: #0b5ed7;
+    color: white;
+    display: flex;
+    margin: 15px;
+    border-radius: 25px;
 
+    font-size: 25px;
+    margin-bottom: 5px;
+    justify-content: center;
+    align-items: center;
+}
+.activeMark{
+    margin-top: 10px;
+    text-align: center;
+    font-size: 15px;
+    max-width: 75px;
+    height: 75px;
+    border-radius: 100%;
+    background-color: limegreen;
+
+
+}
 
 .upravit{
 background-color: #0d6efd;
@@ -214,5 +241,6 @@ margin-left: 100px;
     padding:12px 5px;
     background: #bababa;
     text-align: center;
+
 
 }

@@ -7,32 +7,58 @@
             <div class="photo-box" style="background-image: url('https://i.redd.it/s6zoxmbnq4b61.jpg')"></div>
         </div>
             </div>
-            <div class="col-12 d-flex flex-wrap">
-
+            <div class="col-12 d-flex">
+    <div class ="col-lg-2 d-flex justify-content-around">
+        <div class="col-2 margin-top=50px "><b>Status:</b></div> <div class="col-lg-6 activeMark">Aktivní</div>
+    </div>
                 <!--Střední sloupec-->
-                <div class="col-lg-8">
+                <div class="col-lg-8 justify-content-center">
 
+                    <div class="col-12  separator"><h2>Obobní údaje</h2></div>
+                    <div class="col-12 d-flex justify-content-center align-content-center ">
 
-                    <div class="col-12 separator">Obobní údaje</div>
-                    <div class="col-12 d-block">
-                        <div class="col-5"> Status </div>
-                        <div class="col-4" style=" margin-top: 50px;margin-bottom: 50px; background-color: lawngreen">Aktivní
+                      <div class="col-8 justify-content-between position-relative d-sm-flex">
+                        <div class="col-2 info-frame">{{ user.degree }}</div>
+                        <div class="col-5 info-frame">{{ user.name }}</div>
+                        <div class="col-5 info-frame">{{ user.surname }}</div>
+                      </div>
+
+            </div>
+                    <div class="col-12 d-flex justify-content-center align-content-center ">
+
+                        <div class="col-8 justify-content-between position-relative d-sm-flex">
+                            <div class="col-2 info-frame">{{ user.gender }}</div>
+                            <div class="col-5 info-frame">{{ user.birthday|date("m/d/Y") }}</div>
+                            <div class="col-5 info-frame ">{{ user.getPersonId()  }}</div>
                         </div>
-                        <div class="col-4 info-frame">{{ user.degree }}</div>
-                <div class="col-4 info-frame">{{ user.name }}</div>
-                <div class="col-4 info-frame">{{ user.surname }}</div>
-                <div class="col-4 info-frame">bydliště </div>
-                <div class="col-4 info-frame"></div>
-                <div class="col-4 info-frame"> gender</div>
 
+                    </div>
+                    <div class="col-12 d-flex justify-content-center align-content-center ">
 
-            </div>
+                        <div class="col-8 justify-content-between position-relative d-sm-flex">
+                            <div class="col-2 info-frame">{{ user.citizenship }}</div>
+                            <div class="col-10 info-frame">{{ user.address }} </div>
+
+                        </div>
+
+                    </div>
+
             <div class="col-12 d-block">
-            <div class="separator" >Profesní informace
-            </div>
+                <div class="separator" ><h2>Profesní informace</h2></div>
+                <div class="col-12 d-flex justify-content-center align-content-center ">
+                    <div class="col-10 justify-content-between position-relative d-sm-flex">
+                        <div class="col-6 pinfo-frame">{{ user.getDesignationOfProfessionalCompetence()}}</div>
+                        <div class="col-6 pinfo-frame">{{user.getSpecializedCompetency()}}</div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-center align-content-center ">
+                    <div class="col-10 justify-content-between position-relative d-sm-flex">
+                        <div class="col-12 pinfo-frame">{{ user.getSpecialProfessionalOrSpecialSpecializedCompetencies() }}</div>
+                    </div>
+                </div>
 
         </div>
-       
+            </div>
         <!-- Pravý sloupec-->
         <div class="col-lg-2">
             <div class="upravit"> Upravit</div>
