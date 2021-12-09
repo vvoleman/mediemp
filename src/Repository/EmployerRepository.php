@@ -23,6 +23,13 @@ class EmployerRepository extends ServiceEntityRepository {
         return $this->createQueryBuilder('p');
     }
 
+    public function getFirst(){
+        return $this->createQueryBuilder('p')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function getUnconfirmedEmployer(string $token): ?Employer {
         $qb = $this->createQueryBuilder('p');
         $obj = $qb->where('p.confirmedAt = null')

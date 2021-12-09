@@ -11,6 +11,7 @@ use App\Factory\EmployeeFactory;
 use App\Factory\EmployerFactory;
 use App\Factory\UserFactory;
 use App\Repository\EmployerLineRepository;
+use App\Repository\EmployerRepository;
 use App\Service\Entity\EmployerLineService;
 use App\Service\Entity\EmployerService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -26,25 +27,25 @@ class ZAppFixtures extends Fixture {
     private EntityManagerInterface $entityManager;
     private EmployerLineRepository $lineRepository;
     private EmployerService $employerService;
+    private EmployerRepository $employerRepository;
 
     public function __construct(UserPasswordHasherInterface $passwordHasher,
                                 EntityManagerInterface      $entityManager,
                                 EmployerLineRepository      $lineRepository,
-                                EmployerService             $employerService) {
+                                EmployerService             $employerService,
+                                EmployerRepository          $employerRepository) {
 
         $this->passwordHasher = $passwordHasher;
         $this->entityManager = $entityManager;
         $this->lineRepository = $lineRepository;
         $this->employerService = $employerService;
+        $this->employerRepository = $employerRepository;
     }
 
     public function load(ObjectManager $manager): void {
+        //return;
         //Potřebuju přidat 5 organizací, každá bude mít 10 zaměstnanců
         //Potřebuju přidat 1 uživatele-zaměstnance, uživatele-admina
-
-
-        $conn = $this->entityManager->getConnection();
-        $conn->executeStatement("ALTER TABLE user AUTO_INCREMENT = 1;ALTER TABLE admin AUTO_INCREMENT = 1;ALTER TABLE employee AUTO_INCREMENT = 1;ALTER TABLE employer AUTO_INCREMENT = 1");
 
         $hashed = $this->passwordHasher->hashPassword(new User(), "heslo123");
 
@@ -59,31 +60,13 @@ class ZAppFixtures extends Fixture {
         try {
             $u = UserFactory::new()->create(["email" => "test@test.cz", "password" => $hashed, "type" => "employee"]);
 //            $employer = EmployerFactory::new()->create(["name" => "Krajská nemocnice v Liberci"]);
-            $employer = $this->employerService->postEmployer(EmployerLineService::formatArrayToEmployer($this->lineRepository->find(189734), "employer@test.cz"));
-            $manager->persist($employer);
-            $employee = EmployeeFactory::new()->create(["identity" => $u->object(), "employer" => $employer, "name" => "Jan", "surname" => "Novák","managing"=>$employer]);
+            $employer = $this->employerRepository->getFirst()[0];
+            $employee = EmployeeFactory::new()->create(["identity" => $u->object(), "employer" => $employer, "name" => "Jan", "surname" => "Novák", "managing" => $employer]);
 
         } catch (\Exception $e) {
             die(print_r($e));
         }
 
-        $employers = $this->lineRepository->getFirst();
-
-
-        try {
-            foreach ($employers as $employer) {
-                /** @var Employer $employer */
-                $employer = $this->employerService->postEmployer(EmployerLineService::formatArrayToEmployer($employer));
-                $manager->persist($employer);
-                for($i=0;$i<5;$i++){
-                    EmployeeFactory::new()->create([
-                        'employer'=>$employer
-                    ]);
-                }
-            }
-        }catch (\Exception $e){
-            die(print_r($e));
-        }
         $manager->flush();
     }
 }

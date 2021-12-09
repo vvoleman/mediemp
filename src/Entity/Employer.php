@@ -184,8 +184,7 @@ class Employer {
     /**
      * @return Collection|EmployerCourse[]
      */
-    public function getEmployerCourses(): Collection
-    {
+    public function getEmployerCourses(): Collection {
         return $this->employerCourses;
     }
 

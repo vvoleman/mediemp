@@ -1,0 +1,11 @@
+{% extends 'employer/employer_base.html.twig' %}
+{% block title %} Správa organizace - {{ parent()}} {% endblock %}
+{% block rightside %}
+    <h1 class="text-center">Zaměstnanci</h1>
+    <hr>
+    <div>
+        {% for e in employees %}
+            <li>{{ e.name }} {{ e.surname }}</li>
+        {% endfor %}
+    </div>
+{% endblock %}

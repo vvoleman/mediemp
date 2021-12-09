@@ -210,3 +210,32 @@ a.floating-button{
 .table-striped .bg-success{
     background: #7fff6c !important;
 }
+
+.vertical-menu{
+    border-radius: 5px;
+    background: var(--main-bg-color);
+    overflow: hidden;
+}
+.vertical-menu .item div{
+    padding: 15px;
+    color:white;
+    font-weight: bold;
+    text-align: center;
+}
+.vertical-menu .item{
+    text-decoration:none;
+}
+.vertical-menu .item.active div{
+    background: var(--main-text-color);
+    color:var(--special-color);
+}
+.vertical-menu .item div:not(.vertical-menu .item.active div):hover{
+    background: var(--special-color);
+    color: var(--main-text-color);
+}
+.main-content{
+    background:var(--main-text-color);
+    padding: 0 20px;
+    color:white;
+    font-weight: bold;
+}

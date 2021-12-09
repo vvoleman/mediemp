@@ -45,6 +45,7 @@ final class EmployerFactory extends ModelFactory
             'form_of_care' => self::faker()->text(),
             'confirmToken' => self::faker()->md5(),
             'confirmEmail' => self::faker()->email(),
+            'line_id' => 0
         ];
     }
 

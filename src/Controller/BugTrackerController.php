@@ -34,6 +34,7 @@ class BugTrackerController extends AbstractController {
      * @Route("/bug/report", name="app_bug_report_get")
      */
     public function index(Request $request,EntityManagerInterface $manager, ImageService $imageService): Response {
+        //dd("ff");
         $bug = new Bug();
         if(!$this->previousUrlService->isSet()){
             $this->previousUrlService->set($request);

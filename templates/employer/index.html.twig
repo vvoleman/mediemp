@@ -1,0 +1,17 @@
+{% extends 'employer/employer_base.html.twig' %}
+{% block title %} Správa organizace - {{ parent()}} {% endblock %}
+{% block rightside %}
+    <h1 class="text-center">Přehled</h1>
+    <hr>
+    <div class="d-lg-flex justify-content-around">
+        <div class="text-center col-lg-3 m-top">
+            <h4>{{ employeesCount }}</h4>zaměstnanců
+        </div>
+        <div class="text-center col-lg-3 m-top">
+            <h4>{{ activeAppointments }}</h4>aktivních termínů
+        </div>
+        <div class="text-center col-lg-3 m-top">
+            <h4>{{ totalAppointments }}</h4>termínů celkem
+        </div>
+    </div>
+{% endblock %}
