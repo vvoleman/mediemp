@@ -3,8 +3,14 @@
 namespace App\Controller\Employer;
 
 use App\Entity\CourseAppointment;
+use App\Entity\Employee;
+use App\Event\Employer\EmployeeSetupEvent;
+use App\Form\NewEmployeeType;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -47,6 +53,42 @@ class EmployerController extends AbstractController {
 
         return $this->render('employer/list_employees.html.twig',[
             "employees"=>$employees
+        ]);
+    }
+
+    #[Route('/employees/new',name:'_employees_new')]
+    public function newEmployee(Request $request,EntityManagerInterface $entityManager,EventDispatcherInterface $dispatcher){
+        $user = $this->getUser()->getUser();
+        $employer = $user->getManaging();
+
+        $employee = new Employee();
+        $employee->setEmployer($employer);
+        $form = $this->createForm(NewEmployeeType::class,$employee,[
+            "mode"=>"only-data"
+        ]);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            /** @var Employee $employee */
+            $employee = $form->getData();
+            $email = $form["email"]->getNormData();
+            $employee->setConfirmToken(md5($email.uniqid()));
+            try{
+                $entityManager->persist($employee);
+                $entityManager->flush();
+                dd($employee);
+            }catch (\Exception $e){
+                dd($e);
+            }
+
+
+            //$dispatcher->dispatch(new EmployeeSetupEvent($employee,$email));
+
+            $this->addFlash("success","Zaměstnanec byl vytvořen. Na e-mail mu byl zaslán link pro vytvoření přihlašovacích údajů");
+        }
+
+        return $this->renderForm("employer/new_employee.html.twig",[
+            "form"=>$form
         ]);
     }
 

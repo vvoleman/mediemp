@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Repository\EmployeeRepository;
-use App\Repository\EmployerRepository;
 use App\Service\Util\TimeTrackerTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,11 +22,15 @@ class HomeController extends AbstractController {
         switch ($user->getType()){
             case "employee":
                 $template = "home/index_employee.html.twig";
-                $data = [];
+                $data = [
+                    "user"=>$user->getUser()
+                ];
                 break;
             case "admin":
                 $template = "home/index_admin.html.twig";
-                $data = [];
+                $data = [
+                    "user"=>$user->getUser()
+                ];
                 break;
             default:
                 throw new \Exception("Unknown type of user",403);

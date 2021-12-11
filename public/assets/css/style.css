@@ -234,8 +234,18 @@ a.floating-button{
     color: var(--main-text-color);
 }
 .main-content{
-    background:var(--main-text-color);
-    padding: 0 20px;
+    border-radius: 5px;
+    background:var(--main-bg-color);
+    padding: 0 60px;
     color:white;
     font-weight: bold;
+}
+
+.main-content button[type=submit]{
+    border:none;
+    color:var(--main-text-color);
+    font-weight: bold;
+    width: 100%;
+    margin-top:10px;
+    background:var(--special-color);
 }

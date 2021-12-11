@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Employee;
 use App\Form\Types\CheckEmailType;
 use App\Repository\UserRepository;
+use PharIo\Manifest\Email;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -23,22 +24,51 @@ class NewEmployeeType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         if ($options['mode'] == 'full' || $options['mode'] == 'only-data') {
             $builder
-                ->add('name', TextType::class)
-                ->add('surname', TextType::class)
-                ->add('degree', TextType::class)
+                ->add('name', TextType::class,[
+                    "label"=>"Jméno"
+                ])
+                ->add('surname', TextType::class,
+                    [
+                        "label"=>"Příjmení"
+                    ]);
+                if($options['mode'] != "full"){
+                    $builder->add('email',EmailType::class,[
+                        'label'=>'E-mail pro zaslání odkazu pro vytvoření přihl. údajů',
+                        'mapped'=>false
+                    ]);
+                }
+                $builder->add('degree', TextType::class,[
+                    "label"=>"Titul"
+                ])
                 ->add('birthday', DateType::class, [
                     'widget' => 'single_text',
+                    "label" => "Datum narození"
                 ])
-                ->add('birth_city', TextType::class)
-                ->add('citizenship', TextType::class)
-                ->add('designation_of_professional_competence', TextType::class)
-                ->add('diploma_number', TextType::class)
+                ->add('birth_city', TextType::class,[
+                    "label"=>"Město narození"
+                ])
+                ->add('citizenship', TextType::class,[
+                    "label"=>"Státní občanství"
+                ])
+                ->add('designation_of_professional_competence', TextType::class,[
+                    "label"=>"Označení odborné způsobilosti"
+                ])
+                ->add('diploma_number', TextType::class,[
+                    "label"=>"Číslo diplomu"
+                ])
                 ->add('diploma_date', DateType::class, [
-                    'widget' => 'single_text'
+                    'widget' => 'single_text',
+                    "label"=>"Datum získání diplomu"
                 ])
-                ->add('specialized_competency', TextType::class)
-                ->add('special_professional_or_special_specialized_competencies', TextType::class)
-                ->add('identification_data_of_the_educational_establishment', TextType::class);
+                ->add('specialized_competency', TextType::class,[
+                    "label"=>"Speciální kompetence"
+                ])
+                ->add('special_professional_or_special_specialized_competencies', TextType::class,[
+                    "label"=>"Zvláštní odborné nebo zvláštní specializované způsobilosti"
+                ])
+                ->add('identification_data_of_the_educational_establishment', TextType::class,[
+                    "label"=>"Identifikační údaje vzdělávacího zařízení"
+                ]);
         }
 
         if ($options['mode'] == 'full' || $options['mode'] == "only-credentials") {

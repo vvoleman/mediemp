@@ -19,10 +19,12 @@
                 Můj kalendář
             </div>
         </a>
-        <a href="" class="box col-md-4 offset-md-1">
+        {% if user.managing != null %}
+        <a href="{{ path('app_employer') }}" class="box col-md-4 offset-md-1">
             <div>
                 Správa
             </div>
         </a>
+        {% endif %}
     </div>
 {% endblock %}

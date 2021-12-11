@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Event\Employer\EmployerConfirmedEvent;
 use App\Form\ConfirmEmployerType;
 use App\Form\NewEmployeeType;
+use App\Repository\EmployeeRepository;
 use App\Repository\EmployerRepository;
 use App\Service\Entity\EmployeeService;
 use App\Service\Util\PreviousUrlService;
@@ -15,18 +16,17 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\{EventDispatcher\Debug\TraceableEventDispatcher,
     EventDispatcher\EventDispatcherInterface,
+    HttpFoundation\RedirectResponse,
     HttpFoundation\Request,
+    HttpFoundation\Response,
     PasswordHasher\Hasher\UserPasswordHasherInterface,
     Routing\Annotation\Route,
     Stopwatch\Stopwatch};
 
-/**
- * @Route("/auth/employer/confirm",name="app_employer_confirm")
- */
-class ConfirmEmployerController extends AbstractController {
+class ConfirmController extends AbstractController {
 
     /**
-     * @Route("/{confirmToken}",name="")
+     * @Route("/auth/employer/confirm/{confirmToken}",name="app_employer_confirm")
      */
     public function confirm(Request $request, EmployerRepository $repository, EntityManagerInterface $manager, string $confirmToken, EventDispatcherInterface $dispatcher) {
         $employer = $repository->getUnconfirmedEmployer($confirmToken);
@@ -55,8 +55,8 @@ class ConfirmEmployerController extends AbstractController {
         return $this->renderForm("employer/confirm.html.twig", ["employer" => $employer, "employeeForm" => $form]);
     }
 
-    #[Route("/{confirmToken}/setup",name:"_setup")]
-    public function setupManager(Request $request, EmployerRepository $repository, EntityManagerInterface $manager, string $confirmToken, EventDispatcherInterface $dispatcher, UserPasswordHasherInterface $hasher){
+    #[Route("/auth/employer/confirm/{confirmToken}/setup",name:"app_employer_confirm_setup")]
+    public function setupManager(Request $request, EmployerRepository $repository, EntityManagerInterface $manager, string $confirmToken, EventDispatcherInterface $dispatcher, UserPasswordHasherInterface $hasher): RedirectResponse|Response {
         $employer = $repository->getUnconfirmedEmployer($confirmToken);
         if (!$employer) {
             $this->createNotFoundException("Invalid token");
@@ -89,10 +89,36 @@ class ConfirmEmployerController extends AbstractController {
             return $this->redirectToRoute("app_home");
         }
 
-        return $this->renderForm('employer/setup.html.twig',[
+        return $this->renderForm('employer/setup_manager.html.twig',[
             'form'=>$form,
             "employer"=>$employer
         ]);
     }
 
+    #[Route("/auth/employee/setup/{confirmToken}",name:"app_employee_setup")]
+    public function setupEmployee(Request $request,EmployeeRepository $repository, string $confirmToken) {
+        $employee = $repository->findOneBy(["confirmToken"=>$confirmToken]);
+
+        if(!$employee){
+            throw $this->createNotFoundException("No employee associated with this token");
+        }
+        if($employee->getConfirmedAt() || $employee->getIdentity()){
+            throw $this->createNotFoundException("This employee has already been set up");
+        }
+
+        $user = new User();
+        $form = $this->createForm(NewEmployeeType::class,$user,[
+            "mode"=>"only-credentials"
+        ]);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+            dd($data);
+        }
+
+        return $this->renderForm('employer/setup_employee.html.twig',[
+            "form"=>$form
+        ]);
+    }
 }

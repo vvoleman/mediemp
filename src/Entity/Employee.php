@@ -106,6 +106,16 @@ class Employee {
      */
     private ?User $identity;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $confirmToken;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $confirmedAt;
+
     public function __construct() {
         $this->courseRegistrations = new ArrayCollection();
     }
@@ -300,6 +310,30 @@ class Employee {
     public function setIdentity(User $identity): self
     {
         $this->identity = $identity;
+
+        return $this;
+    }
+
+    public function getConfirmToken(): ?string
+    {
+        return $this->confirmToken;
+    }
+
+    public function setConfirmToken(string $confirmToken): self
+    {
+        $this->confirmToken = $confirmToken;
+
+        return $this;
+    }
+
+    public function getConfirmedAt(): ?\DateTimeImmutable
+    {
+        return $this->confirmedAt;
+    }
+
+    public function setConfirmedAt(?\DateTimeImmutable $confirmedAt): self
+    {
+        $this->confirmedAt = $confirmedAt;
 
         return $this;
     }

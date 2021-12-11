@@ -51,6 +51,7 @@ final class EmployeeFactory extends ModelFactory
             'specialized_competency' => self::faker()->text(64),
             'special_professional_or_special_specialized_competencies' => self::faker()->text(64),
             'identification_data_of_the_educational_establishment' => self::faker()->text(64),
+            "confirm_token"=>self::faker()->md5()
         ];
     }
 
