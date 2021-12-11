@@ -23,6 +23,7 @@ class CalendarController extends AbstractController
             $temp = -1;
         }
         $monday = new \DateTime(sprintf("%d Monday",$temp));
+
         $sunday = new \DateTime("sunday this week");
       //  dd($monday,$sunday);
 
@@ -36,4 +37,5 @@ class CalendarController extends AbstractController
             //"sunday"=> $sunday ->format("d. m.")
         ]);
     }
+
 }

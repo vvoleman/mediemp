@@ -38,7 +38,7 @@ body {
     border-radius: 100%;
     width: 50px;
     height: 50px;
-    padding: px;
+
     background: var(--main-bg-color);
     font-weight: bold;
     /*border: 3px solid var(--main-text-color);*/
@@ -227,13 +227,20 @@ a.floating-button{
     font-size: 20px;
 }
 .monday{
-    padding:5px 13px  24em 13px;
+
     margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: 10px;
     background: white;
     color:#00B2FF;
     border-radius: 5px;
-    font-size: 20px;
+    font-size: 24px;
+}
+.m-topp{
+    font-size: 24px;
+    padding-bottom: 220%;
+   padding-top: 30px;
+    margin-top: 10px;
 }
 .mujkalendar{
     padding:1em 13px  1em 13px;
@@ -242,7 +249,8 @@ a.floating-button{
     border-radius: 5px;
     font-size: 2em;
     text-align: center;
-    margin-left: 50px;
+    margin-left: 25px;
+    margin-right: 25px;
 
 
 }
@@ -250,11 +258,12 @@ a.floating-button{
     background: #90DEFF;
     color:white;
     font-size: 1em;
+    margin-left: 25px;
+    margin-right: 25px;
 
 }
 .calendar thead tr{
     padding:5px 10px  5px 10px;
-    margin-left: 50px;
 }
 .calendar thead th:first-child{
     border-radius: 10px 0 0 10px;
@@ -264,15 +273,31 @@ a.floating-button{
 }
 .stupid{
     padding: 5px;
-    margin-left: 50px;
     margin-top: 10px;
+    margin-left: 25px;
+    margin-right: 25px;
 
 }
 .jednotlive-bunky{
     border-radius: 20px;
-    background: #90DEFF;
+    background: white;
     width: 100%;
-    font-size: 14px;
+    font-size: 0.8em;
     height: 100%;
-    margin-top: 0.26em;
+    margin-top: 0.28em;
+    padding: 3px;
+}
+.month{
+    padding:2px 1em  2px 1em;
+    background: #4BB2FF;
+    color:white;
+    border-radius: 5px;
+    font-size: 20px;
+}
+.button-left-month{
+    color:white;
+    font-size: 3.3em;
+    margin-bottom:4px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
