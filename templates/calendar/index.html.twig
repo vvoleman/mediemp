@@ -3,6 +3,7 @@
 {% block title %}Hello CalendarController!{% endblock %}
 
 {% block body %}
+    {% set dates = events|keys %}
     <div class="col-lg-3 mx-auto d-flex justify-content-center align-items-center" style="margin-top:-3em">
         <a href="{{ path('app_calendar_get',{"offset":offset-1}) }}" class="button-left"><i
                     class="fas fa-caret-left"></i></a>
@@ -11,19 +12,20 @@
         <a href="{{ path('app_calendar_get',{"offset":offset+1}) }}" class="button-left"><i
                     class="fas fa-caret-right"></i></a>
     </div>
-    <div class="d-lg-flex justify-content-around">
+    <div class="d-lg-flex justify-content-center">
         {% set acronyms = ['Po ', 'Út ', 'St ','Čt ','Pá ','So ','Ne '] %}
         {% set months = ['Leden', 'Únor', 'Březen', 'Duben', 'Květen','Červen', 'Červenec', 'Srpen', 'Září', 'Říjen','Listopad', 'Prosinec'] %}
         <div class="col-lg-2">
             <div class=" col-lg-10 mujkalendar">{{ "Můj \n Kalendář" |nl2br }}</div>
-              <div class=" col-lg-10 month_shifter  d-flex justify-content-center align-items-center" style="margin-top: 40px; height: 5%;margin-left: 25px;margin-right: 25px;">
+            <div class=" col-lg-10 month_shifter  d-flex justify-content-center align-items-center"
+                 style="margin-top: 40px; height: 5%;margin-left: 25px;margin-right: 25px;">
                 <a href="{{ path('app_calendar_get',{"offset":offset-4}) }}" class="button-left-month"><i
                             class="fas fa-caret-left"></i></a>
                 <div class="month">{{ months[monday|date('m')-1] }}
                 </div>
                 <a href="{{ path('app_calendar_get',{"offset":offset+4}) }}" class="button-left-month"><i
                             class="fas fa-caret-right"></i></a>
-                 </div>
+            </div>
 
             <div class="col-lg-10 stupid d-flex justify-content-between">
                 <table class="col-12 calendar">
@@ -38,22 +40,26 @@
                     <tr style="height: 10px"></tr>
                     {% for i in 0..4 %}
                         <tr>
-                            <tr style="height: 2px"></tr>
-                            {% for j in 0..6 %}
+                        <tr style="height: 2px"></tr>
+                        {% for j in 0..6 %}
 
-                                {% set color = j > 4 ? '#4BB2FF' : 'white' %}
-                                {% set colortxt = j<5 ? '#4BB2FF' : 'white' %}
-                                <td >
-                                    {% set day = i*7+j+1 %}
-                                              {% if (day >= starts_at) and( day-starts_at+1<= days) %}
+                            {% set color = j > 4 ? '#4BB2FF' : 'white' %}
+                            {% set colortxt = j<5 ? '#4BB2FF' : 'white' %}
+                            <td>
+                                {% set day = i*7+j+1 %}
+                                {% set day_string = (monday|date("Y"))~"-"~(monday|date("m"))~"-"~(day-starts_at+1) %}
+                                {% if (day >= starts_at) and( day-starts_at+1<= days) %}
+                                    {% if day_string in dates %}
+                                        <div class="position-absolute text-danger"><b>*</b></div>
+                                    {% endif %}
+                                    <div class="jednotlive-bunky d-flex justify-content-center align-items-center "
+                                         style="background: {{ color }};color:{{ colortxt }}">
 
-                                    <div class="jednotlive-bunky d-flex justify-content-center align-items-center " style="background: {{ color }};color:{{ colortxt }}">
-
-                                        {{day-starts_at+1 }}
-                                        {% endif %}
+                                        {{ day-starts_at+1 }}
                                     </div>
-                                </td>
-                            {% endfor %}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -62,11 +68,28 @@
             {# ctrl+alt+l - format #}
 
         </div>
-        <div class="col-lg-10 d-lg-flex" style="height: 100%">
-
+        <div class="col-lg-9 d-lg-flex justify-content-center">
             {% for i in 0..4 %}
                 <div class="col-lg-2  monday text-center ">
-                    <div class="m-topp">{{ cycle(acronyms, i) }}{{ monday|date_modify("+%d days"|format(i))|date("d. m.") }}</div>
+                    {% set adjusted_date = monday|date_modify("+%d days"|format(i)) %}
+                    <div class="m-topp">
+                        {{ cycle(acronyms, i) }}{{ adjusted_date|date("d. m.") }}
+                        <hr>
+                        <div>
+                            {% if (adjusted_date|date("Y-m-d")) in dates %}
+                                {% set list = events[adjusted_date|date("Y-m-d")] %}
+                                {% for e in list %}
+                                    <div class="alert alert-danger">
+                                        <b>{{ e.name }}</b>
+                                        <div style="text-align: left">
+                                            <li>{{ e.place }}</li>
+                                            <li>{{ e.keywords }}</li>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
 
                 </div>
             {% endfor %}
