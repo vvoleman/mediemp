@@ -5,7 +5,7 @@
     <hr>
     <div>
         {% for e in employees %}
-            <li>{{ e.name }} {{ e.surname }}</li>
+            <li>{{ e.name }} {{ e.surname }} {% if e.identity.id == app.user.id %} <span class="alert-warning small" style="background: var(--special-color);padding:0px 10px">Vy</span> {% endif %}</li>
         {% endfor %}
     </div>
 {% endblock %}

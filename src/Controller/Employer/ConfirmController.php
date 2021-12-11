@@ -5,6 +5,7 @@ namespace App\Controller\Employer;
 use App\Entity\Employee;
 use App\Entity\Employer;
 use App\Entity\User;
+use App\Event\Employer\EmployeeCreatedEvent;
 use App\Event\Employer\EmployerConfirmedEvent;
 use App\Form\ConfirmEmployerType;
 use App\Form\NewEmployeeType;
@@ -25,10 +26,18 @@ use Symfony\Component\{EventDispatcher\Debug\TraceableEventDispatcher,
 
 class ConfirmController extends AbstractController {
 
+    private EntityManagerInterface $manager;
+    private EventDispatcherInterface $dispatcher;
+
+    public function __construct(EntityManagerInterface $manager, EventDispatcherInterface $dispatcher) {
+        $this->manager = $manager;
+        $this->dispatcher = $dispatcher;
+    }
+
     /**
      * @Route("/auth/employer/confirm/{confirmToken}",name="app_employer_confirm")
      */
-    public function confirm(Request $request, EmployerRepository $repository, EntityManagerInterface $manager, string $confirmToken, EventDispatcherInterface $dispatcher) {
+    public function confirm(Request $request, EmployerRepository $repository, string $confirmToken) {
         $employer = $repository->getUnconfirmedEmployer($confirmToken);
         if($employer->getConfirmedAt()){
             $this->addFlash("warning","Tato organizace již byla potvrzena!");
@@ -45,9 +54,9 @@ class ConfirmController extends AbstractController {
             /** @var Employer $employer */
             $employer = $form->getData();
             $employer->setConfirmedAt(new \DateTimeImmutable());
-            $manager->flush();
+            $this->manager->flush();
 
-            $dispatcher->dispatch(new EmployerConfirmedEvent($employer,$form['manager_email']->getNormData()));
+            $this->dispatcher->dispatch(new EmployerConfirmedEvent($employer,$form['manager_email']->getNormData()));
 
             $this->addFlash("success","Organizace potvrzena, na email přijde link pro vytvoření manažera");
             return $this->redirectToRoute('app_home');
@@ -56,7 +65,7 @@ class ConfirmController extends AbstractController {
     }
 
     #[Route("/auth/employer/confirm/{confirmToken}/setup",name:"app_employer_confirm_setup")]
-    public function setupManager(Request $request, EmployerRepository $repository, EntityManagerInterface $manager, string $confirmToken, EventDispatcherInterface $dispatcher, UserPasswordHasherInterface $hasher): RedirectResponse|Response {
+    public function setupManager(Request $request, EmployerRepository $repository, string $confirmToken, EventDispatcherInterface $dispatcher, UserPasswordHasherInterface $hasher): RedirectResponse|Response {
         $employer = $repository->getUnconfirmedEmployer($confirmToken);
         if (!$employer) {
             $this->createNotFoundException("Invalid token");
@@ -72,7 +81,7 @@ class ConfirmController extends AbstractController {
             $user->setEmail($form->get('email')->getNormData());
             $user->setPassword($hasher->hashPassword($user,$form->get('password')->getNormData()));
             $user->setType(Employee::TYPE_NAME);
-            $manager->persist($user);
+            $this->manager->persist($user);
 
             /** @var Employee $employee */
             $employee = $form->getData();
@@ -80,10 +89,8 @@ class ConfirmController extends AbstractController {
             $employee->setManaging($employer);
             $employee->setIdentity($user);
 
-            //$dispatcher->dispatch(new EmployerConfirmedEvent($employee, $email));
-
-            $manager->persist($employee);
-            $manager->flush();
+            $this->manager->persist($employee);
+            $this->manager->flush();
 
             $this->addFlash("success","Manažerský účet vytvořen!");
             return $this->redirectToRoute("app_home");
@@ -96,7 +103,7 @@ class ConfirmController extends AbstractController {
     }
 
     #[Route("/auth/employee/setup/{confirmToken}",name:"app_employee_setup")]
-    public function setupEmployee(Request $request,EmployeeRepository $repository, string $confirmToken) {
+    public function setupEmployee(Request $request,EmployeeRepository $repository, string $confirmToken, UserPasswordHasherInterface $hasher) {
         $employee = $repository->findOneBy(["confirmToken"=>$confirmToken]);
 
         if(!$employee){
@@ -106,19 +113,28 @@ class ConfirmController extends AbstractController {
             throw $this->createNotFoundException("This employee has already been set up");
         }
 
-        $user = new User();
-        $form = $this->createForm(NewEmployeeType::class,$user,[
+        $form = $this->createForm(NewEmployeeType::class,null,[
             "mode"=>"only-credentials"
         ]);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $data = $form->getData();
-            dd($data);
+            $user = new User();
+            $user->setEmail($form->get("email")->getNormData());
+            $user->setType("employee");
+            $user->setPassword($hasher->hashPassword($user, $form->get("password")->getNormData()));
+            $this->manager->persist($user);
+            $employee->setIdentity($user);
+            $this->manager->flush();
+
+            $this->dispatcher->dispatch(new EmployeeCreatedEvent($employee));
+            $this->addFlash("success","Váš účet byl vytvořen, můžete se přihlásit!");
+            return $this->redirectToRoute("app_security_employee");
         }
 
         return $this->renderForm('employer/setup_employee.html.twig',[
-            "form"=>$form
+            "form"=>$form,
+            "employer"=>$employee->getEmployer()
         ]);
     }
 }

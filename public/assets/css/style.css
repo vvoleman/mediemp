@@ -236,7 +236,7 @@ a.floating-button{
 .main-content{
     border-radius: 5px;
     background:var(--main-bg-color);
-    padding: 0 60px;
+    padding: 30px 60px;
     color:white;
     font-weight: bold;
 }

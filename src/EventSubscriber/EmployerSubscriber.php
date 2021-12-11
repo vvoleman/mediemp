@@ -7,6 +7,7 @@ use App\Email\Employer\EmployerConfirmedEmail;
 use App\Email\Employer\EmployerCreatedEmail;
 use App\Email\Employer\SetupFirstManagerEmail;
 use App\Event\BugTracker\BugReportCreatedEvent;
+use App\Event\Employer\EmployeeCreatedEvent;
 use App\Event\Employer\EmployeeSetupEvent;
 use App\Event\Employer\EmployerConfirmedEvent;
 use App\Event\Employer\EmployerCreatedEvent;
@@ -28,7 +29,8 @@ class EmployerSubscriber implements EventSubscriberInterface {
         return [
             EmployerConfirmedEvent::class => [['sendConfirmed',10], ['sendManagerSetup',0]],
             EmployerCreatedEvent::class => [['sendCreated',10]],
-            EmployeeSetupEvent::class => [['setupEmployee']]
+            EmployeeSetupEvent::class => [['setupEmployee']],
+            //EmployeeCreatedEvent::class => []
         ];
     }
 
