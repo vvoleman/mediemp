@@ -197,27 +197,15 @@ a.floating-button{
     border:1px solid black !important;
 }
 .info-frame {
-    background-color: #0b5ed7;
-    color: white;
-    border-radius: 5px;
-    padding: 10px;
-    margin:10px;
-    text-align: center;
+    padding:5px;
 }
 
-.pinfo-frame {
-    padding: 20px;
-    position: relative;
-    background-color: #0b5ed7;
-    color: white;
-    display: flex;
-    margin: 15px;
-    border-radius: 25px;
-
-    font-size: 25px;
-    margin-bottom: 5px;
-    justify-content: center;
-    align-items: center;
+.info-frame > div{
+    background-color: #90DEFF;
+    color: black;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
 }
 
 .activeMark {
