@@ -106,6 +106,21 @@ class Employee {
      */
     private ?User $identity;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=32)
+     */
+    private $person_id;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $gender;
+
     public function __construct() {
         $this->courseRegistrations = new ArrayCollection();
     }
@@ -300,6 +315,42 @@ class Employee {
     public function setIdentity(User $identity): self
     {
         $this->identity = $identity;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getPersonId(): ?string
+    {
+        return $this->person_id;
+    }
+
+    public function setPersonId(string $person_id): self
+    {
+        $this->person_id = $person_id;
+
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): self
+    {
+        $this->gender = $gender;
 
         return $this;
     }
