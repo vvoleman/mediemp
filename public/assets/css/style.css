@@ -9,8 +9,8 @@
 
 body {
     background: #d2eeff;
-/*CDDEE5 - 13491941*/
-/*B4D6E5 - 11851493*/
+    /*CDDEE5 - 13491941*/
+    /*B4D6E5 - 11851493*/
 }
 
 .navbar .navbar-brand {
@@ -35,7 +35,7 @@ body {
     border-radius: 100%;
     width: 50px;
     height: 50px;
-    padding:0px;
+    padding: 0px;
     background: var(--main-bg-color);
     font-weight: bold;
     /*border: 3px solid var(--main-text-color);*/
@@ -53,13 +53,16 @@ body {
     font-weight: bold;
     margin: 0 5px;
 }
-.navbar-nav.bubble .nav-item{
+
+.navbar-nav.bubble .nav-item {
     border-radius: 5vh;
 }
-.form-floating>.form-control{
+
+.form-floating > .form-control {
     height: auto;
 }
-.bubble .nav-link:hover{
+
+.bubble .nav-link:hover {
     background: var(--special-color);
 }
 
@@ -82,42 +85,44 @@ body {
 }
 
 .bubble .dropdown-item:hover {
-    color:var(--special-color);
+    color: var(--special-color);
     background: none;
     text-decoration: double;
 }
 
-.link-box{
+.link-box {
     text-align: center;
 }
-.link-box > div{
-    background:var(--ligh-blue);
-    box-shadow: 0px 0px 10px -2px rgba(0,0,0,0.15);
+
+.link-box > div {
+    background: var(--ligh-blue);
+    box-shadow: 0px 0px 10px -2px rgba(0, 0, 0, 0.15);
     margin-bottom: 15px;
 }
-.link-box a{
+
+.link-box a {
     margin-bottom: 30px;
 }
-.btn-main{
+
+.btn-main {
     background: var(--main-bg-color);
-    border:none;
-    border-radius:30px;
-    padding:10px 25px;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 25px;
     font-size: 18px;
-    color:white;
-    transition:0.1s;
+    color: white;
+    transition: 0.1s;
     text-decoration: none;
 }
 
-.btn-main:hover,.btn-main:focus{
+.btn-main:hover, .btn-main:focus {
     background: var(--special-color);
-    color:var(--main-text-color);
+    color: var(--main-text-color);
 }
 
 
-
 @media only screen and (min-width: 768px) {
-    .bar{
+    .bar {
         position: absolute;
         left: 50%;
         top: 50%;
@@ -125,84 +130,86 @@ body {
     }
 }
 
-form input{
+form input {
     margin-bottom: 5px;
 }
 
-.m-top{
-    margin-top:15px;
+.m-top {
+    margin-top: 15px;
 }
 
-.m-bottom{
+.m-bottom {
     margin-bottom: 15px;
 }
-.box > div{
-    padding:30px;
-    font-size:25px;
+
+.box > div {
+    padding: 30px;
+    font-size: 25px;
     min-width: 150px;
     min-height: 100%;
-    box-shadow: 0px 0px 10px -2px rgba(0,0,0,0.15);
+    box-shadow: 0px 0px 10px -2px rgba(0, 0, 0, 0.15);
     text-align: center;
     background: var(--ligh-blue);
 }
-a.box{
+
+a.box {
     text-decoration: none;
     margin-top: 8.33333333%;
 }
 
-.floating-button{
-    position:fixed;
-    width:60px;
-    height:60px;
-    bottom:40px;
-    right:40px;
-    color:#FFF;
-    border-radius:50px;
-    text-align:center;
+.floating-button {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
     box-shadow: 2px 2px 3px #999;
 }
-a.floating-button{
+
+a.floating-button {
     text-decoration: none;
 }
-.floating-button > .fa{
+
+.floating-button > .fa {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
 }
 
-.special{
+.special {
     background: var(--special-color);
-    color:var(--main-text-color);
+    color: var(--main-text-color);
 }
 
-.my-float{
-    margin-top:22px;
+.my-float {
+    margin-top: 22px;
 }
 
-.photo-box{
-    width: 90%;
+.photo-box {
+    width: 100%;
     min-height: 100px;
     height: auto;
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
 }
-.info-frame{
-    position: relative;
+.border{
+    border:1px solid black !important;
+}
+.info-frame {
     background-color: #0b5ed7;
     color: white;
-    display: flex;
-    margin: 15px;
-    border-radius: 25px;
-    height: 75px;
-    font-size: 25px;
-    margin-bottom: 5px;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    }
-.pinfo-frame{
+    border-radius: 5px;
+    padding: 10px;
+    margin:10px;
+    text-align: center;
+}
+
+.pinfo-frame {
     padding: 20px;
     position: relative;
     background-color: #0b5ed7;
@@ -216,7 +223,8 @@ a.floating-button{
     justify-content: center;
     align-items: center;
 }
-.activeMark{
+
+.activeMark {
     margin-top: 10px;
     text-align: center;
     font-size: 15px;
@@ -228,19 +236,26 @@ a.floating-button{
 
 }
 
-.upravit{
-background-color: #0d6efd;
-border-radius: 30%;
-width: 100px;
-display: inline-block;
-text-align: center;
-margin-left: 100px;
+.upravit {
+    background-color: #0d6efd;
+    border-radius: 30%;
+    width: 100px;
+    display: inline-block;
+    text-align: center;
+    margin-left: 100px;
     alignment: right;
 }
-.separator{
-    padding:12px 5px;
-    background: #bababa;
+
+.separator {
+    padding: 12px 5px;
+    background: #b2bfcb;
     text-align: center;
+    font-weight: bold;
+}
 
-
+.profile_button{
+    padding:12px 5px;
+    border-radius: 5px;
+    background:#90DEFF;
+    border:none;
 }
