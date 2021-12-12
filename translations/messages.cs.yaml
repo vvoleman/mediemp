@@ -21,6 +21,9 @@ employee:
         special_professional_or_special_specialized_competencies: "Zvláštní odborné nebo zvláštní specializované způsobilosti"
         identification_data_of_the_educational_establishment: "Identifikační údaje vzdělávacího zařízení"
         confirmed_at: "Datum vytvoření přihlášení"
+        address: "Adresa"
+        person_id: "Rodné číslo"
+        gender: "Pohlaví"
 
 global:
     formats:
@@ -28,3 +31,7 @@ global:
             date: "d. m. Y"
         universal:
             date: "Y-m-d"
+    genders:
+        male: "Muž"
+        female: "Žena"
+        other: "Jiné"

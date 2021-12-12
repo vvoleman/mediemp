@@ -229,7 +229,7 @@ class Employee {
         return $this;
     }
 
-    public function getDiplomaDate(): ?string {
+    public function getDiplomaDate(): ?\DateTime {
         return $this->diploma_date;
     }
 
