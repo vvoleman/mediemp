@@ -3,6 +3,7 @@
     src: url("../fonts/Noto_Sans/NotoSans-Regular.ttf");
     font-weight: bold;
 }
+
 :root {
     --main-bg-color: #004286;
     --main-text-color: rgba(0, 0, 0, .9);
@@ -101,6 +102,7 @@ body {
 .link-box a{
     margin-bottom: 30px;
 }
+
 .btn-main{
     background: var(--main-bg-color);
     border:none;
@@ -267,14 +269,13 @@ a.floating-button{
     background: #7fff6c !important;
 }
 
+
 .button-left{
     color:white;
     font-size: 5.3em;
     margin-bottom:4px;
     margin-left: 10px;
     margin-right: 10px;
-
-
 }
 
 .calendar-date{
@@ -333,4 +334,44 @@ a.floating-button{
     font-size: 14px;
     height: 100%;
     margin-top: 0.26em;
+}
+
+
+.vertical-menu{
+    border-radius: 5px;
+    background: var(--main-bg-color);
+    overflow: hidden;
+}
+.vertical-menu .item div{
+    padding: 15px;
+    color:white;
+    font-weight: bold;
+    text-align: center;
+}
+.vertical-menu .item{
+    text-decoration:none;
+}
+.vertical-menu .item.active div{
+    background: var(--main-text-color);
+    color:var(--special-color);
+}
+.vertical-menu .item div:not(.vertical-menu .item.active div):hover{
+    background: var(--special-color);
+    color: var(--main-text-color);
+}
+.main-content{
+    border-radius: 5px;
+    background:var(--main-bg-color);
+    padding: 30px 60px;
+    color:white;
+    font-weight: bold;
+}
+
+.main-content button[type=submit]{
+    border:none;
+    color:var(--main-text-color);
+    font-weight: bold;
+    width: 100%;
+    margin-top:10px;
+    background:var(--special-color);
 }

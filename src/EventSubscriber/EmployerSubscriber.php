@@ -2,10 +2,13 @@
 
 namespace App\EventSubscriber;
 
+use App\Email\Employer\EmployeeSetupEmail;
 use App\Email\Employer\EmployerConfirmedEmail;
 use App\Email\Employer\EmployerCreatedEmail;
 use App\Email\Employer\SetupFirstManagerEmail;
 use App\Event\BugTracker\BugReportCreatedEvent;
+use App\Event\Employer\EmployeeCreatedEvent;
+use App\Event\Employer\EmployeeSetupEvent;
 use App\Event\Employer\EmployerConfirmedEvent;
 use App\Event\Employer\EmployerCreatedEvent;
 use App\Security\LoggerAwareTrait;
@@ -25,7 +28,9 @@ class EmployerSubscriber implements EventSubscriberInterface {
     public static function getSubscribedEvents() {
         return [
             EmployerConfirmedEvent::class => [['sendConfirmed',10], ['sendManagerSetup',0]],
-            EmployerCreatedEvent::class => [['sendCreated',10]]
+            EmployerCreatedEvent::class => [['sendCreated',10]],
+            EmployeeSetupEvent::class => [['setupEmployee']],
+            //EmployeeCreatedEvent::class => []
         ];
     }
 
@@ -45,9 +50,15 @@ class EmployerSubscriber implements EventSubscriberInterface {
     }
 
     public function sendCreated(EmployerCreatedEvent $event){
-        $this->getLogger()->error("aaaa");
         $email = (new EmployerCreatedEmail($event->getEmployer()))
             ->to($event->getEmployer()->getConfirmEmail());
+
+        $this->sender->send($email);
+    }
+
+    public function setupEmployee(EmployeeSetupEvent $event) {
+        $email = (new EmployeeSetupEmail($event->getEmployee()))
+            ->to($event->getEmail());
 
         $this->sender->send($email);
     }

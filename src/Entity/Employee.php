@@ -121,6 +121,16 @@ class Employee {
      */
     private $gender;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $confirmToken;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $confirmedAt;
+
     public function __construct() {
         $this->courseRegistrations = new ArrayCollection();
     }
@@ -307,51 +317,64 @@ class Employee {
         return !!$this->getManaging();
     }
 
-    public function getIdentity(): ?User
-    {
+    public function getIdentity(): ?User {
         return $this->identity;
     }
 
-    public function setIdentity(User $identity): self
-    {
+    public function setIdentity(User $identity): self {
         $this->identity = $identity;
 
         return $this;
     }
 
-    public function getAddress(): ?string
-    {
+    public function getAddress(): ?string {
         return $this->address;
     }
 
-    public function setAddress(string $address): self
-    {
+    public function setAddress(string $address): self {
         $this->address = $address;
 
         return $this;
     }
 
-    public function getPersonId(): ?string
-    {
+    public function getPersonId(): ?string {
         return $this->person_id;
     }
 
-    public function setPersonId(string $person_id): self
-    {
+    public function setPersonId(string $person_id): self {
         $this->person_id = $person_id;
 
         return $this;
     }
 
-    public function getGender(): ?string
-    {
+    public function getGender(): ?string {
         return $this->gender;
     }
 
-    public function setGender(string $gender): self
-    {
+    public function setGender(string $gender): self {
         $this->gender = $gender;
 
         return $this;
     }
+
+    public function getConfirmToken(): ?string {
+        return $this->confirmToken;
+    }
+
+    public function setConfirmToken(string $confirmToken): self {
+        $this->confirmToken = $confirmToken;
+
+        return $this;
+    }
+
+    public function getConfirmedAt(): ?\DateTimeImmutable {
+        return $this->confirmedAt;
+    }
+
+    public function setConfirmedAt(?\DateTimeImmutable $confirmedAt): self {
+        $this->confirmedAt = $confirmedAt;
+
+        return $this;
+    }
+
 }
