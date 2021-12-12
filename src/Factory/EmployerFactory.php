@@ -39,10 +39,12 @@ final class EmployerFactory extends ModelFactory
     {
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
-            'name' => self::faker()->company(),
+            'name' => self::faker()->name(),
             'address' => self::faker()->address(),
             'provider_type' => self::faker()->text(),
             'form_of_care' => self::faker()->text(),
+            'confirmToken' => self::faker()->md5(),
+            'confirmEmail' => self::faker()->email(),
         ];
     }
 

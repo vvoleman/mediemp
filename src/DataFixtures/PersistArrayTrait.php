@@ -13,6 +13,7 @@ trait PersistArrayTrait {
     }
 
     public function persistArrayProxies(ObjectManager $manager, $array) {
+        dd($array);
         foreach ($array as $a){
             $manager->persist($a->object());
         }

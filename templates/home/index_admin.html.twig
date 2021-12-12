@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administrace - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="d-md-flex flex-wrap justify-content-center mx-auto col-lg-7 col-8 bar">
+        <a href="{{ path('app_admin_employers') }}" class="box col-md-4 offset-md-1">
+            <div>
+                Organizace
+            </div>
+        </a>
+    </div>
+{% endblock %}

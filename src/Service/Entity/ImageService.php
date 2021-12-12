@@ -3,6 +3,8 @@
 namespace App\Service\Entity;
 
 use App\Entity\Image;
+use App\Service\File\FileUploaderService;
+use App\Service\Util\RandomService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

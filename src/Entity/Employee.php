@@ -25,7 +25,7 @@ class Employee {
 
     /**
      * @ORM\ManyToOne(targetEntity=Employer::class, inversedBy="employees")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false,onDelete="CASCADE")
      */
     private $employer;
 
@@ -96,12 +96,13 @@ class Employee {
 
     /**
      * @ORM\ManyToOne(targetEntity=Employer::class, inversedBy="managers")
+     * @ORM\JoinColumn(nullable=true,onDelete="CASCADE")
      */
     private $managing;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, inversedBy="employee", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private ?User $identity;
 

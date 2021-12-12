@@ -9,6 +9,9 @@
 /var/log/
 /var/files/data_assets/assets/*
 /vendor/
+var/files/upload/*
+uploaded/images/*
+
 ###< symfony/framework-bundle ###
 
 /.idea/

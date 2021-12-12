@@ -1,5 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&family=Prompt&display=swap');
-
+@font-face {
+    font-family: "Noto Sans";
+    src: url("../fonts/Noto_Sans/NotoSans-Regular.ttf");
+    font-weight: bold;
+}
 :root {
     --main-bg-color: #004286;
     --main-text-color: rgba(0, 0, 0, .9);
@@ -53,16 +56,13 @@ body {
     font-weight: bold;
     margin: 0 5px;
 }
-
-.navbar-nav.bubble .nav-item {
+.navbar-nav.bubble .nav-item{
     border-radius: 5vh;
 }
-
-.form-floating > .form-control {
+.form-floating>.form-control{
     height: auto;
 }
-
-.bubble .nav-link:hover {
+.bubble .nav-link:hover{
     background: var(--special-color);
 }
 
@@ -85,44 +85,42 @@ body {
 }
 
 .bubble .dropdown-item:hover {
-    color: var(--special-color);
+    color:var(--special-color);
     background: none;
     text-decoration: double;
 }
 
-.link-box {
+.link-box{
     text-align: center;
 }
-
-.link-box > div {
-    background: var(--ligh-blue);
-    box-shadow: 0px 0px 10px -2px rgba(0, 0, 0, 0.15);
+.link-box > div{
+    background:var(--ligh-blue);
+    box-shadow: 0px 0px 10px -2px rgba(0,0,0,0.15);
     margin-bottom: 15px;
 }
-
-.link-box a {
+.link-box a{
     margin-bottom: 30px;
 }
-
-.btn-main {
+.btn-main{
     background: var(--main-bg-color);
-    border: none;
-    border-radius: 30px;
-    padding: 10px 25px;
+    border:none;
+    border-radius:30px;
+    padding:10px 25px;
     font-size: 18px;
-    color: white;
-    transition: 0.1s;
+    color:white;
+    transition:0.1s;
     text-decoration: none;
 }
 
-.btn-main:hover, .btn-main:focus {
+.btn-main:hover,.btn-main:focus{
     background: var(--special-color);
-    color: var(--main-text-color);
+    color:var(--main-text-color);
 }
 
 
+
 @media only screen and (min-width: 768px) {
-    .bar {
+    .bar{
         position: absolute;
         left: 50%;
         top: 50%;
@@ -130,66 +128,62 @@ body {
     }
 }
 
-form input {
+form input{
     margin-bottom: 5px;
 }
 
-.m-top {
-    margin-top: 15px;
+.m-top{
+    margin-top:15px;
 }
 
-.m-bottom {
+.m-bottom{
     margin-bottom: 15px;
 }
-
-.box > div {
-    padding: 30px;
-    font-size: 25px;
+.box > div{
+    padding:30px;
+    font-size:25px;
     min-width: 150px;
     min-height: 100%;
-    box-shadow: 0px 0px 10px -2px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 10px -2px rgba(0,0,0,0.15);
     text-align: center;
     background: var(--ligh-blue);
 }
-
-a.box {
+a.box{
     text-decoration: none;
     margin-top: 8.33333333%;
 }
 
-.floating-button {
-    position: fixed;
-    width: 60px;
-    height: 60px;
-    bottom: 40px;
-    right: 40px;
-    color: #FFF;
-    border-radius: 50px;
-    text-align: center;
+.floating-button{
+    position:fixed;
+    width:60px;
+    height:60px;
+    bottom:40px;
+    right:40px;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
     box-shadow: 2px 2px 3px #999;
 }
-
-a.floating-button {
+a.floating-button{
     text-decoration: none;
 }
-
-.floating-button > .fa {
+.floating-button > .fa{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
 }
 
-.special {
+.special{
     background: var(--special-color);
-    color: var(--main-text-color);
+    color:var(--main-text-color);
 }
 
-.my-float {
-    margin-top: 22px;
+.my-float{
+    margin-top:22px;
 }
 
-.photo-box {
+.photo-box{
     width: 100%;
     min-height: 100px;
     height: auto;
@@ -258,4 +252,85 @@ a.floating-button {
     border-radius: 5px;
     background:#90DEFF;
     border:none;
+}
+
+
+.table-striped .bg-warning{
+    background: var(--special-color) !important;
+}
+
+.table-striped .bg-info{
+    background: #5ca0ff !important;
+}
+
+.table-striped .bg-success{
+    background: #7fff6c !important;
+}
+
+.button-left{
+    color:white;
+    font-size: 5.3em;
+    margin-bottom:4px;
+    margin-left: 10px;
+    margin-right: 10px;
+
+
+}
+
+.calendar-date{
+    padding:10px;
+    background: #90DEFF;
+    color:white;
+    border-radius: 5px;
+    font-size: 20px;
+}
+.monday{
+    padding:5px 13px  24em 13px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    background: white;
+    color:#00B2FF;
+    border-radius: 5px;
+    font-size: 20px;
+}
+.mujkalendar{
+    padding:1em 13px  1em 13px;
+    background: #90DEFF;
+    color: white;
+    border-radius: 5px;
+    font-size: 2em;
+    text-align: center;
+    margin-left: 50px;
+
+
+}
+.day-names{
+    background: #90DEFF;
+    color:white;
+    font-size: 1em;
+
+}
+.calendar thead tr{
+    padding:5px 10px  5px 10px;
+    margin-left: 50px;
+}
+.calendar thead th:first-child{
+    border-radius: 10px 0 0 10px;
+}
+.calendar thead th:last-child{
+    border-radius: 0 10px 10px 0;
+}
+.stupid{
+    padding: 5px;
+    margin-left: 50px;
+    margin-top: 10px;
+
+}
+.jednotlive-bunky{
+    border-radius: 20px;
+    background: #90DEFF;
+    width: 100%;
+    font-size: 14px;
+    height: 100%;
+    margin-top: 0.26em;
 }

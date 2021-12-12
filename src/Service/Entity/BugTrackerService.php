@@ -8,6 +8,7 @@ use App\Repository\BugCategoryRepository;
 use App\Repository\BugRepository;
 use App\Repository\EmployeeRepository;
 use App\Security\LoggerAwareTrait;
+use App\Service\Util\PreviousUrlService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
