@@ -21,7 +21,6 @@ class ProfileController extends AbstractController
         $user = $this->getUser();
         $user = $user->getUser();
         return $this->render('profile/index.html.twig', [
-            'user' => $user,
-        ]);
+            'user' => $user,        ]);
     }
 }

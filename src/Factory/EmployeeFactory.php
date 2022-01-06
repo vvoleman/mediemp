@@ -43,14 +43,18 @@ final class EmployeeFactory extends ModelFactory
             'surname' => self::faker()->lastName(),
             'degree' => self::faker()->randomElement(["Bc.","Mudr."]),
             'birthday' => new \DateTime(self::faker()->date()),
+            "address" => self::faker()->address,
+            "person_id"=>self::faker()->randomNumber(6),
+            "gender" => rand(1,100) <= 45 ? "male" : "female",
             'birth_city' => self::faker()->city(),
             'citizenship' => self::faker()->countryCode(),
             'designation_of_professional_competence' => self::faker()->text(),
-            'diploma_number' => self::faker()->text(),
+            'diploma_number' => self::faker()->text(32),
             'diploma_date' => new \DateTime(self::faker()->date()),
-            'specialized_competency' => self::faker()->text(),
-            'special_professional_or_special_specialized_competencies' => self::faker()->text(),
-            'identification_data_of_the_educational_establishment' => self::faker()->text(),
+            'specialized_competency' => self::faker()->text(64),
+            'special_professional_or_special_specialized_competencies' => self::faker()->text(64),
+            'identification_data_of_the_educational_establishment' => self::faker()->text(64),
+            "confirm_token"=>self::faker()->md5()
         ];
     }
 

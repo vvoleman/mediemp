@@ -1,3 +1,5 @@
 framework:
     mailer:
+        envelope:
+            sender: 'mediemp@themulti.eu'
         dsn: '%env(MAILER_DSN)%'
