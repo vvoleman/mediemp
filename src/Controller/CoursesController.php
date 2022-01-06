@@ -48,10 +48,10 @@ class CoursesController extends AbstractController
         } else if ($request->request->get('action') == "create_course") {
             $entityManager = $this->getDoctrine()->getManager();
             $new = new GlobalCourse();
-            $new->setName("Change me!");
-            $new->setKeywords("");
-            $new->setFocus("");
-            $new->setSpecialization("");
+            $new->setName($request->request->get('name'));
+            $new->setKeywords($request->request->get('keywords'));
+            $new->setFocus($request->request->get('focus'));
+            $new->setSpecialization($request->request->get('specialization'));
             $entityManager->persist($new);
             $entityManager->flush();
             $this->addFlash("success", "Kurz vytvořen");
