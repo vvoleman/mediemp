@@ -100,9 +100,9 @@ class CoursesController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $new = new CourseAppointment();
             $new->setEmployerCourse($emp_course->findOneBy(['id' => $request->request->get("id")]));
-            $new->setDate(new DateTime());
-            $new->setCapacity(0);
-            $new->setPlace("");
+            $new->setDate(new DateTime(date("Y-m-d H:i:s", strtotime($request->request->get('date')))));
+            $new->setPlace($request->request->get('place'));
+            $new->setCapacity($request->request->get('capacity'));
             $entityManager->persist($new);
             $entityManager->flush();
             $this->addFlash("success", "Termín vytvořen");
