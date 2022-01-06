@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="d-md-flex flex-wrap justify-content-center mx-auto col-lg-7 col-8 bar">
-        <a href="{{ path('app_profile_get') }}" class="box col-md-4 offset-md-1">
+        <a href="" class="box col-md-4 offset-md-1">
             <div>
                 Můj profil
             </div>
@@ -19,12 +19,10 @@
                 Můj kalendář
             </div>
         </a>
-        {% if user.managing != null %}
-        <a href="{{ path('app_employer') }}" class="box col-md-4 offset-md-1">
+        <a href="" class="box col-md-4 offset-md-1">
             <div>
                 Správa
             </div>
         </a>
-        {% endif %}
     </div>
 {% endblock %}

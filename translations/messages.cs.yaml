@@ -5,26 +5,3 @@ bugtracker:
 security:
     csrf:
         invalid: "Nelze zpracovat formulář, zkuste obnovit stránku"
-
-employee:
-    attributes:
-        name: "Jméno"
-        surname: "Příjmení"
-        degree: "Titul"
-        birthday: "Datum narození"
-        birth_city: "Místo narození"
-        citizenship: "Státní občanství"
-        designation_of_professional_competence: "Označení odborné způsobilosti"
-        diploma_number: "Číslo diplomu"
-        diploma_date: "Datum získání diplomu"
-        specialized_competency: "Speciální kompetence"
-        special_professional_or_special_specialized_competencies: "Zvláštní odborné nebo zvláštní specializované způsobilosti"
-        identification_data_of_the_educational_establishment: "Identifikační údaje vzdělávacího zařízení"
-        confirmed_at: "Datum vytvoření přihlášení"
-
-global:
-    formats:
-        pretty:
-            date: "d. m. Y"
-        universal:
-            date: "Y-m-d"

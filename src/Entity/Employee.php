@@ -25,7 +25,7 @@ class Employee {
 
     /**
      * @ORM\ManyToOne(targetEntity=Employer::class, inversedBy="employees")
-     * @ORM\JoinColumn(nullable=false,onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $employer;
 
@@ -96,40 +96,14 @@ class Employee {
 
     /**
      * @ORM\ManyToOne(targetEntity=Employer::class, inversedBy="managers")
-     * @ORM\JoinColumn(nullable=true,onDelete="CASCADE")
      */
     private $managing;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, inversedBy="employee", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=false)
      */
     private ?User $identity;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $address;
-
-    /**
-     * @ORM\Column(type="string", length=32)
-     */
-    private $person_id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $gender;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $confirmToken;
-
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
-    private $confirmedAt;
 
     public function __construct() {
         $this->courseRegistrations = new ArrayCollection();
@@ -317,64 +291,15 @@ class Employee {
         return !!$this->getManaging();
     }
 
-    public function getIdentity(): ?User {
+    public function getIdentity(): ?User
+    {
         return $this->identity;
     }
 
-    public function setIdentity(User $identity): self {
+    public function setIdentity(User $identity): self
+    {
         $this->identity = $identity;
 
         return $this;
     }
-
-    public function getAddress(): ?string {
-        return $this->address;
-    }
-
-    public function setAddress(string $address): self {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    public function getPersonId(): ?string {
-        return $this->person_id;
-    }
-
-    public function setPersonId(string $person_id): self {
-        $this->person_id = $person_id;
-
-        return $this;
-    }
-
-    public function getGender(): ?string {
-        return $this->gender;
-    }
-
-    public function setGender(string $gender): self {
-        $this->gender = $gender;
-
-        return $this;
-    }
-
-    public function getConfirmToken(): ?string {
-        return $this->confirmToken;
-    }
-
-    public function setConfirmToken(string $confirmToken): self {
-        $this->confirmToken = $confirmToken;
-
-        return $this;
-    }
-
-    public function getConfirmedAt(): ?\DateTimeImmutable {
-        return $this->confirmedAt;
-    }
-
-    public function setConfirmedAt(?\DateTimeImmutable $confirmedAt): self {
-        $this->confirmedAt = $confirmedAt;
-
-        return $this;
-    }
-
 }

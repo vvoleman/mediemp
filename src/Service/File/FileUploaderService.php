@@ -2,16 +2,15 @@
 
 namespace App\Service\File;
 
-use App\Service\Util\RandomService;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FileUploaderService {
 
     public const FOLDER = "/uploaded";
-    //^3_~LZ8zi14Wx
 
     private RandomService $randomService;
     private Filesystem $filesystem;
