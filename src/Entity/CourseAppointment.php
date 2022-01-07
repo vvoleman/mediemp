@@ -21,7 +21,7 @@ class CourseAppointment
 
     /**
      * @ORM\ManyToOne(targetEntity=EmployerCourse::class, inversedBy="courseAppointments")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="CASCADE",nullable=false)
      */
     private $employerCourse;
 

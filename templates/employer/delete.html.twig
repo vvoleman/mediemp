@@ -1,0 +1,32 @@
+{% extends 'employer/employer_base.html.twig' %}
+{% block title %} Smazání zaměstnance - {{ parent()}} {% endblock %}
+{% block rightside %}
+    <h1 class="text-center">Smazání zaměstnance</h1>
+    <hr>
+    <div>
+        <h4>Přejete si smazat tohoto zaměstnance? Tuto akci nelze zvrátit</h4>
+        <div>
+            <table class="table">
+                <thead class="table-light">
+                    <tr>
+                        <td>ID</td>
+                        <td>Příjmení</td>
+                        <td>Jméno</td>
+                        <td>Titul</td>
+                        <td>Adresa</td>
+                    </tr>
+                </thead>
+                <tbody class="table-light">
+                    <tr>
+                        <td>{{ employee.id }}</td>
+                        <td>{{ employee.surname }}</td>
+                        <td>{{ employee.name }}</td>
+                        <td>{{ employee.degree }}</td>
+                        <td>{{ employee.address }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {{ form(form) }}
+    </div>
+{% endblock %}

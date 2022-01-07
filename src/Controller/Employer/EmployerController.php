@@ -13,16 +13,16 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use League\Csv\Writer;
 
-/**
- * @IsGranted("EMPLOYEE_IS_MANAGER")
- * @Route("/employer",name="app_employer")
- */
+#[IsGranted("EMPLOYEE_IS_MANAGER")]
+#[Route("/employer",name:"app_employer")]
 class EmployerController extends AbstractController {
 
     #[Route('/', name: '')]
@@ -51,7 +51,7 @@ class EmployerController extends AbstractController {
     }
 
     #[Route('/employees', name: '_employees')]
-    public function employeesList() {
+    public function employeesList(): Response {
         $user = $this->getUser()->getUser();
         $employer = $user->getManaging();
         $employees = $employer->getEmployees();
@@ -62,7 +62,7 @@ class EmployerController extends AbstractController {
     }
 
     #[Route('/employees/new',name:'_employees_new')]
-    public function newEmployee(Request $request,EntityManagerInterface $entityManager,EventDispatcherInterface $dispatcher){
+    public function newEmployee(Request $request,EntityManagerInterface $entityManager,EventDispatcherInterface $dispatcher): Response {
         $user = $this->getUser()->getUser();
 
         $employee = new Employee();
@@ -92,7 +92,7 @@ class EmployerController extends AbstractController {
     }
 
     #[Route("/export",name:'_export')]
-    public function exportData(Request $request,EmployeeBasicExport $export) {
+    public function exportData(Request $request,EmployeeBasicExport $export): Response {
         $form = $this->createForm(ExportDataType::class);
 
         $form->handleRequest($request);
@@ -116,6 +116,37 @@ class EmployerController extends AbstractController {
 
         return $this->renderForm('employer/export_data.html.twig',[
             "form"=>$form
+        ]);
+    }
+
+    #[Route("/delete/{id}",name: "_delete")]
+    public function deleteEmployee(Request $request, Employee $employee, EntityManagerInterface $manager){
+        $form = $this->createFormBuilder()
+            ->add("confirm",SubmitType::class,["label"=>"Smazat"])
+            ->add("_id",HiddenType::class,["data"=>$employee->getId()])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+            if($data["_id"] != $employee->getId()){
+                $this->addFlash("danger","Zadané parametry se neshodují, zkuste to znovu");
+            }else{
+                $deletedId = $employee->getId();
+                $manager->remove($employee);
+                $manager->flush();
+                dd($employee);
+                $this->addFlash("success",sprintf("Uživatel s ID:%d smazán!",$deletedId));
+            }
+            dd($data);
+            //smazat employeeho
+            //odeslat email
+
+        }
+
+        return $this->renderForm("employer/delete.html.twig",[
+            "form"=>$form,
+            "employee"=>$employee
         ]);
     }
 
