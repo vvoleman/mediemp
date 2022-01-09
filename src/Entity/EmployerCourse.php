@@ -98,4 +98,11 @@ class EmployerCourse
 
         return $this;
     }
+
+    public function getFilteredAppointments(bool $finished = true): Collection|array {
+        return array_filter($this->getCourseAppointments()->toArray(),function ($x)use($finished){
+            /** @var CourseAppointment $x */
+            return ($finished) ? $x->isOver() : !$x->isOver();
+        });
+    }
 }

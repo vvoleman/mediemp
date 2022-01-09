@@ -4,69 +4,46 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container">
-		<div class="row justify-content-md-center">
-			{% for course in courses %}
+    <div class="container">
+        <div class="row">
+            <div>
+                <a href="{{ path('app_courses_adopt') }}">
+                    <button class="btn btn-success">Přidat kurz</button>
+                </a>
+            </div>
+        </div>
+        <div class="row justify-content-md-center">
+            {% for employer_course in courses %}
+            {% set course = employer_course.course %}
+            <div class="col col-lg-3 m-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.name }}</h5>
+                        <p class="card-text">{{ course.focus }}</p>
+                        {% set keywords = course.keywords|split(',') %}
+                        {% for u in keywords %}
+                            <span class="badge bg-secondary">{{ u }}</span>
+                        {% endfor %}
+                        <div class="card-text my-2">
+                            <a href="{{ path('app_courses_details', {"id":course.id}) }}" class="btn btn-primary">Otevřít
+                                kurz</a>
+                            {% if is_granted("EMPLOYEE_IS_MANAGER") %}
+                            <form method="POST">
+                                <input type="hidden" name="action" value="delete_course"/>
+                                <input type="hidden" name="id" value="{{ course.id }}"/>
+                                <input type="hidden" name="_csrf_token"
+                                       value="{{ csrf_token('post-create_appointment') }}">
+                                <input type="Submit" class="btn btn-danger btn-sm my-1" value="Smazat"/>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
 
-				<div class="col col-lg-3 m-2">
-					<div class="card">
-						<div class="card-body">
-							<h5 class="card-title">{{ course.name }}</h5>
-							<p class="card-text">{{ course.focus }}</p>
-							{% set keywords = course.keywords|split(',') %}
-							{% for u in keywords %}
-								<span class="badge bg-secondary">{{ u }}</span>
-							{% endfor %}
-							<div class="card-text my-2">
-								<a href="{{path('app_courses_one', {"id":course.id}) }}" class="btn btn-primary">Otevřít kurz</a>
-								<form method="POST">
-									<input type="hidden" name="action" value="delete_course"/>
-									<input type="hidden" name="id" value="{{course.id}}"/>
-									<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
-									<input type="Submit" class="btn btn-danger btn-sm my-1" value="Smazat"/>
-								</form>
-							</div>
+        {% endfor %}
 
-						</div>
-					</div>
-				</div>
-
-			{% endfor %}
-			<div class="col col-lg-3 m-2">
-				<div class="card">
-					<div class="card-body text-center">
-						<h5 class="card-title">Vytvořit nový kurz</h5>
-						<div class="card-text my-2 ">
-							<form method="POST">
-								<input type="hidden" name="action" value="create_course"/>
-								<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
-								<div class="mb-3">
-									<label class="form-label">
-										Jméno:
-									</label>
-									<input type="text" class="form-control" name="name"></div>
-								<div class="mb-3">
-									<label class="form-label">
-										Klíčová slova:
-									</label>
-									<input type="text" class="form-control" name="keywords"></div>
-								<div class="mb-3">
-									<label class="form-label">
-										Specializace:
-									</label>
-									<input type="text" class="form-control" name="specialization"></div>
-								<div class="mb-3">
-									<label class="form-label">
-										Zaměření:
-									</label>
-									<input type="text" class="form-control" name="focus"></div>
-								<input type="Submit" class="btn btn-success my-1" value="Vytvořit nový"/>
-							</form>
-						</div>
-
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    </div>
+    </div>
 {% endblock %}

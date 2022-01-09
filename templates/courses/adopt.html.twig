@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Přehled kurzů - {{ parent() }}{% endblock %}
+{% block body %}
+<div class="container">
+    <h3 class="text-center">Adoptovat kurz</h3>
+    <hr>
+    {{ form(form) }}
+</div>
+{% endblock %}

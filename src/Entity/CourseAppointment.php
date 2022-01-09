@@ -132,4 +132,40 @@ class CourseAppointment
 
         return $this;
     }
+
+    public function isOver(): bool {
+        return $this->date < new \DateTime();
+    }
+
+    public function getRealAttendants(): array {
+        $registrations = [];
+        foreach ($this->getCourseRegistrations() as $courseRegistration) {
+            if(!$courseRegistration->getAbsence()) $registrations[] = $courseRegistration;
+        }
+        return $registrations;
+    }
+    
+    public function getSuccessRate(): float{
+        if($this->isOver()) return 0;
+
+        $registrations = $this->getCourseRegistrations();
+
+        $count = 0;
+        $totalCount = 0;
+
+        foreach ($registrations as $registration){
+            if(!$registration->getAbsence()){
+                $totalCount++;
+                if($registration->getTestDone()){
+                    $count++;
+                }
+            }
+        }
+
+        return $count/$totalCount;
+    }
+
+    public function canEnter(): bool {
+        return !$this->isOver() && $this->getCourseRegistrations()->count() < $this->capacity;
+    }
 }

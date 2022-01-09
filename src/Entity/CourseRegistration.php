@@ -8,8 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=CourseRegistrationRepository::class)
  */
-class CourseRegistration
-{
+class CourseRegistration {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -30,81 +29,56 @@ class CourseRegistration
     private $employee;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint",nullable=true)
      */
     private $absence;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="boolean",nullable=true)
      */
     private $test_done;
 
-    /**
-     * @ORM\Column(type="string", length=32)
-     */
-    private $notification_status;
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getCourseAppointment(): ?CourseAppointment
-    {
+    public function getCourseAppointment(): ?CourseAppointment {
         return $this->courseAppointment;
     }
 
-    public function setCourseAppointment(?CourseAppointment $courseAppointment): self
-    {
+    public function setCourseAppointment(?CourseAppointment $courseAppointment): self {
         $this->courseAppointment = $courseAppointment;
 
         return $this;
     }
 
-    public function getEmployee(): ?Employee
-    {
+    public function getEmployee(): ?Employee {
         return $this->employee;
     }
 
-    public function setEmployee(?Employee $employee): self
-    {
+    public function setEmployee(?Employee $employee): self {
         $this->employee = $employee;
 
         return $this;
     }
 
-    public function getAbsence(): ?int
-    {
+    public function getAbsence(): ?int {
         return $this->absence;
     }
 
-    public function setAbsence(int $absence): self
-    {
+    public function setAbsence(int $absence): self {
         $this->absence = $absence;
 
         return $this;
     }
 
-    public function getTestDone(): ?int
-    {
+    public function getTestDone(): ?bool {
         return $this->test_done;
     }
 
-    public function setTestDone(int $test_done): self
-    {
+    public function setTestDone(int $test_done): self {
         $this->test_done = $test_done;
-
-        return $this;
-    }
-
-    public function getNotificationStatus(): ?string
-    {
-        return $this->notification_status;
-    }
-
-    public function setNotificationStatus(string $notification_status): self
-    {
-        $this->notification_status = $notification_status;
 
         return $this;
     }

@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Employer;
 use App\Entity\GlobalCourse;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,9 +17,23 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class GlobalCourseRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, GlobalCourse::class);
+    }
+
+    public function availableGlobalCourses(int $employerId) {
+        return $this->availableGlobalCoursesQueryBuilder($employerId)
+            ->getQuery()->getResult();
+    }
+
+    public function availableGlobalCoursesQueryBuilder(int $employerId): QueryBuilder {
+        $q = $this->createQueryBuilder('gc');
+        return $q
+            ->select('gc')
+            ->leftJoin('gc.employerCourses',"ec")
+            ->where('ec.employer is null')
+            ->OrWhere('ec.employer != :employer')
+            ->setParameter("employer",$employerId);
     }
 
     // /**
