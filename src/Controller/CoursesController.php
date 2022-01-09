@@ -4,128 +4,81 @@ namespace App\Controller;
 
 use App\Entity\CourseAppointment;
 use App\Entity\CourseRegistration;
-use App\Entity\Employee;
 use App\Entity\EmployerCourse;
 use App\Entity\GlobalCourse;
-use App\Form\AdoptCourseType;
-use App\Form\NewAppointmentType;
 use App\Repository\CourseAppointmentRepository;
 use App\Repository\CourseRegistrationRepository;
 use App\Repository\EmployeeRepository;
 use App\Repository\EmployerCourseRepository;
 use App\Repository\EmployerRepository;
 use App\Repository\GlobalCourseRepository;
-use App\Security\VerifyCsrfTrait;
+use App\Service\Util\PreviousUrlService;
 use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Doctrine\ORM\Mapping\Id;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-//TODO: #[IsGranted("USER_EMPLOYEE")]
-#[Route("/courses",name:"app_courses")]
-class CoursesController extends AbstractController {
-
-    use VerifyCsrfTrait;
-
-    #[Route("/",name:"",methods: ["GET"])]
-    public function index(): Response {
-        /** @var Employee $user */
-        $user = $this->getUser()->getUser();
-        $records = $user->getEmployer()->getEmployerCourses();
+class CoursesController extends AbstractController
+{
+    /**
+     * @Route("/courses", name="app_courses",methods={"GET"})
+     */
+    public function indexCourses(GlobalCourseRepository $repository): Response
+    {
+        $records = $repository->findAll();
         return $this->render('courses/index.html.twig', [
+            'controller_name' => 'CoursesController',
             'courses' => $records
         ]);
     }
-
-    #[Route("/adopt",name:"_adopt")]
-    public function create(Request $request,EntityManagerInterface $entityManager): Response {
-        //TODO: $this->denyAccessUnlessGranted("EMPLOYEE_IS_MANAGER");
-        //adopt
-//        return $this->;
-        /** @var Employee $user */
-        $user = $this->getUser()->getUser();
-        $form = $this->createForm(AdoptCourseType::class,null,["employer_id"=>$user->getEmployer()->getId()]);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-            $course = $form->get("course")->getNormData();
-            $employerCourse = new EmployerCourse();
-            $employerCourse->setEmployer($user->getEmployer());
-            $employerCourse->setCourse($course);
-            $entityManager->persist($employerCourse);
+    /**
+     * @Route("/courses", name="app_courses_post",methods={"POST"})
+     */
+    public function indexCoursesPost(GlobalCourseRepository $repository, Request $request): Response
+    {
+        if ($request->request->get('action') == "delete_course") {
+            $entityManager = $this->getDoctrine()->getManager();
+            $old = $repository->findOneBy(['id' => $request->request->get('id')]);
+            $entityManager->remove($old);
             $entityManager->flush();
-
-            $this->addFlash("success","Kurz byl adoptován!");
-            //TODO: přesměruj na detaily kurzu
-        }
-
-        return $this->renderForm("courses/adopt.html.twig",[
-            "form"=>$form
-        ]);
-    }
-
-    #[Route("/{id}",name:"_details")]
-    public function detailsManager(Request $request, EmployerCourse $c, EntityManagerInterface $entityManager): Response {
-        //TODO: $this->denyAccessUnlessGranted("EMPLOYEE_IS_MANAGER_OF",$c->getEmployer());
-
-        $appointment = new CourseAppointment();
-        $newAppointmentForm = $this->createForm(NewAppointmentType::class,$appointment);
-
-        $newAppointmentForm->handleRequest($request);
-        if($newAppointmentForm->isSubmitted() && $newAppointmentForm->isValid()){
-            /** @var CourseAppointment $appointment */
-            $appointment = $newAppointmentForm->getNormData();
-            $appointment->setEmployerCourse($c);
-            $entityManager->persist($appointment);
+            $this->addFlash("success", "Kurz smazán");
+        } else if ($request->request->get('action') == "create_course") {
+            $entityManager = $this->getDoctrine()->getManager();
+            $new = new GlobalCourse();
+            $new->setName($request->request->get('name'));
+            $new->setKeywords($request->request->get('keywords'));
+            $new->setFocus($request->request->get('focus'));
+            $new->setSpecialization($request->request->get('specialization'));
+            $entityManager->persist($new);
             $entityManager->flush();
-            $this->addFlash("success","Nový termín přidán!");
+            $this->addFlash("success", "Kurz vytvořen");
         }
-
-        return $this->renderForm('courses/one.html.twig', [
-            'course' => $c->getCourse(),
-            'emp_course' => $c,
-            "new_appointment"=>$newAppointmentForm
-        ]);
+        return new RedirectResponse($this->generateUrl("app_courses"));
     }
 
-    #[Route("/{id}/employee",name:"_details_employee")]
-    public function detailsEmployee(Request $request, EmployerCourse $course, CourseAppointmentRepository $repository, EntityManagerInterface $entityManager): Response {
-        if($request->request->get("_submit")){
-            if (!$this->verify("join-appointment",$request->request->get("_csrf"))){
-                throw new \Exception("Outdated request",419);
-            }
 
-            $id = $request->request->get("_appointment_id");
-            $appointment = $repository->find($id);
-            if($appointment->canEnter()){
-                $registration = new CourseRegistration();
-
-                /** @var Employee $user */
-                $user = $this->getUser()->getUser();
-                $registration->setEmployee($user);
-                $registration->setCourseAppointment($appointment);
-                $entityManager->persist($registration);
-                $entityManager->flush();
-
-                $this->addFlash("success","Úspěšně přihlášeno na termín!");
-            }else{
-                $this->addFlash("danger","Termín je již plný!");
-            }
-        }
-
-        return $this->render("courses/one_employee.html.twig",[
-            "employer_course"=>$course,
-            "course"=>$course->getCourse()
+    /**
+     * @Route("/courses/{id}", name="app_courses_one",methods={"GET"})
+     */
+    public function indexOneCourse(EmployerRepository $em, GlobalCourse $c): Response
+    {
+        $all_emplyers = $em->findAll();
+        $courses = $c->getEmployerCourses()->toArray();
+        return $this->render('courses/one.html.twig', [
+            'controller_name' => 'CoursesController',
+            'course' => $c,
+            'emp_course' => $courses,
+            "emp_all" => $all_emplyers
         ]);
     }
-
     /**
      * @Route("/courses/{id}", name="app_courses_one_post",methods={"POST"})
      */
-    public function indexOneCoursePost(GlobalCourse $c, Request $request, $id, EmployerRepository $emp, EmployerCourseRepository $emp_course, CourseAppointmentRepository $course_appointemtn): Response {
+    public function indexOneCoursePost(GlobalCourse $c, Request $request, $id, EmployerRepository $emp, EmployerCourseRepository $emp_course, CourseAppointmentRepository $course_appointemtn): Response
+    {
         if ($request->request->get('action') == "edit_course") {
             $entityManager = $this->getDoctrine()->getManager();
             $c->setName($request->request->get('name'));
@@ -166,7 +119,8 @@ class CoursesController extends AbstractController {
     /**
      * @Route("/courses/{c_id}/appointment/{id}", name="app_courses_one_appointment",methods={"GET"})
      */
-    public function indexAppointment(CourseAppointment $c, EmployeeRepository $emp): Response {
+    public function indexAppointment(CourseAppointment $c, EmployeeRepository $emp): Response
+    {
         $course = $c->getEmployerCourse()->getCourse();
         $peoples = $c->getCourseRegistrations()->toArray();
         $all_users = $emp->findAll();
@@ -179,11 +133,11 @@ class CoursesController extends AbstractController {
 
         ]);
     }
-
     /**
      * @Route("/courses/{c_id}/appointment/{id}", name="app_courses_one_appointment_post",methods={"POST"})
      */
-    public function indexAppointmentPost(CourseAppointment $c, Request $request, $c_id, $id, CourseRegistrationRepository $rep_c, EmployeeRepository $emp): Response {
+    public function indexAppointmentPost(CourseAppointment $c, Request $request, $c_id, $id, CourseRegistrationRepository $rep_c, EmployeeRepository $emp): Response
+    {
         if ($request->request->get('action') == "edit_course") {
             $entityManager = $this->getDoctrine()->getManager();
             $c->setDate(new DateTime(date("Y-m-d H:i:s", strtotime($request->request->get('date')))));

@@ -1,168 +1,172 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Adoptovaný kurz - {{ parent() }}
+	Kurz
 {% endblock %}
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Kurz
-                        </h5>
-                        <p class="card-text">
-                        <div>
-                            <input type="hidden" name="action" value="edit_course"/>
+	<div class="container">
+		<div class="row">
+			<div class="col-4">
+				<div class="card" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title">
+							Editace kurzu
+						</h5>
+						<p class="card-text">
+							<form method="POST">
+								<input type="hidden" name="action" value="edit_course"/>
 
-                            <div class="mb-3">
-                                <label class="form-label">
-                                    Id
-                                </label>
-                                <input type="text" class="form-control" disabled value="{{ course.id }}"></div>
-                            <div class="mb-3">
-                                <label class="form-label">
-                                    Jméno
-                                </label>
-                                <input type="text" class="form-control" name="name" disabled value="{{ course.name }}">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">
-                                    Klíčová slova
-                                </label>
-                                <input type="text" class="form-control" disabled name="keywords"
-                                       value="{{ course.keywords }}"></div>
-                            <div class="mb-3">
-                                <label class="form-label">
-                                    Specializace
-                                </label>
-                                <input type="text" class="form-control" disabled name="specialization"
-                                       value="{{ course.specialization }}"></div>
-                            <div class="mb-3">
-                                <label class="form-label">
-                                    Zaměření
-                                </label>
-                                <input type="text" class="form-control" disabled name="focus"
-                                       value="{{ course.focus }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Id
+									</label>
+									<input type="text" class="form-control" disabled value="{{ course.id }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Jméno
+									</label>
+									<input type="text" class="form-control" name="name" value="{{ course.name }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Klíčová slova
+									</label>
+									<input type="text" class="form-control" name="keywords" value="{{ course.keywords }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Specializace
+									</label>
+									<input type="text" class="form-control" name="specialization" value="{{ course.specialization }}"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Zaměření
+									</label>
+									<input type="text" class="form-control" name="focus" value="{{ course.focus }}"></div>
 
-                        </div>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Naplánované termíny
-                        </h5>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">Datum</th>
-                                <th scope="col">Zapsáno</th>
-                                <th scope="col">Kapacita</th>
-                                <th scope="col">Akce</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for appointment in emp_course.courseAppointments %}
-                                {% if not appointment.over %}
-                                    <tr>
-                                        <td>{{ appointment.date|date("d. m. Y H:i") }}</td>
-                                        <td>{{ appointment.courseRegistrations.count }}</td>
-                                        <td>{{ appointment.capacity }}</td>
-                                        <td><a href="#" class="btn btn-primary">Otevřít</a></td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="card m-top">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Nový termín
-                        </h5>
-                        {{ form(new_appointment) }}
-                    </div>
-                </div>
-                {% if emp_course.filteredAppointments|length > 0 %}
-                    <div class="card m-top">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                Proběhlé termíny
-                            </h5>
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">
-                                        Datum
-                                    </th>
-                                    <th scope="col">
-                                        Zapsáno ku kapacitě
-                                    </th>
-                                    <th>
-                                        Reálná docházka
-                                    </th>
+								<button type="submit" class="btn btn-primary">
+									Uložit
+								</button>
+							</form>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-8">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">
+							Přiřazené termíny
+						</h5>
+						<p>
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">
+											Zaměstnavatel
+										</th>
+										<th scope="col">
+											Dostupné časy startu
+										</th>
+										<th>
+											Akce
+										</th>
 
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for appointment in emp_course.courseAppointments %}
-                                    {% if appointment.over %}
-                                        <tr>
-                                            <td>{{ appointment.date|date("d. m. Y H:i") }}</td>
-                                            <td>{{ appointment.courseRegistrations.count }}
-                                                /{{ appointment.capacity }}</td>
-                                            <td>{{ appointment.realAttendants|length }}/{{ appointment.courseRegistrations.count }}</td>
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+									</tr>
+								</thead>
+								<tbody>
+									{% for c in emp_course %}
+										<tr>
+											<td>
+												{{ c.employer.name }}
+											</td>
+											<td></td>
+											<td>
+												<button data-bs-toggle="modal" data-bs-target="#new-term" onclick="document.getElementById('new-id').value='{{c.id}}'" class="btn btn-success btn-sm" data-id="{{c.id}}">Nový</button>
+											</td>
 
-    <div class="modal" tabindex="-1" id="new-term">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Založit nový termín</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST">
-                        <input type="hidden" name="action" value="create_appointment"/>
-                        <input type="hidden" name="id" id="new-id" value=""/>
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
-                        <div class="mb-3">
-                            <label class="form-label">
-                                Datum
-                            </label>
-                            <input type="text" class="form-control" name="date" value="1000-01-01 00:00"></div>
-                        <div class="mb-3">
-                            <label class="form-label">
-                                Místo
-                            </label>
-                            <input type="text" class="form-control" name="place"></div>
-                        <div class="mb-3">
-                            <label class="form-label">
-                                Kapacita
-                            </label>
-                            <input type="number" min="1" step="1" class="form-control" name="capacity" value="0"></div>
+										</tr>
+										{% for d in c.CourseAppointments() %}
+											<tr>
+												<td></td>
+												<td>
+													<a href="{{ path('app_courses_one_appointment', {"c_id":course.id, "id":d.id}) }}">
+														{{ d.date|date('Y-m-d  H:i') }}
+													</a>
+													<small>
+														(
+														{{ d.courseRegistrations|length }}
+														/
+														{{ d.capacity }}
+														)
+													</small>
 
-                        <input type="Submit" class="btn btn-success btn-sm" value="Založit"/>
-                    </form>
-                </div>
+												</td>
+												<td>
+													<form method="POST">
+														<input type="hidden" name="action" value="delete_appointment"/>
+														<input type="hidden" name="id" value="{{d.id}}"/>
+														<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
+														<input type="Submit" class="btn btn-danger btn-sm" value="Smazat"/>
+													</form>
+												</td>
+											</tr>
+										{% endfor %}
+										<tr></tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</p>
+						<p>
+							<form method="POST">
+								<input type="hidden" name="action" value="adopt_course"/>
+								<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
+								<select class="form-select" name="employer_id">
+									<option selected disabled hidden>Pro zaměstnavatele</option>
+									{% for e in emp_all %}
+										<option value="{{ e.id }}">{{ e.name }}</option>
+									{% endfor %}
+								</select>
+								<input type="Submit" class="btn btn-danger btn-sm" value="Adoptovat kurz"/>
+							</form>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</p>
 
-            </div>
-        </div>
-    </div>
+	<div class="modal" tabindex="-1" id="new-term">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Založit nový termín</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form method="POST">
+						<input type="hidden" name="action" value="create_appointment"/>
+						<input type="hidden" name="id" id="new-id" value=""/>
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
+						<div class="mb-3">
+							<label class="form-label">
+								Datum
+							</label>
+							<input type="text" class="form-control" name="date" value="1000-01-01 00:00"></div>
+						<div class="mb-3">
+							<label class="form-label">
+								Místo
+							</label>
+							<input type="text" class="form-control" name="place"></div>
+						<div class="mb-3">
+							<label class="form-label">
+								Kapacita
+							</label>
+							<input type="number" min="1" step="1" class="form-control" name="capacity" value="0"></div>
+
+						<input type="Submit" class="btn btn-success btn-sm" value="Založit"/>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
 {% endblock %}
