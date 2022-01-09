@@ -1,0 +1,5 @@
+{% extends "email/base.html.twig" %}
+{% block body %}
+    Zaměstnavatel vytvořen. Potvrďte prosím data pro pokračování
+    <a href="{{ absolute_url(path("app_employer_confirm",{"confirmToken":employer.confirmToken})) }}">Odkaz</a>
+{% endblock %}

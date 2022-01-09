@@ -12,8 +12,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass=EmployeeRepository::class)
  */
-class Employee implements UserInterface, PasswordAuthenticatedUserInterface
-{
+class Employee {
+
+    public const TYPE_NAME = "employee";
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -22,24 +24,8 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $email;
-
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
-
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     */
-    private $password;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Employer::class, inversedBy="employees")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false,onDelete="CASCADE")
      */
     private $employer;
 
@@ -108,251 +94,176 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $courseRegistrations;
 
-    public function __construct()
-    {
+    /**
+     * @ORM\ManyToOne(targetEntity=Employer::class, inversedBy="managers")
+     * @ORM\JoinColumn(nullable=true,onDelete="CASCADE")
+     */
+    private $managing;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="employee", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?User $identity;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=32)
+     */
+    private $person_id;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $gender;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $confirmToken;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $confirmedAt;
+
+    public function __construct() {
         $this->courseRegistrations = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
-    {
-        return (string) $this->email;
-    }
-
-    /**
-     * @deprecated since Symfony 5.3, use getUserIdentifier instead
-     */
-    public function getUsername(): string
-    {
-        return (string) $this->email;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Returning a salt is only needed, if you are not using a modern
-     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-     *
-     * @see UserInterface
-     */
-    public function getSalt(): ?string
-    {
-        return null;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
-
-    public function getEmployer(): ?Employer
-    {
+    public function getEmployer(): ?Employer {
         return $this->employer;
     }
 
-    public function setEmployer(?Employer $employer): self
-    {
+    public function setEmployer(?Employer $employer): self {
         $this->employer = $employer;
 
         return $this;
     }
 
-    public function getName(): ?string
-    {
+    public function getName(): ?string {
         return $this->name;
     }
 
-    public function setName(string $name): self
-    {
+    public function setName(string $name): self {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getSurname(): ?string
-    {
+    public function getSurname(): ?string {
         return $this->surname;
     }
 
-    public function setSurname(string $surname): self
-    {
+    public function setSurname(string $surname): self {
         $this->surname = $surname;
 
         return $this;
     }
 
-    public function getDegree(): ?string
-    {
+    public function getDegree(): ?string {
         return $this->degree;
     }
 
-    public function setDegree(string $degree): self
-    {
+    public function setDegree(string $degree): self {
         $this->degree = $degree;
 
         return $this;
     }
 
-    public function getBirthday(): ?\DateTimeInterface
-    {
+    public function getBirthday(): ?\DateTimeInterface {
         return $this->birthday;
     }
 
-    public function setBirthday(\DateTimeInterface $birthday): self
-    {
+    public function setBirthday(\DateTimeInterface $birthday): self {
         $this->birthday = $birthday;
 
         return $this;
     }
 
-    public function getBirthCity(): ?string
-    {
+    public function getBirthCity(): ?string {
         return $this->birth_city;
     }
 
-    public function setBirthCity(string $birth_city): self
-    {
+    public function setBirthCity(string $birth_city): self {
         $this->birth_city = $birth_city;
 
         return $this;
     }
 
-    public function getCitizenship(): ?string
-    {
+    public function getCitizenship(): ?string {
         return $this->citizenship;
     }
 
-    public function setCitizenship(string $citizenship): self
-    {
+    public function setCitizenship(string $citizenship): self {
         $this->citizenship = $citizenship;
 
         return $this;
     }
 
-    public function getDesignationOfProfessionalCompetence(): ?string
-    {
+    public function getDesignationOfProfessionalCompetence(): ?string {
         return $this->designation_of_professional_competence;
     }
 
-    public function setDesignationOfProfessionalCompetence(string $designation_of_professional_competence): self
-    {
+    public function setDesignationOfProfessionalCompetence(string $designation_of_professional_competence): self {
         $this->designation_of_professional_competence = $designation_of_professional_competence;
 
         return $this;
     }
 
-    public function getDiplomaNumber(): ?string
-    {
+    public function getDiplomaNumber(): ?string {
         return $this->diploma_number;
     }
 
-    public function setDiplomaNumber(string $diploma_number): self
-    {
+    public function setDiplomaNumber(string $diploma_number): self {
         $this->diploma_number = $diploma_number;
 
         return $this;
     }
 
-    public function getDiplomaDate(): ?string
-    {
+    public function getDiplomaDate(): ?\DateTime {
         return $this->diploma_date;
     }
 
-    public function setDiplomaDate(\DateTime $diploma_date): self
-    {
+    public function setDiplomaDate(\DateTime $diploma_date): self {
         $this->diploma_date = $diploma_date;
 
         return $this;
     }
 
-    public function getSpecializedCompetency(): ?string
-    {
+    public function getSpecializedCompetency(): ?string {
         return $this->specialized_competency;
     }
 
-    public function setSpecializedCompetency(string $specialized_competency): self
-    {
+    public function setSpecializedCompetency(string $specialized_competency): self {
         $this->specialized_competency = $specialized_competency;
 
         return $this;
     }
 
-    public function getSpecialProfessionalOrSpecialSpecializedCompetencies(): ?string
-    {
+    public function getSpecialProfessionalOrSpecialSpecializedCompetencies(): ?string {
         return $this->special_professional_or_special_specialized_competencies;
     }
 
-    public function setSpecialProfessionalOrSpecialSpecializedCompetencies(string $special_professional_or_special_specialized_competencies): self
-    {
+    public function setSpecialProfessionalOrSpecialSpecializedCompetencies(string $special_professional_or_special_specialized_competencies): self {
         $this->special_professional_or_special_specialized_competencies = $special_professional_or_special_specialized_competencies;
 
         return $this;
     }
 
-    public function getIdentificationDataOfTheEducationalEstablishment(): ?string
-    {
+    public function getIdentificationDataOfTheEducationalEstablishment(): ?string {
         return $this->identification_data_of_the_educational_establishment;
     }
 
-    public function setIdentificationDataOfTheEducationalEstablishment(string $identification_data_of_the_educational_establishment): self
-    {
+    public function setIdentificationDataOfTheEducationalEstablishment(string $identification_data_of_the_educational_establishment): self {
         $this->identification_data_of_the_educational_establishment = $identification_data_of_the_educational_establishment;
 
         return $this;
@@ -361,13 +272,11 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection|CourseRegistration[]
      */
-    public function getCourseRegistrations(): Collection
-    {
+    public function getCourseRegistrations(): Collection {
         return $this->courseRegistrations;
     }
 
-    public function addCourseRegistration(CourseRegistration $courseRegistration): self
-    {
+    public function addCourseRegistration(CourseRegistration $courseRegistration): self {
         if (!$this->courseRegistrations->contains($courseRegistration)) {
             $this->courseRegistrations[] = $courseRegistration;
             $courseRegistration->setEmployee($this);
@@ -376,8 +285,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeCourseRegistration(CourseRegistration $courseRegistration): self
-    {
+    public function removeCourseRegistration(CourseRegistration $courseRegistration): self {
         if ($this->courseRegistrations->removeElement($courseRegistration)) {
             // set the owning side to null (unless already changed)
             if ($courseRegistration->getEmployee() === $this) {
@@ -389,9 +297,84 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function getFullname($reverse = false): string {
-        $data = [$this->name,$this->surname];
-        if($reverse) $data = array_reverse($data);
+        $data = [$this->name, $this->surname];
+        if ($reverse) $data = array_reverse($data);
 
-        return sprintf("%s %s",...$data);
+        return sprintf("%s %s", ...$data);
     }
+
+    public function getManaging(): ?Employer {
+        return $this->managing;
+    }
+
+    public function setManaging(?Employer $managing): self {
+        $this->managing = $managing;
+
+        return $this;
+    }
+
+    public function isManager(): bool {
+        return !!$this->getManaging();
+    }
+
+    public function getIdentity(): ?User {
+        return $this->identity;
+    }
+
+    public function setIdentity(User $identity): self {
+        $this->identity = $identity;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getPersonId(): ?string {
+        return $this->person_id;
+    }
+
+    public function setPersonId(string $person_id): self {
+        $this->person_id = $person_id;
+
+        return $this;
+    }
+
+    public function getGender(): ?string {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): self {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    public function getConfirmToken(): ?string {
+        return $this->confirmToken;
+    }
+
+    public function setConfirmToken(string $confirmToken): self {
+        $this->confirmToken = $confirmToken;
+
+        return $this;
+    }
+
+    public function getConfirmedAt(): ?\DateTimeImmutable {
+        return $this->confirmedAt;
+    }
+
+    public function setConfirmedAt(?\DateTimeImmutable $confirmedAt): self {
+        $this->confirmedAt = $confirmedAt;
+
+        return $this;
+    }
+
 }

@@ -21,6 +21,7 @@ class EmployerCourse
 
     /**
      * @ORM\ManyToOne(targetEntity=Employer::class, inversedBy="employerCourses")
+     * @ORM\JoinColumn(onDelete="CASCADE",nullable=false)
      */
     private $employer;
 
@@ -72,9 +73,16 @@ class EmployerCourse
     /**
      * @return Collection|CourseAppointment[]
      */
-    public function getCourseAppointments(): Collection
-    {
+    public function getCourseAppointments(): Collection {
         return $this->courseAppointments;
+    }
+
+    public function getFilteredAppointments(bool $active = true): Collection{
+        $date = new \DateTimeImmutable();
+        return $this->getCourseAppointments()->filter(function($p)use($date){
+            /** @var CourseAppointment $p */
+            return $p->getDate() > $date;
+        });
     }
 
     public function addCourseAppointment(CourseAppointment $courseAppointment): self

@@ -19,13 +19,13 @@ class CourseRegistration
 
     /**
      * @ORM\ManyToOne(targetEntity=CourseAppointment::class, inversedBy="courseRegistrations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="CASCADE",nullable=false)
      */
     private $courseAppointment;
 
     /**
      * @ORM\ManyToOne(targetEntity=Employee::class, inversedBy="courseRegistrations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="CASCADE",nullable=false)
      */
     private $employee;
 

@@ -5,8 +5,13 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
-/var/
+/var/cache/
+/var/log/
+/var/files/data_assets/assets/*
 /vendor/
+var/files/upload/*
+uploaded/images/*
+
 ###< symfony/framework-bundle ###
 
 /.idea/

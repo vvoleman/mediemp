@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %} Správa organizace - {{ parent() }} {% endblock %}
+{% block body %}
+    <div class="d-lg-flex justify-content-around align-items-start">
+        {% set links = [
+            {"text":"Přehled","route":"app_employer"},
+            {"text":"Zaměstnanci","route":"app_employer_employees"},
+            {"text":"Nový zaměstnanec","route":"app_employer_employees_new"},
+            {"text":"Export dat","route":"app_employer_export"},
+            ] %}
+        <div class="col-lg-3 vertical-menu">
+            {% set current_path = app.request.get('_route') %}
+            {% for l in links %}
+                <a href="{{ path(l.route) }}" class="item{% if (current_path == l.route) %} active{% endif %}">
+                    <div>
+                        {{ l.text }}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+        <div class="col-lg-8 main-content">
+            {% block rightside %}{% endblock %}
+        </div>
+    </div>
+
+{% endblock %}

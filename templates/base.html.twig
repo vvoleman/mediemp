@@ -1,3 +1,4 @@
+{% set isUserLogged = is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,15 +9,18 @@
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    {% endblock %}
-
-    {% block javascripts %}
-        <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+        <link rel="stylesheet" href="{{ asset('assets/css/fontawesome.min.css') }}">
     {% endblock %}
 </head>
 <body>
 {% include "partials/_navbar.html.twig" %}
+{{ render(controller('App\\Controller\\HomeController::renderFlashMessages')) }}
 {% block body %}{% endblock %}
+{% include "partials/_floating.html.twig" %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+{% endblock %}
 </body>
 </html>

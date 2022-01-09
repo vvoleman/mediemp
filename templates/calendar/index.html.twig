@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CalendarController!{% endblock %}
+
+{% block body %}
+    <div class="col-lg-3 mx-auto d-flex justify-content-center align-items-center" style="margin-top:-3em">
+        <a href="{{ path('app_calendar_get',{"offset":offset-1}) }}" class="button-left"><i
+                    class="fas fa-caret-left"></i></a>
+        <div class="calendar-date">{{ monday|date("d. m.") }}
+            - {{ monday|date_modify("+%d days"|format(4))|date("d. m.") }}</div>
+        <a href="{{ path('app_calendar_get',{"offset":offset+1}) }}" class="button-left"><i
+                    class="fas fa-caret-right"></i></a>
+    </div>
+    <div class="d-lg-flex justify-content-around">
+        {% set acronyms = ['Po ', 'Út ', 'St ','Čt ','Pá ','So ','Ne '] %}
+        <div class="col-lg-2">
+            <div class=" col-lg-10 mujkalendar">{{ "Můj \n Kalendář" |nl2br }}</div>
+            <div class="col-lg-10 stupid d-flex justify-content-between">
+                <table class="col-12 calendar">
+                    <thead>
+                    <tr>
+                        {% for i in 0..6 %}
+                            <th class="col-lg-1  day-names text-center">{{ cycle(acronyms, i) }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in 0..4 %}
+                        <tr>
+                            {% for j in 0..6 %}
+                                <td>
+                                    {% set day = i*7+j+1 %}
+                                    {% if (day >= starts_at) and( day-starts_at+1<= days) %}
+                                    <div class="jednotlive-bunky d-flex justify-content-center align-items-center ">
+                                        {{ day-starts_at+1 }}
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {# ctrl+alt+l - format #}
+
+        </div>
+        <div class="col-lg-9 d-lg-flex" style="height: 100px">
+
+            {% for i in 0..4 %}
+                <div class="col-lg-2  monday text-center ">
+                    <div class="m-top">{{ cycle(acronyms, i) }}{{ monday|date_modify("+%d days"|format(i))|date("d. m.") }}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+
+    </div>
+    {# <h1>Date: {{ date.format('d. m. Y') }}</h1>
+    <h1>Starts at: {{ starts_at }}</h1>
+    <h1>Number of days: {{ days }}</h1>
+    <h1>Offset: {{ offset }} |
+
+
+        <a href="{{ path('app_calendar_get',{"offset":0}) }}">Vynuluj</a>
+    </h1> #}
+{% endblock %}

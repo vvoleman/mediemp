@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +30,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/employee", name="_employee")
      */
-    public function login(AuthenticationUtils $authenticationUtils,Request $request): Response
+    public function employeeLogin(AuthenticationUtils $authenticationUtils,Request $request): Response
     {
         $this->redirectIfLogged($this->getUser(),$request);
 
@@ -41,7 +40,26 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', [
+        return $this->render('security/login_employee.html.twig', [
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        ]);
+    }
+
+    /**
+     * @Route("/admin",name="_admin")
+     */
+    public function adminLogin(Request $request, AuthenticationUtils $authenticationUtils) {
+        dd($authenticationUtils->getLastUsername());
+        $this->redirectIfLogged($this->getUser(),$request);
+
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('security/login_admin.html.twig', [
             'last_username' => $lastUsername,
             'error'         => $error,
         ]);

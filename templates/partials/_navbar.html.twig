@@ -9,12 +9,16 @@
         </button>
         <div class="collapse navbar-collapse d-lg-flex justify-content-end" id="navbarNav">
             <ul class="navbar-nav bubble">
-                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {% if isUserLogged %}
                     <li class="nav-item">
                         <div class="dropdown">
                             <button class="nav-link btn btn-secondary dropdown-toggle" type="button"
                                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ app.user.fullname }}
+                                {% if instanceof(app.user.user,"App\\Entity\\Employee") %}
+                                    {{ app.user.user.fullname }}
+                                {% else %}
+                                    {{ app.user.email }}
+                                {% endif %}
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item" href="#">Action</a></li>
@@ -24,8 +28,14 @@
                         </div>
                     </li>
                     <li class="nav-item special">
-                        <a class="nav-link active" aria-current="page" href="{{ path("app_security_logout") }}">
+                        <a class="nav-link" aria-current="page" href="{{ path("app_security_logout") }}">
                             Odhlásit se
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{{ path("app_security") }}" class="nav-link btn-main">
+                            Přihlášení
                         </a>
                     </li>
                 {% endif %}
