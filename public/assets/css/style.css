@@ -367,3 +367,18 @@ a.floating-button{
 .main-content a{
     color:inherit;
 }
+
+.month{
+    padding:2px 1em  2px 1em;
+    background: #4BB2FF;
+    color:white;
+    border-radius: 5px;
+    font-size: 20px;
+}
+.button-left-month{
+    color:white;
+    font-size: 3.3em;
+    margin-bottom:4px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
