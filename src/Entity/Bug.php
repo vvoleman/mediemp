@@ -51,11 +51,10 @@ class Bug {
      * @Assert\Url
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $url = null;
+    private string $url;
 
     public function __construct() {
         $this->screenshots = new ArrayCollection();
-        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int {

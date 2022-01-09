@@ -21,7 +21,7 @@ class PreviousUrlService {
      * @return bool
      */
     public function set(Request $request): bool {
-        $url = $this->previous($request);
+        $url = $request->headers->get("referer");
 
         if (!!$url) {
             $this->session->set(self::NAME, $url);
@@ -41,10 +41,6 @@ class PreviousUrlService {
         if ($clear) $this->session->remove(self::NAME);
         if ($url==null) $url = $default;
         return $url;
-    }
-
-    public function previous(Request $request): ?string{
-        return $request->headers->get("referer");
     }
 
     /**

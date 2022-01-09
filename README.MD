@@ -34,11 +34,10 @@ V kontroleru si provedeme nějakou potřebnou logiku a nakonci zavoláme vykresl
  * @param int $id  
   */  
 public function get(int $id, EmployerRepository $repository): Response {  
-  try{  
-	  $employer = $repository->getById($id);  
-  }catch (\Exception $e){  
-	  throw $this->createNotFoundException("ID ".$id." not found");  
-  }  
+  $employer = $this->repository->find($id);
+  if(!$employer){
+        $this->createNotFoundException("Can't find employer with ID ".$id);
+  } 
   
   return $this->render('/home/test.html.twig',[  
 	  "employer"=>$employer  
