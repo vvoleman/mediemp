@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\GlobalCourse;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ObjectManager;
 
 class CoursesFixtures extends Fixture
