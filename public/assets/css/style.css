@@ -363,3 +363,7 @@ a.floating-button{
     margin-top:10px;
     background:var(--special-color);
 }
+
+.main-content a{
+    color:inherit;
+}

@@ -6,6 +6,7 @@ use App\Entity\Employee;
 use App\Entity\User;
 use App\Form\EditEmployeeType;
 use App\Repository\EmployeeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,25 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 #[Route("/profile", name: "app_profile")]
 class ProfileController extends AbstractController {
+
+    #[Route("/edit", name: "_edit")]
+    public function edit(Request $request,EntityManagerInterface $manager) {
+        $user = $this->getUser();
+        $user = $user->getUser();
+
+        $form = $this->createForm(EditEmployeeType::class, $user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $manager->flush();
+            $this->addFlash("success","Změna proběhla úspěšně");
+        }
+
+        return $this->renderForm("profile/edit.html.twig", [
+            "form" => $form
+        ]);
+    }
 
     #[Route("/{id?}", name: "_get")]
     public function index(EmployeeRepository $repository, ?Employee $employee): Response {
@@ -41,24 +61,6 @@ class ProfileController extends AbstractController {
         return $this->render('profile/index.html.twig', [
             'user' => $user,
             'isManager' => $isManager
-        ]);
-    }
-
-    #[Route("/edit", name: "_edit")]
-    public function edit(Request $request) {
-        $user = $this->getUser();
-        $user = $user->getUser();
-
-        $form = $this->createForm(EditEmployeeType::class, $user);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            dd($data);
-        }
-
-        return $this->renderForm("profile/edit.html.twig", [
-            "form" => $form
         ]);
     }
 

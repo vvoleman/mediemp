@@ -5,6 +5,7 @@ namespace App\Controller\Employer;
 use App\Entity\CourseAppointment;
 use App\Entity\Employee;
 use App\Entity\Employer;
+use App\Event\Employer\EmployeeDeletedEvent;
 use App\Event\Employer\EmployeeSetupEvent;
 use App\Form\ExportDataType;
 use App\Form\NewEmployeeType;
@@ -120,7 +121,7 @@ class EmployerController extends AbstractController {
     }
 
     #[Route("/delete/{id}",name: "_delete")]
-    public function deleteEmployee(Request $request, Employee $employee, EntityManagerInterface $manager){
+    public function deleteEmployee(Request $request, Employee $employee, EntityManagerInterface $manager, EventDispatcherInterface $dispatcher){
         $form = $this->createFormBuilder()
             ->add("confirm",SubmitType::class,["label"=>"Smazat"])
             ->add("_id",HiddenType::class,["data"=>$employee->getId()])
@@ -135,10 +136,11 @@ class EmployerController extends AbstractController {
                 $deletedId = $employee->getId();
                 $manager->remove($employee);
                 $manager->flush();
-                dd($employee);
+                $dispatcher->dispatch(new EmployeeDeletedEvent($employee));
                 $this->addFlash("success",sprintf("Uživatel s ID:%d smazán!",$deletedId));
+
+                return $this->redirectToRoute("app_employer_employees");
             }
-            dd($data);
             //smazat employeeho
             //odeslat email
 

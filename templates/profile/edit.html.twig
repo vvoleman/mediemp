@@ -1,5 +1,10 @@
 {% extends "base.html.twig" %}
 {% block title %} Upravit údaje - {{ parent() }}{% endblock %}
 {% block body %}
-    {{ form(form) }}
+    <div class="container">
+        <a href="{{ path('app_profile_get') }}">Zpět na profil</a>
+    </div>
+    <div class="container col-lg-6">
+        {{ form(form) }}
+    </div>
 {% endblock %}

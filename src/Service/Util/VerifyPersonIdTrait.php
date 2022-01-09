@@ -15,7 +15,6 @@ trait VerifyPersonIdTrait {
             return false;
         }
 
-        dd($matches);
         list(, $year, $month, $day, $ext, $c) = $matches;
 
         if ($c === '') {
