@@ -1,5 +1,0 @@
-{% extends "email/base.html.twig" %}
-{% block body %}
-    Založte si manažerský účet pro organizaci "{{ employer.name }} ({{ employer.providerType }})"
-    <a href="{{ absolute_url(path('app_employer_confirm_setup',{"confirmToken":employer.confirmToken})) }}">zde</a>
-{% endblock %}

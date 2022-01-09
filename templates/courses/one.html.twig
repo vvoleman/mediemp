@@ -80,12 +80,7 @@
 											</td>
 											<td></td>
 											<td>
-												<form method="POST">
-													<input type="hidden" name="action" value="create_appointment"/>
-													<input type="hidden" name="id" value="{{c.id}}"/>
-													<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
-													<input type="Submit" class="btn btn-success btn-sm" value="Nový"/>
-												</form>
+												<button data-bs-toggle="modal" data-bs-target="#new-term" onclick="document.getElementById('new-id').value='{{c.id}}'" class="btn btn-success btn-sm" data-id="{{c.id}}">Nový</button>
 											</td>
 
 										</tr>
@@ -138,4 +133,40 @@
 			</div>
 		</div>
 	</p>
+
+	<div class="modal" tabindex="-1" id="new-term">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Založit nový termín</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form method="POST">
+						<input type="hidden" name="action" value="create_appointment"/>
+						<input type="hidden" name="id" id="new-id" value=""/>
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
+						<div class="mb-3">
+							<label class="form-label">
+								Datum
+							</label>
+							<input type="text" class="form-control" name="date" value="1000-01-01 00:00"></div>
+						<div class="mb-3">
+							<label class="form-label">
+								Místo
+							</label>
+							<input type="text" class="form-control" name="place"></div>
+						<div class="mb-3">
+							<label class="form-label">
+								Kapacita
+							</label>
+							<input type="number" min="1" step="1" class="form-control" name="capacity" value="0"></div>
+
+						<input type="Submit" class="btn btn-success btn-sm" value="Založit"/>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
 {% endblock %}

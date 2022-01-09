@@ -15,25 +15,12 @@ class CalendarController extends AbstractController
         $date = new \DateTime(sprintf("%ddays",$offset*7));
         $firstDate = new \DateTime($date->format("Y-m-01"));
         $starts = intval($firstDate->format("N"));
-        $temp = $offset;
-        if($temp<0){
-            $temp--;
-
-        }else if($temp==0){
-            $temp = -1;
-        }
-        $monday = new \DateTime(sprintf("%d Monday",$temp));
-        $sunday = new \DateTime("sunday this week");
-      //  dd($monday,$sunday);
-
         $days = cal_days_in_month(CAL_GREGORIAN,intval($date->format('m')),intval($date->format('Y')));
         return $this->render('calendar/index.html.twig', [
             "starts_at"=>$starts,
             "days"=>$days,
             "date"=>$date,
-            "offset"=>$offset,
-            "monday"=>$monday
-            //"sunday"=> $sunday ->format("d. m.")
+            "offset"=>$offset
         ]);
     }
 }

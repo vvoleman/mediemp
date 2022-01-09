@@ -4,8 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Employer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,31 +12,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Employer[]    findAll()
  * @method Employer[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class EmployerRepository extends ServiceEntityRepository {
-    public function __construct(ManagerRegistry $registry) {
+class EmployerRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
         parent::__construct($registry, Employer::class);
-    }
-
-    public function createAllEmployerQueryBuilder(): QueryBuilder {
-        return $this->createQueryBuilder('p');
-    }
-
-    public function getFirst(){
-        return $this->createQueryBuilder('p')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function getUnconfirmedEmployer(string $token): ?Employer {
-        $qb = $this->createQueryBuilder('p');
-        $obj = $qb->where('p.confirmedAt = null')
-            ->where('p.confirmToken = :token')
-            ->setParameter('token',$token)
-            ->getQuery()
-            ->getResult(Query::HYDRATE_OBJECT);
-
-        return (sizeof($obj) == 0) ? null : $obj[0];
     }
 
     // /**
