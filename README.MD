@@ -1,5 +1,25 @@
 # MediEMP
 
+## Výzva
+Poptávka po aplikaci byla identifikována na základě potřeb zaměstnavatelů, které plynou z absence přehledného systému zaměstnaneckých kompetencí a dosaženého vzdělávání.
+
+Aplikace přinese komplexní možnost správy zaměstnaneckých databází, plánování budoucího vzdělávání a získávání nových kompetencí zaměstnanců. 
+Poskytne tedy celistvý přehled o personálním vybavení zaměstnavatele a kvalifikaci či osobním rozvoji jeho zaměstnanců. 
+
+## Řešení
+* webová aplikace umožňující personální správu databáze zaměstnanců, jejich kvalifikací a kompetencí
+* přehledné prostředí pro plánování vzdělávání zaměstnanců a rozvoj jejich profesních kompetencí a kvalifikací
+* zaměstnancům i zaměstnavatelům poskytnout přehledný a souhrnný přehled odborných kurzů a seminářů pro kariérní rozvoj zdravotnických pracovníků 
+* aplikace umožňuje registraci na jednotlivé akce, dle preferencí zaměstnance i zaměstnavatele
+
+Naše řešení tak vytváří přehledné prostředí pro zaměstanavatele, kde mohou plánovat kurzy pro své zaměstnance. Zaměstnanci se pak mohou na tyto kurzy přihlásit. Poté se eviduje docházka a splnění závěrečného testu.
+
+## Použité technologie
+Naše aplikace běží na webovém serveru a je napsána v jazyce PHP ve verzi 8. Ke svému fungování potřebuje databázi MariaDB.
+
+
+
+
 
 ## Jak zprovoznit?
 
@@ -44,12 +64,15 @@ public function get(int $id, EmployerRepository $repository): Response {
   ]);  
 }
 ```
-Šablony se v Symfony píšou v Twigu, no worries, je to takový HTML na steroidech.
+Šablony se v Symfony píšou v Twigu, je to takový HTML na steroidech.
 
 ## Přístup k DB
 
-~~Jelikož tenhle projekt děláme do předmětu *Databázové systémy*, tak by nebylo moc košér, kdybychom pro manipulaci s daty používali ORM. Proto jsem zvolil, trochu křečovité, repozitáře. Zde si troufám říct, že kdybyste našli lepší způsob jak to napsat, tak mi klidně ve 3 ráno vyražte dveře (nebo hoďte issue, taky možnost).~~
-Haha, my bad, takže pro přístup k databázi používáme Doctrine - knihovnu pro mapování entit na objekty (ORM). Dokumentace [zde](https://symfony.com/doc/current/doctrine.html). Díky Doctrine můžeme vytvářet entity a mapovat je mezi sebou.
+
+Pro přístup k databázi používáme Doctrine - knihovnu pro mapování entit na objekty (ORM). Dokumentace [zde](https://symfony.com/doc/current/doctrine.html). Díky Doctrine můžeme vytvářet entity a mapovat je mezi sebou.
+
+## Schéma databáze
+[DB schéma](https://media.innogamescdn.com/com_DS_CZ/Kubina/forum/Mix/temp/obrazek_db.png)
 
 
 ## Struktura složek
@@ -71,7 +94,7 @@ Haha, my bad, takže pro přístup k databázi používáme Doctrine - knihovnu 
     * Složka se šablonami
 ## Další
 * V případě, že vás zarazí nějaká do očí bijící věc, tak vytvořte issue a popište problém
-* Už nevím, co psát, tak asi dobrou noc
+
 
 ## Užitečné příkazy
 1. `php bin/console debug:router`
