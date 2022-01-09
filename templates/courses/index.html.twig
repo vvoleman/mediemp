@@ -34,11 +34,32 @@
 			{% endfor %}
 			<div class="col col-lg-3 m-2">
 				<div class="card">
-					<div class="card-body">
-						<div class="card-text my-2 text-center">
+					<div class="card-body text-center">
+						<h5 class="card-title">Vytvořit nový kurz</h5>
+						<div class="card-text my-2 ">
 							<form method="POST">
 								<input type="hidden" name="action" value="create_course"/>
 								<input type="hidden" name="_csrf_token" value="{{ csrf_token('post-create_appointment') }}">
+								<div class="mb-3">
+									<label class="form-label">
+										Jméno:
+									</label>
+									<input type="text" class="form-control" name="name"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Klíčová slova:
+									</label>
+									<input type="text" class="form-control" name="keywords"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Specializace:
+									</label>
+									<input type="text" class="form-control" name="specialization"></div>
+								<div class="mb-3">
+									<label class="form-label">
+										Zaměření:
+									</label>
+									<input type="text" class="form-control" name="focus"></div>
 								<input type="Submit" class="btn btn-success my-1" value="Vytvořit nový"/>
 							</form>
 						</div>
