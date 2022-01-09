@@ -72,7 +72,7 @@ public function get(int $id, EmployerRepository $repository): Response {
 Pro přístup k databázi používáme Doctrine - knihovnu pro mapování entit na objekty (ORM). Dokumentace [zde](https://symfony.com/doc/current/doctrine.html). Díky Doctrine můžeme vytvářet entity a mapovat je mezi sebou.
 
 ## Schéma databáze
-[DB schéma](https://media.innogamescdn.com/com_DS_CZ/Kubina/forum/Mix/temp/obrazek_db.png)
+![DB schéma](https://media.innogamescdn.com/com_DS_CZ/Kubina/forum/Mix/temp/obrazek_db.png)
 
 
 ## Struktura složek
