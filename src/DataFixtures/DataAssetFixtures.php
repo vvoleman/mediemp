@@ -4,9 +4,10 @@ namespace App\DataFixtures;
 
 use App\Entity\DataAsset;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class DataAssetFixtures extends Fixture {
+class DataAssetFixtures extends Fixture implements FixtureGroupInterface{
     public function load(ObjectManager $manager): void {
         $asset = new DataAsset();
         $asset->setName("nrpzs");
@@ -17,5 +18,9 @@ class DataAssetFixtures extends Fixture {
 
         $manager->persist($asset);
         $manager->flush();
+    }
+
+    public static function getGroups(): array {
+        return ['group2'];
     }
 }

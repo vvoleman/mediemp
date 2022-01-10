@@ -15,11 +15,13 @@ use App\Repository\EmployerRepository;
 use App\Service\Entity\EmployerLineService;
 use App\Service\Entity\EmployerService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class ZAppFixtures extends Fixture {
+class ZAppFixtures extends Fixture implements DependentFixtureInterface,FixtureGroupInterface{
 
     use PersistArrayTrait;
 
@@ -68,5 +70,15 @@ class ZAppFixtures extends Fixture {
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies() {
+        return [
+          UserFixtures::class,
+        ];
+    }
+
+    public static function getGroups(): array {
+        return ['group1', 'group2'];
     }
 }

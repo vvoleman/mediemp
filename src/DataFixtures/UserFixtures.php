@@ -9,12 +9,14 @@ use App\Factory\EmployerFactory;
 use App\Factory\UserFactory;
 use App\Repository\EmployerLineRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
-class UserFixtures extends Fixture {
+class UserFixtures extends Fixture implements DependentFixtureInterface,FixtureGroupInterface{
 
     private EmployerLineRepository $lineRepository;
 
@@ -63,5 +65,15 @@ class UserFixtures extends Fixture {
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies() {
+        return [
+            EmployerLineFixtures::class
+        ];
+    }
+
+    public static function getGroups(): array {
+        return ['group1', 'group2'];
     }
 }

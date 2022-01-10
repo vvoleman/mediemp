@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\EmployerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/",name="")
      */
-    public function hub(Request $request): Response{
+    public function hub(Request $request,EmployerRepository $repository): Response{
         $this->redirectIfLogged($this->getUser(),$request);
 
         return $this->render("security/index.html.twig");
