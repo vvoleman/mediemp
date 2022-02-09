@@ -4,9 +4,11 @@ namespace App\Form;
 
 use App\Entity\Employee;
 use App\Form\Types\CheckEmailType;
+use App\Form\Types\PersonIdType;
 use App\Repository\UserRepository;
 use PharIo\Manifest\Email;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -37,6 +39,19 @@ class NewEmployeeType extends AbstractType {
                         'mapped'=>false
                     ]);
                 }
+                $builder->add('address',TextType::class,[
+                    'label'=>"Adresa"
+                ]);
+                $builder->add('person_id',PersonIdType::class,[
+                    'label'=>"Rodné číslo"
+                ]);
+                $builder->add('gender',ChoiceType::class,[
+                    "choices"=>[
+                        "Muž"=>"male",
+                        "Žena"=>"female"
+                    ],
+                    "label"=>"Pohlaví"
+                ]);
                 $builder->add('degree', TextType::class,[
                     "label"=>"Titul"
                 ])
