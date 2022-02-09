@@ -21,6 +21,6 @@ class DataAssetFixtures extends Fixture implements FixtureGroupInterface{
     }
 
     public static function getGroups(): array {
-        return ['group2'];
+        return ['group2','aaa'];
     }
 }
