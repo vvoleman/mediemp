@@ -80,11 +80,14 @@ class EmployerController extends AbstractController {
             $employee->setConfirmToken(md5($email.uniqid()));
 
             $entityManager->persist($employee);
+            //ready to save
             $entityManager->flush();
+            
 
             $dispatcher->dispatch(new EmployeeSetupEvent($employee,$email));
 
             $this->addFlash("success","Zaměstnanec byl vytvořen. Na e-mail mu byl zaslán link pro vytvoření přihlašovacích údajů");
+        //posle zaznam
         }
 
         return $this->renderForm("employer/new_employee.html.twig",[
